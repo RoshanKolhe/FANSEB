@@ -2,11 +2,11 @@ import { adminAndOwnerOnly, adminOwnerAndStaffOnly } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 
 export const siteSettings = {
-  name: 'PickBazar',
+  name: 'FANSEB',
   description: '',
   logo: {
     url: '/logo.svg',
-    alt: 'PickBazar',
+    alt: 'FANSEB',
     href: '/',
     width: 128,
     height: 40,
@@ -41,11 +41,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-shops',
         icon: 'ShopIcon',
       },
-      {
-        href: Routes.adminMyShops,
-        label: 'sidebar-nav-item-my-shops',
-        icon: 'MyShopIcon',
-      },
+      // {
+      //   href: Routes.adminMyShops,
+      //   label: 'sidebar-nav-item-my-shops',
+      //   icon: 'MyShopIcon',
+      // },
       {
         href: Routes.product.list,
         label: 'sidebar-nav-item-products',
@@ -71,16 +71,16 @@ export const siteSettings = {
         label: 'sidebar-nav-item-tags',
         icon: 'TagIcon',
       },
-      {
-        href: Routes.manufacturer.list,
-        label: 'sidebar-nav-item-manufacturers',
-        icon: 'DiaryIcon',
-      },
-      {
-        href: Routes.author.list,
-        label: 'sidebar-nav-item-authors',
-        icon: 'FountainPenIcon',
-      },
+      // {
+      //   href: Routes.manufacturer.list,
+      //   label: 'sidebar-nav-item-manufacturers',
+      //   icon: 'DiaryIcon',
+      // },
+      // {
+      //   href: Routes.author.list,
+      //   label: 'sidebar-nav-item-authors',
+      //   icon: 'FountainPenIcon',
+      // },
       {
         href: Routes.order.list,
         label: 'sidebar-nav-item-orders',
@@ -136,11 +136,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-reviews',
         icon: 'ReviewIcon',
       },
-      {
-        href: Routes.settings,
-        label: 'sidebar-nav-item-settings',
-        icon: 'SettingsIcon',
-      },
+      // {
+      //   href: Routes.settings,
+      //   label: 'sidebar-nav-item-settings',
+      //   icon: 'SettingsIcon',
+      // },
     ],
     shop: [
       {
@@ -161,18 +161,18 @@ export const siteSettings = {
         icon: 'ProductsIcon',
         permissions: adminOwnerAndStaffOnly,
       },
-      {
-        href: (shop: string) => `/${shop}${Routes.author.list}`,
-        label: 'sidebar-nav-item-authors',
-        icon: 'FountainPenIcon',
-        permissions: adminAndOwnerOnly,
-      },
-      {
-        href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
-        label: 'sidebar-nav-item-manufacturers',
-        icon: 'DiaryIcon',
-        permissions: adminAndOwnerOnly,
-      },
+      // {
+      //   href: (shop: string) => `/${shop}${Routes.author.list}`,
+      //   label: 'sidebar-nav-item-authors',
+      //   icon: 'FountainPenIcon',
+      //   permissions: adminAndOwnerOnly,
+      // },
+      // {
+      //   href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
+      //   label: 'sidebar-nav-item-manufacturers',
+      //   icon: 'DiaryIcon',
+      //   permissions: adminAndOwnerOnly,
+      // },
       {
         href: (shop: string) => `/${shop}${Routes.order.list}`,
         label: 'sidebar-nav-item-orders',

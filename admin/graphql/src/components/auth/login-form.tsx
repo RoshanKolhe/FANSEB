@@ -33,7 +33,7 @@ const LoginForm = () => {
   const client = useApolloClient();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [login, { loading }] = useLoginMutation({
-    onCompleted: (data) => {
+    onCompleted: (data:any) => {
       if (data.login?.token) {
         if (hasAccess(allowedRoles, data.login.permissions as string[])) {
           setAuthCredentials(data.login.token, data.login.permissions);

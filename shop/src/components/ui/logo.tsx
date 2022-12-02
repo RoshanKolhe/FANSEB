@@ -10,13 +10,13 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
 }) => {
   const {
     settings: { logo, siteTitle },
-  } : any = useSettings();
+  }: any = useSettings();
   return (
     <Link href="/" className={cn('inline-flex', className)} {...props}>
       <span className="relative h-10 w-32 overflow-hidden md:w-40">
         <Image
           src={logo?.original ?? logoPlaceholder}
-          alt={siteTitle || 'PickBazar Logo'}
+          alt={siteTitle || 'FANSEB Logo'}
           layout="fill"
           objectFit="contain"
           loading="eager"

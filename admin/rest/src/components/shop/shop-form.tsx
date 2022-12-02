@@ -286,7 +286,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
           />
 
           <Card className="w-full sm:w-8/12 md:w-2/3">
-            <div className="mb-5">
+            {/* <div className="mb-5">
               <Label>{t('form:input-label-autocomplete')}</Label>
               <Controller
                 control={control}
@@ -305,7 +305,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
               variant="outline"
               className="mb-5"
               error={t(errors.settings?.contact?.message!)}
-            />
+            /> */}
             <Input
               label={t('form:input-label-website')}
               {...register('settings.website')}
@@ -340,7 +340,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
                       /> */}
                       <Input
                         className="sm:col-span-2"
-                        label={t('form:input-label-url')}
+                        label="URL"
                         variant="outline"
                         {...register(`settings.socials.${index}.url` as const)}
                         defaultValue={item.url!} // make sure to set up defaultValue

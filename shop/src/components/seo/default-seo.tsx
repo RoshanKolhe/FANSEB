@@ -2,7 +2,7 @@ import { useSettings } from '@/framework/settings';
 import { DefaultSeo as NextDefaultSeo } from 'next-seo';
 
 const DefaultSeo = () => {
-  const { settings } : any = useSettings();
+  const { settings }: any = useSettings();
   return (
     <NextDefaultSeo
       additionalMetaTags={[
@@ -33,7 +33,7 @@ const DefaultSeo = () => {
       titleTemplate={`${
         settings?.seo?.metaTitle || settings?.siteTitle || 'E-Commerce'
       } | %s`}
-      defaultTitle="PickBazar"
+      defaultTitle="FANSEB"
       description={settings?.seo?.metaDescription || settings?.siteSubtitle}
       canonical={settings?.seo?.canonicalUrl}
       openGraph={{
