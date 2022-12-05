@@ -11,7 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Routes } from '@/config/routes';
 import ShopLayout from '@/components/layouts/shop';
-import { adminOwnerAndStaffOnly } from '@/utils/auth-utils';
+import { adminOwnerAndStaffOnly, getAuthCredentials } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
 import { SortOrder } from '@/types';
 import { useManufacturersQuery } from '@/data/manufacturer';
@@ -27,6 +27,7 @@ export default function Manufacturers() {
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const { permissions: currentUserPermissions } = getAuthCredentials();
   const { manufacturers, paginatorInfo, loading, error } =
     useManufacturersQuery({
       limit: LIMIT,
@@ -59,16 +60,17 @@ export default function Manufacturers() {
         <div className="flex w-full flex-col items-center space-y-4 ms-auto md:flex-row md:space-y-0 xl:w-2/3">
           <Search onSearch={handleSearch} />
 
-          {locale === Config.defaultLanguage && (
-            <LinkButton
-              href={`/${shop}${Routes.manufacturer.create}`}
-              className="h-12 w-full md:w-auto md:ms-6"
-            >
-              <span>
-                + {t('form:button-label-add-manufacturer-publication')}
-              </span>
-            </LinkButton>
-          )}
+          {currentUserPermissions?.includes('super_admin') &&
+            locale === Config.defaultLanguage && (
+              <LinkButton
+                href={`${Routes.manufacturer.create}`}
+                className="h-12 w-full md:w-auto md:ms-6"
+              >
+                <span>
+                  + {t('form:button-label-add-manufacturer-publication')}
+                </span>
+              </LinkButton>
+            )}
         </div>
       </Card>
 

@@ -33,6 +33,7 @@ import {
   useCreateProductMutation,
   useUpdateProductMutation,
 } from '@/data/product';
+import { getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 
 type ProductFormProps = {
   initialValues?: Product | null;
@@ -41,6 +42,7 @@ type ProductFormProps = {
 export default function CreateOrUpdateProductForm({
   initialValues,
 }: ProductFormProps) {
+  const { permissions: currentUserPermissions } = getAuthCredentials();
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { t } = useTranslation();
@@ -87,7 +89,7 @@ export default function CreateOrUpdateProductForm({
       ) {
         //@ts-ignore
         createProduct({
-          ...inputValues,
+          ...{ ...inputValues, type_id: 1 },
           ...(initialValues?.slug && { slug: initialValues.slug }),
           shop_id: shopId || initialValues?.shop_id,
         });
@@ -157,12 +159,16 @@ export default function CreateOrUpdateProductForm({
             />
 
             <Card className="w-full sm:w-8/12 md:w-2/3">
-              <ProductGroupInput
-                control={control}
-                error={t((errors?.type as any)?.message)}
-              />
+              <div style={{ display: 'none' }}>
+                <ProductGroupInput
+                  control={control}
+                  error={t((errors?.type as any)?.message)}
+                />
+              </div>
               <ProductCategoryInput control={control} setValue={setValue} />
-              <ProductAuthorInput control={control} />
+              <div style={{ display: 'none' }}>
+                <ProductAuthorInput control={control} />
+              </div>
               <ProductManufacturerInput control={control} setValue={setValue} />
               <ProductTagInput control={control} setValue={setValue} />
             </Card>
@@ -204,7 +210,13 @@ export default function CreateOrUpdateProductForm({
                 className="mb-5"
               />
 
-              <div>
+              <div
+                style={{
+                  visibility: currentUserPermissions?.includes('super_admin')
+                    ? 'visible'
+                    : 'hidden',
+                }}
+              >
                 <Label>{t('form:input-label-status')}</Label>
                 <Radio
                   {...register('status')}

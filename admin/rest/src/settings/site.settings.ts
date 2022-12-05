@@ -71,11 +71,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-tags',
         icon: 'TagIcon',
       },
-      // {
-      //   href: Routes.manufacturer.list,
-      //   label: 'sidebar-nav-item-manufacturers',
-      //   icon: 'DiaryIcon',
-      // },
+      {
+        href: Routes.manufacturer.list,
+        label: 'sidebar-nav-item-manufacturers',
+        icon: 'DiaryIcon',
+      },
       // {
       //   href: Routes.author.list,
       //   label: 'sidebar-nav-item-authors',
@@ -136,11 +136,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-reviews',
         icon: 'ReviewIcon',
       },
-        // {
-        //   href: Routes.settings,
-        //   label: 'sidebar-nav-item-settings',
-        //   icon: 'SettingsIcon',
-        // },
+      // {
+      //   href: Routes.settings,
+      //   label: 'sidebar-nav-item-settings',
+      //   icon: 'SettingsIcon',
+      // },
     ],
     shop: [
       {
@@ -167,18 +167,18 @@ export const siteSettings = {
       //   icon: 'FountainPenIcon',
       //   permissions: adminAndOwnerOnly,
       // },
-      // {
-      //   href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
-      //   label: 'sidebar-nav-item-manufacturers',
-      //   icon: 'DiaryIcon',
-      //   permissions: adminAndOwnerOnly,
-      // },
       {
-        href: (shop: string) => `/${shop}${Routes.order.list}`,
-        label: 'sidebar-nav-item-orders',
-        icon: 'OrdersIcon',
-        permissions: adminOwnerAndStaffOnly,
+        href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
+        label: 'sidebar-nav-item-manufacturers',
+        icon: 'DiaryIcon',
+        permissions: adminAndOwnerOnly,
       },
+      // {
+      //   href: (shop: string) => `/${shop}${Routes.order.list}`,
+      //   label: 'sidebar-nav-item-orders',
+      //   icon: 'OrdersIcon',
+      //   permissions: adminOwnerAndStaffOnly,
+      // },
       {
         href: (shop: string) => `/${shop}${Routes.refund.list}`,
         label: 'sidebar-nav-item-refunds',
@@ -191,12 +191,12 @@ export const siteSettings = {
         icon: 'UsersIcon',
         permissions: adminAndOwnerOnly,
       },
-      {
-        href: (shop: string) => `/${shop}${Routes.withdraw.list}`,
-        label: 'sidebar-nav-item-withdraws',
-        icon: 'AttributeIcon',
-        permissions: adminAndOwnerOnly,
-      },
+      // {
+      //   href: (shop: string) => `/${shop}${Routes.withdraw.list}`,
+      //   label: 'sidebar-nav-item-withdraws',
+      //   icon: 'AttributeIcon',
+      //   permissions: adminAndOwnerOnly,
+      // },
       {
         href: (shop: string) => `/${shop}${Routes.reviews.list}`,
         label: 'sidebar-nav-item-reviews',

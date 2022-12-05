@@ -71,11 +71,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-tags',
         icon: 'TagIcon',
       },
-      // {
-      //   href: Routes.manufacturer.list,
-      //   label: 'sidebar-nav-item-manufacturers',
-      //   icon: 'DiaryIcon',
-      // },
+      {
+        href: Routes.manufacturer.list,
+        label: 'sidebar-nav-item-manufacturers',
+        icon: 'DiaryIcon',
+      },
       // {
       //   href: Routes.author.list,
       //   label: 'sidebar-nav-item-authors',
@@ -167,12 +167,12 @@ export const siteSettings = {
       //   icon: 'FountainPenIcon',
       //   permissions: adminAndOwnerOnly,
       // },
-      // {
-      //   href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
-      //   label: 'sidebar-nav-item-manufacturers',
-      //   icon: 'DiaryIcon',
-      //   permissions: adminAndOwnerOnly,
-      // },
+      {
+        href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
+        label: 'sidebar-nav-item-manufacturers',
+        icon: 'DiaryIcon',
+        permissions: adminAndOwnerOnly,
+      },
       {
         href: (shop: string) => `/${shop}${Routes.order.list}`,
         label: 'sidebar-nav-item-orders',

@@ -10,7 +10,7 @@ import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { adminOnly } from '@/utils/auth-utils';
+import { adminOnly, getAuthCredentials } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 import { GetStaticProps } from 'next';
 import { SortOrder } from '@/types';
@@ -19,6 +19,8 @@ import { useRouter } from 'next/router';
 import { Config } from '@/config';
 
 export default function Manufacturers() {
+  const { permissions: currentUserPermissions } = getAuthCredentials();
+  console.log('currentUserPermissionsIndex', currentUserPermissions);
   const { locale } = useRouter();
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
@@ -56,17 +58,17 @@ export default function Manufacturers() {
 
         <div className="flex w-full flex-col items-center space-y-4 ms-auto md:flex-row md:space-y-0 xl:w-2/3">
           <Search onSearch={handleSearch} />
-
-          {locale === Config.defaultLanguage && (
-            <LinkButton
-              href={`${Routes.manufacturer.create}`}
-              className="h-12 w-full md:w-auto md:ms-6"
-            >
-              <span>
-                + {t('form:button-label-add-manufacturer-publication')}
-              </span>
-            </LinkButton>
-          )}
+          {currentUserPermissions?.includes('super_admin') &&
+            locale === Config.defaultLanguage && (
+              <LinkButton
+                href={`${Routes.manufacturer.create}`}
+                className="h-12 w-full md:w-auto md:ms-6"
+              >
+                <span>
+                  + {t('form:button-label-add-manufacturer-publication')}
+                </span>
+              </LinkButton>
+            )}
         </div>
       </Card>
 

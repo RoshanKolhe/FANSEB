@@ -67,9 +67,12 @@ const Header = ({ layout }: { layout?: string }) => {
             ''
           )}
 
-          <div className="hidden ltr:ml-10 ltr:mr-auto rtl:mr-10 rtl:ml-auto xl:block">
+          {/* <div
+            className="hidden ltr:ml-10 ltr:mr-auto rtl:mr-10 rtl:ml-auto xl:block"
+            style={{ display: 'none !important' }}
+          >
             <GroupsDropdownMenu />
-          </div>
+          </div> */}
         </div>
         {isHomePage ? (
           <>

@@ -111,7 +111,7 @@ export function getProductDefaultValues(
       is_taxable: false,
       image: [],
       gallery: [],
-      status: ProductStatus.Publish,
+      status: ProductStatus.Draft,
       // isVariation: false,
       variations: [],
       variation_options: [],

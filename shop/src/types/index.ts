@@ -234,6 +234,7 @@ export interface Type {
 }
 
 export interface Shop {
+  settings: any;
   id: string;
   name: string;
   slug: string;
