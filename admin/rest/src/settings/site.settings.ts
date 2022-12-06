@@ -41,11 +41,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-shops',
         icon: 'ShopIcon',
       },
-      // {
-      //   href: Routes.adminMyShops,
-      //   label: 'sidebar-nav-item-my-shops',
-      //   icon: 'MyShopIcon',
-      // },
+      {
+        href: Routes.adminMyShops,
+        label: 'sidebar-nav-item-my-shops',
+        icon: 'MyShopIcon',
+      },
       {
         href: Routes.product.list,
         label: 'sidebar-nav-item-products',

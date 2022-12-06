@@ -13,6 +13,7 @@ import { NextPageWithLayout } from '@/types';
 import * as socialIcons from '@/components/icons/social';
 import { InferGetStaticPropsType } from 'next';
 import { getStaticPaths, getStaticProps } from '@/framework/shop.ssr';
+import Button from '@/components/ui/button';
 export { getStaticPaths, getStaticProps };
 
 const CartCounterButton = dynamic(
@@ -85,6 +86,18 @@ const ShopPage: NextPageWithLayout<
               })}
             </a>
           ))}
+        </div>
+        <div
+          className="align-items-center justify-content-center flex lg:pt-3"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            color: 'black',
+            fontSize: '25px',
+          }}
+        >
+          Showcase |{' '}
+          <span style={{ color: '#c77f3c', marginLeft: '5px' }}>Reels</span>
         </div>
         <div className="flex flex-col bg-gray-100 lg:flex-row lg:items-start lg:p-8">
           <ProductsGrid
