@@ -15,4 +15,5 @@ final class Permission extends Enum
     public const STORE_OWNER = 'store_owner';
     public const STAFF = 'staff';
     public const CUSTOMER = 'customer';
+    public const INFLUENCER = 'influencer';
 }

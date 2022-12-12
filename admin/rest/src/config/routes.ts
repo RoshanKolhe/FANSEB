@@ -3,6 +3,7 @@ export const Routes = {
   login: '/login',
   logout: '/logout',
   register: '/register',
+  influencerRegister: '/influencer-register',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   adminMyShops: '/my-shops',

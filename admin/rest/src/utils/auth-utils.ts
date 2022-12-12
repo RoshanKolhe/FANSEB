@@ -7,11 +7,14 @@ import {
   STORE_OWNER,
   SUPER_ADMIN,
   TOKEN,
+  INFLUENCER
 } from './constants';
 
-export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF];
+export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF, INFLUENCER];
 export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, STORE_OWNER, STAFF];
+export const influencerOnly = [INFLUENCER];
+export const adminAndInfluencerOnly = [INFLUENCER,SUPER_ADMIN];
 export const adminOnly = [SUPER_ADMIN];
 export const ownerOnly = [STORE_OWNER];
 

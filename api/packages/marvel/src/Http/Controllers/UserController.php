@@ -157,11 +157,23 @@ class UserController extends CoreController
         if (isset($request->permission)) {
             $permissions[] = isset($request->permission->value) ? $request->permission->value : $request->permission;
         }
-        $user = $this->repository->create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $influencerExists = in_array( 'influencer', $permissions );
+        if($influencerExists){
+            $user = $this->repository->create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+                'is_active' => '0',
+            ]);
+        }else{
+            $user = $this->repository->create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+                
+            ]);
+        }
+       
 
         $user->givePermissionTo($permissions);
         $this->giveSignupPointsToCustomer($user->id);

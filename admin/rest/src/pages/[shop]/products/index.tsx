@@ -77,7 +77,6 @@ export default function ProductsPage() {
   function handlePagination(current: any) {
     setPage(current);
   }
-
   return (
     <>
       <Card className="mb-8 flex flex-col">

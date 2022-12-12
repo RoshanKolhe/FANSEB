@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
+import InfluencerLayout from '@/components/layouts/influencer';
 import Search from '@/components/common/search';
 import ProductList from '@/components/product/product-list';
 import ErrorMessage from '@/components/ui/error-message';
@@ -14,7 +15,10 @@ import CategoryTypeFilter from '@/components/product/category-type-filter';
 import cn from 'classnames';
 import { ArrowDown } from '@/components/icons/arrow-down';
 import { ArrowUp } from '@/components/icons/arrow-up';
-import { adminOnly } from '@/utils/auth-utils';
+import { adminAndInfluencerOnly, getAuthCredentials } from '@/utils/auth-utils';
+
+
+const { permissions: adminInfluencerPermissions } = getAuthCredentials();
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -112,10 +116,16 @@ export default function ProductsPage() {
     </>
   );
 }
+
 ProductsPage.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndInfluencerOnly,
 };
-ProductsPage.Layout = Layout;
+
+if (adminInfluencerPermissions?.includes('influencer')) {
+  ProductsPage.Layout = InfluencerLayout;
+} else {
+  ProductsPage.Layout = Layout;
+}
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

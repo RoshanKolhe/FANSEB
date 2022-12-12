@@ -1,4 +1,4 @@
-import { adminAndOwnerOnly, adminOwnerAndStaffOnly } from '@/utils/auth-utils';
+import { adminAndOwnerOnly, adminOwnerAndStaffOnly, influencerOnly } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 
 export const siteSettings = {
@@ -71,11 +71,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-tags',
         icon: 'TagIcon',
       },
-      {
-        href: Routes.manufacturer.list,
-        label: 'sidebar-nav-item-manufacturers',
-        icon: 'DiaryIcon',
-      },
+      // {
+      //   href: Routes.manufacturer.list,
+      //   label: 'sidebar-nav-item-manufacturers',
+      //   icon: 'DiaryIcon',
+      // },
       // {
       //   href: Routes.author.list,
       //   label: 'sidebar-nav-item-authors',
@@ -167,18 +167,18 @@ export const siteSettings = {
       //   icon: 'FountainPenIcon',
       //   permissions: adminAndOwnerOnly,
       // },
-      {
-        href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
-        label: 'sidebar-nav-item-manufacturers',
-        icon: 'DiaryIcon',
-        permissions: adminAndOwnerOnly,
-      },
       // {
-      //   href: (shop: string) => `/${shop}${Routes.order.list}`,
-      //   label: 'sidebar-nav-item-orders',
-      //   icon: 'OrdersIcon',
-      //   permissions: adminOwnerAndStaffOnly,
+      //   href: (shop: string) => `/${shop}${Routes.manufacturer.list}`,
+      //   label: 'sidebar-nav-item-manufacturers',
+      //   icon: 'DiaryIcon',
+      //   permissions: adminAndOwnerOnly,
       // },
+      {
+        href: (shop: string) => `/${shop}${Routes.order.list}`,
+        label: 'sidebar-nav-item-orders',
+        icon: 'OrdersIcon',
+        permissions: adminOwnerAndStaffOnly,
+      },
       {
         href: (shop: string) => `/${shop}${Routes.refund.list}`,
         label: 'sidebar-nav-item-refunds',
@@ -191,12 +191,12 @@ export const siteSettings = {
         icon: 'UsersIcon',
         permissions: adminAndOwnerOnly,
       },
-      // {
-      //   href: (shop: string) => `/${shop}${Routes.withdraw.list}`,
-      //   label: 'sidebar-nav-item-withdraws',
-      //   icon: 'AttributeIcon',
-      //   permissions: adminAndOwnerOnly,
-      // },
+      {
+        href: (shop: string) => `/${shop}${Routes.withdraw.list}`,
+        label: 'sidebar-nav-item-withdraws',
+        icon: 'AttributeIcon',
+        permissions: adminAndOwnerOnly,
+      },
       {
         href: (shop: string) => `/${shop}${Routes.reviews.list}`,
         label: 'sidebar-nav-item-reviews',
@@ -208,6 +208,18 @@ export const siteSettings = {
         label: 'sidebar-nav-item-questions',
         icon: 'QuestionIcon',
         permissions: adminAndOwnerOnly,
+      },
+    ],
+    influencer:[
+      {
+        href: Routes.dashboard,
+        label: 'sidebar-nav-item-dashboard',
+        icon: 'DashboardIcon',
+      },
+      {
+        href: Routes.product.list,
+        label: 'sidebar-nav-item-products',
+        icon: 'ProductsIcon',
       },
     ],
   },
