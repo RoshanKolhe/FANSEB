@@ -59,6 +59,10 @@ Route::get("products/calculate-rental-price", [ProductController::class, 'calcul
 Route::apiResource('products', ProductController::class, [
     'only' => ['index', 'show'],
 ]);
+Route::apiResource('influencers', UserController::class, [
+    'only' => ['index', 'show'],
+]);
+
 Route::apiResource('types', TypeController::class, [
     'only' => ['index', 'show'],
 ]);

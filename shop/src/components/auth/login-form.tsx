@@ -88,7 +88,7 @@ function LoginForm() {
         </span>
       </div>
       <div className="mt-2 grid grid-cols-1 gap-4">
-        <Button
+        {/* <Button
           className="!bg-social-google !text-light hover:!bg-social-google-hover"
           disabled={isLoading}
           onClick={() => {
@@ -97,7 +97,7 @@ function LoginForm() {
         >
           <GoogleIcon className="h-4 w-4 ltr:mr-3 rtl:ml-3" />
           {t('text-login-google')}
-        </Button>
+        </Button> */}
 
         <Button
           className="h-11 w-full !bg-gray-500 !text-light hover:!bg-gray-600 sm:h-12"

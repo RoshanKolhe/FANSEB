@@ -120,6 +120,21 @@ export interface ShopQueryOptions extends QueryOptions {
   is_active: number;
 }
 
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
+export type QueryOptionsType = {
+  page?: number;
+  name?: string;
+  shop_id?: number;
+  limit?: number;
+  orderBy?: string;
+  sortedBy?: SortOrder;
+  permission?:string;
+};
+
 export interface AuthorQueryOptions extends QueryOptions {
   language: string;
   name: string;
@@ -663,6 +678,8 @@ export interface ProductPaginator extends PaginatorInfo<Product> {}
 export interface CategoryPaginator extends PaginatorInfo<Category> {}
 
 export interface ShopPaginator extends PaginatorInfo<Shop> {}
+
+export interface UserPaginator extends PaginatorInfo<User> { }
 
 export interface AuthorPaginator extends PaginatorInfo<Author> {}
 

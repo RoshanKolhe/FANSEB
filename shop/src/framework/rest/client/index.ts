@@ -71,6 +71,8 @@ import type {
   WishlistQueryOptions,
   GetParams,
   SettingsQueryOptions,
+  QueryOptionsType,
+  UserPaginator,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { HttpClient } from './http-client';
@@ -202,6 +204,17 @@ class Client {
       }),
     get: (slug: string) =>
       HttpClient.get<Shop>(`${API_ENDPOINTS.SHOPS}/${slug}`),
+  };
+  influencers = {
+    all: ({ name, ...params }: Partial<QueryOptionsType>) =>
+    HttpClient.get<UserPaginator>(API_ENDPOINTS.INFLUENCERS, {
+      searchJoin: 'and',
+      with: 'wallet',
+      ...params,
+      search: HttpClient.formatSearchParams({ name }),
+    }),
+    get: (slug: string) =>
+      HttpClient.get<User>(`${API_ENDPOINTS.INFLUENCERS}/${slug}`),
   };
   authors = {
     all: ({ name, ...params }: Partial<AuthorQueryOptions>) => {

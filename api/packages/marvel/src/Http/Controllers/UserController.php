@@ -51,7 +51,15 @@ class UserController extends CoreController
     public function index(Request $request)
     {
         $limit = $request->limit ?   $request->limit : 15;
+        if($request->permission == 'influencer'){
+            return $this->repository->with(['profile', 'address', 'permissions'])->where(function($query){
+                $query->whereHas('permissions', function ( $subquery ){
+                    $subquery->where('name', 'influencer');
+                });
+            })->paginate($limit);
+        }
         return $this->repository->with(['profile', 'address', 'permissions'])->paginate($limit);
+        
     }
 
     /**

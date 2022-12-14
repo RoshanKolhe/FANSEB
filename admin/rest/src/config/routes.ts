@@ -62,6 +62,9 @@ export const Routes = {
   product: {
     ...routesFactory('/products'),
   },
+  influencerProduct: {
+    ...routesFactory('/influencerProducts'),
+  },
   shop: {
     ...routesFactory('/shops'),
   },

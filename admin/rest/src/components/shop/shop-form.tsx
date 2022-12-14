@@ -145,7 +145,7 @@ const ShopForm = ({ initialValues }: { initialValues?: any }) => {
     <span>
       {t('form:shop-cover-image-help-text')} <br />
       {t('form:cover-image-dimension-help-text')} &nbsp;
-      <span className="font-bold">1170 x 435{t('common:text-px')}</span>
+      <span className="font-bold">1519 x 564{t('common:text-px')}</span>
     </span>
   );
 

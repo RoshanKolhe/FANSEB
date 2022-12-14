@@ -11,6 +11,9 @@ import {
   AttachmentInput,
   VariationOption,
   Variation,
+  GalleryType,
+  CreateInfluencerProduct,
+  Shop,
 } from '@/types';
 import groupBy from 'lodash/groupBy';
 import orderBy from 'lodash/orderBy';
@@ -41,10 +44,28 @@ export type ProductFormValues = Omit<
   is_digital: boolean;
 };
 
+
+export type ProductGalleryFormValues = Omit<
+  CreateInfluencerProduct,
+  | 'user_id'
+  | 'shop_id'
+  | 'product_id'
+> & {
+  product_type: ProductGalleryTypeOption;
+  shops:Pick<Shop, 'id' | 'name'>;
+  products:Pick<Product, 'id' | 'name'>;
+};
+
 export type ProductTypeOption = {
   value: ProductType;
   name: string;
 };
+
+export type ProductGalleryTypeOption = {
+  value: GalleryType;
+  name: string;
+};
+
 export const productTypeOptions: ProductTypeOption[] = Object.entries(
   ProductType
 ).map(([key, value]) => ({
@@ -82,7 +103,7 @@ export function calculateMinMaxPrice(variationOptions: any) {
   return {
     min_price:
       sortedVariationsBySalePrice?.[0].sale_price <
-      sortedVariationsByPrice?.[0]?.price
+        sortedVariationsByPrice?.[0]?.price
         ? sortedVariationsBySalePrice?.[0].sale_price
         : sortedVariationsByPrice?.[0]?.price,
     max_price:
@@ -300,5 +321,23 @@ export function getProductInputValues(
       },
     }),
     ...calculateMinMaxPrice(variation_options),
+  };
+}
+export function getGalleryProductInputValues(
+  values: ProductGalleryFormValues,
+  initialValues: any
+) {
+  const {
+    product_type,
+  } = values;
+  // const { locale } = useRouter();
+  // const router = useRouter();
+
+  return {
+    // language: router.locale,
+  
+    product_type: product_type?.value,
+ 
+
   };
 }

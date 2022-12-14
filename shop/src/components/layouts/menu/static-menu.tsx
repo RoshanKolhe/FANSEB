@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 
 const headerLinks = [
   { href: Routes.shops, icon: null, label: 'nav-menu-shops' },
-  { href: Routes.coupons, icon: null, label: 'nav-menu-offer' },
+  { href: Routes.influencers, icon: null, label: 'nav-menu-offer' },
 ];
 
 const StaticMenu = () => {

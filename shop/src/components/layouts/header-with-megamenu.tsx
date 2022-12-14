@@ -82,7 +82,7 @@ const HeaderWithMegaMenu: React.FC<MenuProps> = ({ data, className }) => {
           ) : null}
 
           <div className="ltr:ml-10 rtl:mr-10 hidden lg:flex items-center shrink-0 space-x-9 rtl:space-x-reverse">
-            <GroupsDropdownMenu variant="minimal" />
+            {/* <GroupsDropdownMenu variant="minimal" /> */}
             <CartCounterIconButton />
             {isAuthorize ? <AuthorizedMenu minimal={true} /> : <JoinButton />}
           </div>

@@ -217,7 +217,7 @@ export const siteSettings = {
         icon: 'DashboardIcon',
       },
       {
-        href: Routes.product.list,
+        href: Routes.influencerProduct.list,
         label: 'sidebar-nav-item-products',
         icon: 'ProductsIcon',
       },

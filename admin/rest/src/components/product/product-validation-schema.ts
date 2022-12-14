@@ -1,4 +1,4 @@
-import { ProductType } from '@/types';
+import { ProductType,Product } from '@/types';
 import * as yup from 'yup';
 
 export const productValidationSchema = yup.object().shape({
@@ -90,4 +90,14 @@ export const productValidationSchema = yup.object().shape({
     }
     return yup.string().nullable();
   }),
+});
+
+export const productGalleryValidationSchema = yup.object().shape({
+  product_gallery_type: yup.object().required('Product Gallery Type required'),
+  shops: yup.object().required('Please Select a Brand'),
+  products:yup.array()
+  .of(
+    yup.object()
+  )
+  .required("Please Select Products"),
 });

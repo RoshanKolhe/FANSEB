@@ -21,6 +21,11 @@ export enum ProductType {
   Variable = 'variable',
 }
 
+export enum GalleryType {
+  Collection = 'collection',
+  Product = 'product',
+}
+
 export enum ProductStatus {
   Publish = 'publish',
   Draft = 'draft',
@@ -59,7 +64,7 @@ export enum Permission {
   StoreOwner = 'store_owner',
   Staff = 'staff',
   Customer = 'customer',
-  Influencer='influencer'
+  Influencer = 'influencer'
 }
 
 export interface GetParams {
@@ -509,6 +514,10 @@ export interface CreateProduct {
   length?: string;
   width?: string;
   shop_id?: string;
+}
+
+export interface CreateInfluencerProduct {
+  product_gallery_type:GalleryType
 }
 
 export interface AttributeProductPivot {
@@ -1230,43 +1239,43 @@ export interface ShopQueryOptions extends Omit<QueryOptions, 'language'> {
   parent: number | null;
 }
 
-export interface ShopPaginator extends PaginatorInfo<Shop> {}
+export interface ShopPaginator extends PaginatorInfo<Shop> { }
 
-export interface WithdrawPaginator extends PaginatorInfo<Withdraw> {}
+export interface WithdrawPaginator extends PaginatorInfo<Withdraw> { }
 
-export interface UserPaginator extends PaginatorInfo<User> {}
+export interface UserPaginator extends PaginatorInfo<User> { }
 
-export interface QuestionPaginator extends PaginatorInfo<Question> {}
+export interface QuestionPaginator extends PaginatorInfo<Question> { }
 
-export interface QuestionPaginator extends PaginatorInfo<Question> {}
+export interface QuestionPaginator extends PaginatorInfo<Question> { }
 
-export interface StaffPaginator extends PaginatorInfo<User> {}
+export interface StaffPaginator extends PaginatorInfo<User> { }
 
-export interface OrderPaginator extends PaginatorInfo<Order> {}
+export interface OrderPaginator extends PaginatorInfo<Order> { }
 
-export interface CouponPaginator extends PaginatorInfo<Coupon> {}
+export interface CouponPaginator extends PaginatorInfo<Coupon> { }
 
-export interface ProductPaginator extends PaginatorInfo<Product> {}
+export interface ProductPaginator extends PaginatorInfo<Product> { }
 
-export interface CategoryPaginator extends PaginatorInfo<Category> {}
+export interface CategoryPaginator extends PaginatorInfo<Category> { }
 
-export interface TaxPaginator extends PaginatorInfo<Tax> {}
+export interface TaxPaginator extends PaginatorInfo<Tax> { }
 
-export interface ReviewPaginator extends PaginatorInfo<Review> {}
+export interface ReviewPaginator extends PaginatorInfo<Review> { }
 
-export interface TagPaginator extends PaginatorInfo<Tag> {}
+export interface TagPaginator extends PaginatorInfo<Tag> { }
 
-export interface AttributePaginator extends PaginatorInfo<Attribute> {}
+export interface AttributePaginator extends PaginatorInfo<Attribute> { }
 
 export interface AttributeValuePaginator
-  extends PaginatorInfo<AttributeValue> {}
+  extends PaginatorInfo<AttributeValue> { }
 
-export interface ShippingPaginator extends PaginatorInfo<Shipping> {}
+export interface ShippingPaginator extends PaginatorInfo<Shipping> { }
 
-export interface AuthorPaginator extends PaginatorInfo<Author> {}
+export interface AuthorPaginator extends PaginatorInfo<Author> { }
 
-export interface ManufacturerPaginator extends PaginatorInfo<Manufacturer> {}
+export interface ManufacturerPaginator extends PaginatorInfo<Manufacturer> { }
 
-export interface OrderStatusPaginator extends PaginatorInfo<OrderStatus> {}
+export interface OrderStatusPaginator extends PaginatorInfo<OrderStatus> { }
 
-export interface WithdrawPaginator extends PaginatorInfo<Withdraw> {}
+export interface WithdrawPaginator extends PaginatorInfo<Withdraw> { }
