@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FileInput from '@/components/ui/file-input';
 import { productGalleryValidationSchema } from './product-validation-schema';
-import { ProductType, Product } from '@/types';
+import { ProductType, Product, GalleryType } from '@/types';
 import { useTranslation } from 'next-i18next';
 import { useShopQuery } from '@/data/shop';
 import ProductTagInput from './product-tag-input';
@@ -17,11 +17,12 @@ import { useEffect, useState } from 'react';
 import ProductAuthorInput from './product-author-input';
 import ProductManufacturerInput from './product-manufacturer-input';
 import {
-  getGalleryProductInputValues,
   getProductDefaultValues,
   getProductInputValues,
+  influencerProductTypeOptions,
   ProductFormValues,
   ProductGalleryFormValues,
+  productTypeOptions,
 } from './form-utils';
 import { getErrorMessage } from '@/utils/form-error';
 import {
@@ -34,15 +35,14 @@ import ProductGroupInput from './product-group-input';
 import ProductCategoryInput from './product-category-input';
 import ProductBrandInput from './product-brand-input';
 import ProductInput from './product-input copy';
+import { type } from 'os';
+import { useCreateInfluencerProductMutation, useUpdateInfluencerProductMutation } from '@/data/influencerProduct';
+import { useMeQuery } from '@/data/user';
 
-type ProductFormProps = {
-  initialValues?: Product | null;
-};
 
 export default function CreateOrUpdateInfluencerProduct({
   initialValues,
-}: ProductFormProps) {
-  const { permissions: currentUserPermissions } = getAuthCredentials();
+}: any) {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [galleryType, setGalleryType] = useState<string | null>(null);
@@ -53,8 +53,17 @@ export default function CreateOrUpdateInfluencerProduct({
     resolver: yupResolver(productGalleryValidationSchema),
     shouldUnregister: true,
     // @ts-ignore
-    defaultValues: getProductDefaultValues(initialValues!, isNewTranslation),
+    defaultValues: {
+      product_gallery_type: influencerProductTypeOptions.find(
+        (option) => initialValues?.type === option.value
+      ) || undefined,
+
+      featureInfluencerImageUrl: initialValues?.featureInfluencerImageUrl || '',
+      shops: initialValues?.products?.shop_id,
+      products: initialValues?.products,
+    },
   });
+  const { data, isLoading: loading, error } = useMeQuery();
   const {
     register,
     handleSubmit,
@@ -67,55 +76,52 @@ export default function CreateOrUpdateInfluencerProduct({
 
   const watchShposValueChange = watch("shops");
 
-  const { mutate: createProduct, isLoading: creating } =
-    useCreateProductMutation();
-  const { mutate: updateProduct, isLoading: updating } =
-    useUpdateProductMutation();
+  const { mutate: createInfluencerProduct, isLoading: creating } =
+    useCreateInfluencerProductMutation();
+  const { mutate: updateInfluencerProduct, isLoading: updating } =
+    useUpdateInfluencerProductMutation();
 
-  const onSubmit = async (values: ProductGalleryFormValues) => {
-    console.log(values);
-    // const inputValues = {
-    //   language: router.locale,
-    //   ...getGalleryProductInputValues(values, initialValues),
-    // };
-
-    // try {
-    //   if (
-    //     !initialValues ||
-    //     !initialValues.translated_languages.includes(router.locale!)
-    //   ) {
-    //     // //@ts-ignore
-    //     // createProduct({
-    //     //   ...{ ...inputValues, type_id: 1 },
-    //     //   ...(initialValues?.slug && { slug: initialValues.slug }),
-    //     //   shop_id: shopId || initialValues?.shop_id,
-    //     // });
-    //   } else {
-    //     //@ts-ignore
-    //     // updateProduct({
-    //     //   ...inputValues,
-    //     //   id: initialValues.id!,
-    //     //   shop_id: initialValues.shop_id!,
-    //     // });
-    //   }
-    // } catch (error) {
-    //   const serverErrors = getErrorMessage(error);
-    //   Object.keys(serverErrors?.validation).forEach((field: any) => {
-    //     setError(field.split('.')[1], {
-    //       type: 'manual',
-    //       message: serverErrors?.validation[field][0],
-    //     });
-    //   });
-    // }
+  const onSubmit = async (values: any) => {
+    const inputValues = {
+      ...values,
+      product_gallery_type: values.product_gallery_type.value,
+      userId: data?.id || undefined
+    }
+    console.log(inputValues);
+    try {
+      if (
+        !initialValues ||
+        !initialValues.translated_languages.includes(router.locale!)
+      ) {
+        //@ts-ignore
+        createInfluencerProduct({
+          ...inputValues,
+        });
+      } else {
+        //@ts-ignore
+        // updateInfluencerProduct({
+        //   ...inputValues,
+        //   id: initialValues.id!,
+        // });
+      }
+    } catch (error) {
+      const serverErrors = getErrorMessage(error);
+      Object.keys(serverErrors?.validation).forEach((field: any) => {
+        setError(field.split('.')[1], {
+          type: 'manual',
+          message: serverErrors?.validation[field][0],
+        });
+      });
+    }
   };
   function checkGalleryType(e: any) {
     setValue('product_gallery_type', e);
     setGalleryType(e.value);
   }
-  useEffect(()=>{
+  useEffect(() => {
     console.log("value changed");
-    
-  },[watchShposValueChange])
+
+  }, [watchShposValueChange])
 
   return (
     <>

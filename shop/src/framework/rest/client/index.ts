@@ -80,6 +80,16 @@ import { OTPVerifyResponse } from '@/types';
 
 class Client {
   products = {
+    influencerProductsPaginated: ({
+      ...params
+    }: Partial<any>) => {
+      return HttpClient.get<any>(API_ENDPOINTS.INFLUENCER_PRODUCTS, {
+        ...params,
+      });
+    },
+    influencerProduct:(params: any) => {
+      return HttpClient.get<any>('influencerProduct', params);
+    },
     all: ({
       type,
       categories,
@@ -291,6 +301,10 @@ class Client {
   };
   users = {
     me: () => HttpClient.get<User>(API_ENDPOINTS.USERS_ME),
+    influencerMe: ({ user_id }: { user_id: string }) =>
+    HttpClient.get<any>(
+      `${API_ENDPOINTS.INFLUENCER_ME}/${user_id}`
+    ),
     update: (user: UpdateUserInput) =>
       HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${user.id}`, user),
     login: (input: LoginUserInput) =>

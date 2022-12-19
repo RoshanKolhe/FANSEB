@@ -156,6 +156,7 @@ const ManufacturerList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_MANUFACTURER"
           routes={Routes?.manufacturer}
         />

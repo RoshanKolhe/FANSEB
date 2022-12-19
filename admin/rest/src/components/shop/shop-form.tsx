@@ -71,6 +71,7 @@ type FormValues = {
 const ShopForm = ({ initialValues }: { initialValues?: any }) => {
   const { mutate: createShop, isLoading: creating } = useCreateShopMutation();
   const { mutate: updateShop, isLoading: updating } = useUpdateShopMutation();
+  console.log("initialvalkues", initialValues);
   const {
     register,
     handleSubmit,

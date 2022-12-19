@@ -52,6 +52,30 @@ class UserRepository extends BaseRepository
         }
     }
 
+    public function fetchRelated($request, $limit = 20, $language = DEFAULT_LANGUAGE)
+    {
+        try {
+            
+            $user = $this->findOneByFieldOrFail('id', $request->userId);
+            if($request->orderByColumn && $request->sortedByColumn ){
+                $products = $user->products()->with('shop')->orderBy($request->orderByColumn,$request->sortedByColumn)->paginate($limit);
+            }
+            else{
+                $products = $user->products()->with('shop')->paginate($limit);
+
+            }
+            if(sizeOf($products) > 0){                
+                return $products;
+            }
+            return [
+                'message' => 'No products found'
+            ];
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+
     public function storeUser($request)
     {
         try {

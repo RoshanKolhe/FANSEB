@@ -1,3 +1,4 @@
+import { ProductGalleryTypeOption } from '@/components/product/form-utils';
 import type { NextPage } from 'next';
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
@@ -294,6 +295,12 @@ export interface ShopSettings {
   website?: string;
 }
 
+export interface ProfileSocials {
+  socials?: SocialInput[];
+  website?: string;
+}
+
+
 export interface Location {
   lat?: number;
   lng?: number;
@@ -517,7 +524,10 @@ export interface CreateProduct {
 }
 
 export interface CreateInfluencerProduct {
-  product_gallery_type:GalleryType
+  product_gallery_type: ProductGalleryTypeOption,
+  featureInfluencerImageUrl?:string,
+  
+  user_id:string,
 }
 
 export interface AttributeProductPivot {
@@ -1103,7 +1113,7 @@ export interface UserProfileInput {
   id: string;
   avatar?: AttachmentInput;
   bio?: string;
-  socials?: SocialInput[];
+  socials?: any;
   contact?: string;
 }
 

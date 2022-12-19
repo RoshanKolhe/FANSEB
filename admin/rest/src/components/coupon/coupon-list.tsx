@@ -186,6 +186,7 @@ const CouponList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_COUPON"
           routes={Routes?.coupon}
         />

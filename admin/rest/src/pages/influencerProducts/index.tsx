@@ -9,10 +9,10 @@ import Loader from '@/components/ui/loader/loader';
 import { Routes } from '@/config/routes';
 import { SortOrder } from '@/types';
 import { useState } from 'react';
-import { useProductsQuery } from '@/data/product';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CategoryTypeFilter from '@/components/product/category-type-filter';
+import { useInfluecnerProductsQuery } from '@/data/influencerProduct';
 import cn from 'classnames';
 import { ArrowDown } from '@/components/icons/arrow-down';
 import { ArrowUp } from '@/components/icons/arrow-up';
@@ -20,11 +20,16 @@ import { adminAndInfluencerOnly, getAuthCredentials } from '@/utils/auth-utils';
 import InfluencerProductList from '@/components/product/influencer-product-list';
 import LinkButton from '@/components/ui/link-button';
 import CategoryShopFilter from '@/components/product/category-shop-filter';
+import { useProductsQuery } from '@/data/product';
+import { useMeQuery } from '@/data/user';
 
 
 const { permissions: adminInfluencerPermissions } = getAuthCredentials();
 
 export default function ProductsPage() {
+
+  const userData = useMeQuery();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [shop, setShop] = useState('');
   const [category, setCategory] = useState('');
@@ -38,17 +43,26 @@ export default function ProductsPage() {
   const toggleVisible = () => {
     setVisible((v) => !v);
   };
+   const { products, loading, paginatorInfo, error } = useInfluecnerProductsQuery({
+      page,
+      userId: userData.data?.id,
+      shop_id: shop,
+      categories: category,
+      name: searchTerm,
+      orderByColumn:orderBy,
+      sortedByColumn:sortedBy,
+    });
 
-  const { products, loading, paginatorInfo, error } = useProductsQuery({
-    language: locale,
-    limit: 20,
-    page,
-    shop_id:shop,
-    categories: category,
-    name: searchTerm,
-    orderBy,
-    sortedBy,
-  });
+  // const { products, loading, paginatorInfo, error } = useProductsQuery({
+  //   language: locale,
+  //   limit: 20,
+  //   page,
+  //   shop_id: shop,
+  //   categories: category,
+  //   name: searchTerm,
+  //   orderBy,
+  //   sortedBy,
+  // });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -95,7 +109,7 @@ export default function ProductsPage() {
             <span className="block md:hidden xl:block">
               + Add
             </span>
-            
+
           </LinkButton>
         </div>
 
@@ -118,7 +132,7 @@ export default function ProductsPage() {
               }}
             />
           </div>
-   
+
         </div>
       </Card>
       <InfluencerProductList

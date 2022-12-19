@@ -25,6 +25,10 @@ const CouponDeleteView = dynamic(
 const ProductDeleteView = dynamic(
   () => import('@/components/product/product-delete-view')
 );
+
+const InfluencerProductDeleteView = dynamic(
+  () => import('@/components/product/influencer-product-delete-view')
+);
 const TypeDeleteView = dynamic(
   () => import('@/components/group/group-delete-view')
 );
@@ -103,6 +107,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
   switch (view) {
     case 'DELETE_PRODUCT':
       return <ProductDeleteView />;
+    case 'DELETE_INFLUENCER_PRODUCT':
+      return <InfluencerProductDeleteView />;
     case 'DELETE_TYPE':
       return <TypeDeleteView />;
     case 'DELETE_ATTRIBUTE':

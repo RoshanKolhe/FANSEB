@@ -42,6 +42,23 @@ export function useUser() {
   //TODO: do some improvement here
   return { me: data, isLoading, error, isAuthorized };
 }
+export function getInfluencerUser({
+  user_id,
+}: {
+  user_id: string;
+}) {
+  const { data, isLoading, error } = useQuery<boolean, Error>(
+    [`${API_ENDPOINTS.INFLUENCER_ME}`, user_id],
+    () => client.users.influencerMe({ user_id }),
+    {
+    }
+  );
+  return {
+    influencer: data ?? {},
+    isLoading,
+    error,
+  };
+}
 
 export const useDeleteAddress = () => {
   const { closeModal } = useModalAction();

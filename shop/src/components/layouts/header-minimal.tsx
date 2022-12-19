@@ -101,7 +101,7 @@ const HeaderMinimal = ({ layout }: { layout: string }) => {
           <CartCounterIconButton />
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
             <Link
-              href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/register`}
+              href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/influencer-register`}
               variant="button"
               target="_blank"
             >

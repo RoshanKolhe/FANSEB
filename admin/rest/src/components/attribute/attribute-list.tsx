@@ -109,6 +109,7 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_ATTRIBUTE"
           routes={Routes?.attribute}
         />

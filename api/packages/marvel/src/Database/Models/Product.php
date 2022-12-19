@@ -153,6 +153,13 @@ class Product extends Model
     }
 
     /**
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'product_user');
+    }
+    /**
      * @return HasMany
      */
     public function variation_options(): HasMany

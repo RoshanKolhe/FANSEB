@@ -146,6 +146,7 @@ const AuthorList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_AUTHOR"
           routes={Routes?.author}
         />

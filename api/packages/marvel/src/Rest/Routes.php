@@ -52,6 +52,9 @@ Route::get('top-authors', [AuthorController::class, 'topAuthor']);
 Route::get('top-manufacturers', [ManufacturerController::class, 'topManufacturer']);
 Route::get('popular-products', [ProductController::class, 'popularProducts']);
 Route::get('check-availability', [ProductController::class, 'checkAvailability']);
+Route::get('influencerProducts', [UserController::class, 'getUserProducts']);
+Route::get('/influencerUser/{id}', [UserController::class, 'getUserInfluencer']);
+
 
 
 Route::get("products/calculate-rental-price", [ProductController::class, 'calculateRentalPrice']);
@@ -184,7 +187,7 @@ Route::group(['middleware' => ['can:' . Permission::CUSTOMER, 'auth:sanctum']], 
 });
 
 Route::group(
-    ['middleware' => ['permission:' . Permission::STAFF . '|' . Permission::STORE_OWNER, 'auth:sanctum']],
+    ['middleware' => ['permission:' . Permission::STAFF . '|' . Permission::STORE_OWNER . '|' . Permission::INFLUENCER, 'auth:sanctum']],
     function () {
         Route::get('analytics', [AnalyticsController::class, 'analytics']);
         Route::apiResource('products', ProductController::class, [
@@ -205,6 +208,8 @@ Route::group(
 
         // Route::get('popular-products', [AnalyticsController::class, 'popularProducts']);
         // Route::get('shops/refunds', 'Marvel\Http\Controllers\ShopController@refunds');
+        Route::post('influencerProducts', 'Marvel\Http\Controllers\ProductController@createProductUser');
+        Route::delete('influencerProducts', 'Marvel\Http\Controllers\ProductController@deleteInfluencerProduct');
 
         Route::apiResource('questions', QuestionController::class, [
             'only' => ['update'],

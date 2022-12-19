@@ -51,7 +51,6 @@ export type ProductGalleryFormValues = Omit<
   | 'shop_id'
   | 'product_id'
 > & {
-  product_type: ProductGalleryTypeOption;
   shops:Pick<Shop, 'id' | 'name'>;
   products:Pick<Product, 'id' | 'name'>;
 };
@@ -72,6 +71,13 @@ export const productTypeOptions: ProductTypeOption[] = Object.entries(
   name: key,
   value,
 }));
+export const influencerProductTypeOptions: ProductGalleryTypeOption[] = Object.entries(
+  GalleryType
+).map(([key, value]) => ({
+  name: key,
+  value,
+}));
+
 
 export function getFormattedVariations(variations: any) {
   const variationGroup = groupBy(variations, 'attribute.slug');
@@ -321,23 +327,5 @@ export function getProductInputValues(
       },
     }),
     ...calculateMinMaxPrice(variation_options),
-  };
-}
-export function getGalleryProductInputValues(
-  values: ProductGalleryFormValues,
-  initialValues: any
-) {
-  const {
-    product_type,
-  } = values;
-  // const { locale } = useRouter();
-  // const router = useRouter();
-
-  return {
-    // language: router.locale,
-  
-    product_type: product_type?.value,
- 
-
   };
 }

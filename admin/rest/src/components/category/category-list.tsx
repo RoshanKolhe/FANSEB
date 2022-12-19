@@ -170,6 +170,7 @@ const CategoryList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_CATEGORY"
           routes={Routes?.category}
         />

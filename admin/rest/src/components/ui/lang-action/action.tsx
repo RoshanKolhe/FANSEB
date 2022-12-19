@@ -9,6 +9,7 @@ export type LanguageSwitcherProps = {
   slug: string;
   deleteModalView?: string | any;
   routes: any;
+  showEdit:boolean;
   className?: string | undefined;
 };
 
@@ -17,6 +18,7 @@ export default function LanguageSwitcher({
   slug,
   deleteModalView,
   routes,
+  showEdit = false,
   className,
 }: LanguageSwitcherProps) {
   const { enableMultiLang } = Config;
@@ -36,7 +38,7 @@ export default function LanguageSwitcher({
       ) : (
         <ActionButtons
           id={record?.id}
-          editUrl={routes.editWithoutLang(slug, shop)}
+          editUrl={showEdit ? routes.editWithoutLang(slug, shop): undefined}
           deleteModalView={deleteModalView}
         />
       )}

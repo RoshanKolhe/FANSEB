@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
   PRODUCTS: '/products',
+  INFLUENCER_PRODUCTS:'/influencerProducts',
   PRODUCTS_POPULAR: '/popular-products',
   PRODUCTS_REVIEWS: '/reviews',
   PRODUCTS_REVIEWS_ABUSE_REPORT: '/abusive_reports',
@@ -25,6 +26,7 @@ export const API_ENDPOINTS = {
   USERS: '/influencers',
   USERS_ADDRESS: '/address',
   USERS_ME: '/me',
+  INFLUENCER_ME:'/influencerUser',
   USERS_LOGIN: '/token',
   USERS_REGISTER: '/register',
   USERS_FORGOT_PASSWORD: '/forget-password',

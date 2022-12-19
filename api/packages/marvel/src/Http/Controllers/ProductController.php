@@ -18,12 +18,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Marvel\Http\Requests\ProductCreateRequest;
 use Marvel\Http\Requests\ProductUpdateRequest;
 use Marvel\Database\Repositories\ProductRepository;
+use Marvel\Database\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends CoreController
 {
     public $repository;
-
     public function __construct(ProductRepository $repository)
     {
         $this->repository = $repository;
@@ -54,6 +54,58 @@ class ProductController extends CoreController
             throw new MarvelException(config('shop.app_notice_domain') . 'ERROR.NOT_AUTHORIZED');
         }
         return $this->repository->where('language', $language)->whereNotIn('id', $unavailableProducts);
+    }
+
+    public function createProductUser(Request $request){
+        $products = $request->products;
+        foreach( $products as  $product){
+            $product_id =  $product['id'];
+            $shop_id =  $product['shop_id'];
+            $results = DB::select(DB::raw("SELECT * FROM product_user WHERE product_id = '$product_id' and shop_id='$shop_id' and user_id='$request->userId' and type=''"));
+            if(sizeOf($results) == 0){
+                if($request->image){
+                    DB::table('product_user')->insert([
+                        'product_id' => $product['id'],
+                        'user_id' => $request->userId,
+                        'shop_id' => $product['shop_id'],
+                        'type' => $request->product_gallery_type,
+                        'featureInfluencerImageUrl' =>  json_encode($request->image) 
+                    ]);
+                }else{
+                    DB::table('product_user')->insert([
+                        'product_id' =>  $product['id'],
+                        'shop_id' => $product['shop_id'],
+                        'user_id' => $request->userId,
+                        'type'=>$request->product_gallery_type,
+                     
+                    ]);
+                }
+            }else{
+                if($request->image){
+                    DB::table('product_user')->where('id', $results[0]->id)->update(
+                    array('product_id' => $product['id'],'user_id' => $request->userId,
+                    'shop_id' => $product['shop_id'],
+                    'type' => $request->product_gallery_type,
+                    'featureInfluencerImageUrl' =>  json_encode($request->image) ));  
+                }else{
+                    DB::table('product_user')->where('id', $results[0]->id)->update(
+                        array('product_id' =>  $product['id'],
+                        'shop_id' => $product['shop_id'],
+                        'user_id' => $request->userId,
+                        'type'=>$request->product_gallery_type, 
+                        'featureInfluencerImageUrl' =>  ''));  
+                        
+                }
+            }
+           
+        }
+        
+        return 'success';
+
+    }
+
+    public function deleteInfluencerProduct(Request $request){
+        dd($request);
     }
 
     /**

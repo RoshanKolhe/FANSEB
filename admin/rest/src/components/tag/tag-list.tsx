@@ -108,6 +108,7 @@ const TagList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_TAG"
           routes={Routes?.tag}
         />

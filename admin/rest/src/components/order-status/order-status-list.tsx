@@ -103,6 +103,7 @@ const OrderStatusList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           routes={Routes?.orderStatus}
         />
       ),

@@ -237,6 +237,7 @@ const ProductList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
+          showEdit={true}
           deleteModalView="DELETE_PRODUCT"
           routes={Routes?.product}
         />

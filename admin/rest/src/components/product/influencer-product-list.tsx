@@ -112,7 +112,7 @@ const InfluencerProductList = ({
     //   ),
     // },
     {
-      title: t('table:table-item-shop'),
+      title: 'Brand',
       dataIndex: 'shop',
       key: 'shop',
       width: 120,
@@ -237,7 +237,8 @@ const InfluencerProductList = ({
         <LanguageSwitcher
           slug={slug}
           record={record}
-          deleteModalView="DELETE_PRODUCT"
+          showEdit={false}
+          deleteModalView="DELETE_INFLUENCER_PRODUCT"
           routes={Routes?.influencerProduct}
         />
       ),

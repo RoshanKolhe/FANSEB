@@ -51,7 +51,6 @@ export function useProducts(options?: Partial<ProductQueryOptions>) {
   function handleLoadMore() {
     fetchNextPage();
   }
-
   return {
     products: data?.pages?.flatMap((page) => page.data) ?? [],
     paginatorInfo: Array.isArray(data?.pages)
@@ -65,6 +64,37 @@ export function useProducts(options?: Partial<ProductQueryOptions>) {
     hasMore: Boolean(hasNextPage),
   };
 }
+
+export const useInfluecnerProductsQuery = (
+  params: any,
+) => {
+  const { data, error, isLoading, fetchNextPage, hasNextPage, isFetching,isFetchingNextPage, } = useInfiniteQuery<any, Error>(
+    [API_ENDPOINTS.INFLUENCER_PRODUCTS, params],
+    ({ queryKey, pageParam }) =>
+      client.products.influencerProductsPaginated(Object.assign({}, queryKey[1], pageParam)),
+    {
+      getNextPageParam: ({ current_page, last_page }) =>
+      last_page > current_page && { page: current_page + 1 },
+    }
+  );
+
+  function handleLoadMore() {
+    fetchNextPage();
+  }
+
+  return {
+    products: data?.pages?.flatMap((page) => page.data) ?? [],
+    paginatorInfo: Array.isArray(data?.pages)
+      ? mapPaginatorData(data?.pages[data.pages.length - 1])
+      : null,
+    isLoading,
+    error,
+    isFetching,
+    isLoadingMore: isFetchingNextPage,
+    loadMore: handleLoadMore,
+    hasMore: Boolean(hasNextPage),
+  };
+};
 
 export const usePopularProducts = (
   options?: Partial<PopularProductQueryOptions>

@@ -551,4 +551,15 @@ class UserController extends CoreController
             throw new MarvelException(SOMETHING_WENT_WRONG);
         }
     }
+
+    public function getUserProducts(Request $request){
+       return $this->repository->fetchRelated($request);
+    }
+
+    public function getUserInfluencer($id){
+        return $this->repository->with(['profile'])->find($id);
+
+     }
+
+    
 }

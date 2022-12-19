@@ -6,7 +6,7 @@ import NotFound from '@/components/ui/not-found';
 import rangeMap from '@/lib/range-map';
 import ProductCard from '@/components/products/cards/card';
 import ErrorMessage from '@/components/ui/error-message';
-import { useProducts } from '@/framework/product';
+import { useInfluecnerProductsQuery, useProducts } from '@/framework/product';
 import { PRODUCTS_PER_PAGE } from '@/framework/client/variables';
 import type { Product } from '@/types';
 
@@ -90,15 +90,18 @@ interface ProductsGridProps {
   gridClassName?: string;
   variables?: any;
   column?: 'five' | 'auto';
+  isInfluencerGrid?:boolean;
 }
 export default function ProductsGrid({
   className,
   gridClassName,
   variables,
   column = 'auto',
-}: ProductsGridProps) {
+  isInfluencerGrid = false
+}: ProductsGridProps) {   
+
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
-    useProducts(variables);
+  isInfluencerGrid ? useInfluecnerProductsQuery({userId:variables?.id}) : useProducts(variables); 
 
   const productsItem:any = products;
   return (
