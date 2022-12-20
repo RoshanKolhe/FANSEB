@@ -221,6 +221,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-products',
         icon: 'ProductsIcon',
       },
+      {
+        href: Routes.reels.list,
+        label: 'Reels',
+        icon: 'ReelsIcon',
+      },
     ],
   },
   product: {

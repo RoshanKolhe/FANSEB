@@ -47,6 +47,7 @@ export const API_ENDPOINTS = {
   MAKE_ADMIN: 'users/make-admin',
   AUTHORS: 'authors',
   MANUFACTURERS: 'manufacturers',
+  REELS: 'reels',
   CHECKOUT: 'orders/checkout/verify',
   QUESTIONS: 'questions',
   REVIEWS: 'reviews',

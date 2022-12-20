@@ -90,6 +90,16 @@ class CreateMarvelTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('reels', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->text('reel_link');
+            $table->string('name');
+            $table->string('slug');
+            $table->timestamps();
+        });
+
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -297,5 +307,6 @@ class CreateMarvelTables extends Migration
         Schema::dropIfExists('attachments');
         Schema::dropIfExists('authors');
         Schema::dropIfExists('manufacturers');
+        Schema::dropIfExists('reels');
     }
 }

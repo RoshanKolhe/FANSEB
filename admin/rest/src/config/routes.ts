@@ -86,6 +86,9 @@ export const Routes = {
   question: {
     ...routesFactory('/questions'),
   },
+  reels: {
+    ...routesFactory('/reels'),
+  },
 };
 
 function routesFactory(endpoint: string) {

@@ -65,11 +65,11 @@ export function Grid({
       >
         {isLoading && !products?.length
           ? rangeMap(limit, (i) => (
-              <ProductLoader key={i} uniqueKey={`product-${i}`} />
-            ))
+            <ProductLoader key={i} uniqueKey={`product-${i}`} />
+          ))
           : products?.map((product) => (
-              <ProductCard product={product} key={product.id} />
-            ))}
+            <ProductCard product={product} key={product.id} />
+          ))}
       </div>
       {hasMore && (
         <div className="mt-8 flex justify-center lg:mt-12">
@@ -90,23 +90,40 @@ interface ProductsGridProps {
   gridClassName?: string;
   variables?: any;
   column?: 'five' | 'auto';
-  isInfluencerGrid?:boolean;
+  isInfluencerGrid?: boolean;
+  isCollection?: any;
 }
 export default function ProductsGrid({
   className,
   gridClassName,
   variables,
   column = 'auto',
-  isInfluencerGrid = false
-}: ProductsGridProps) {   
+  isInfluencerGrid = false,
+  isCollection = false
+}: ProductsGridProps) {
 
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
-  isInfluencerGrid ? useInfluecnerProductsQuery({userId:variables?.id}) : useProducts(variables); 
+    isInfluencerGrid ? useInfluecnerProductsQuery({ userId: variables?.id }) : useProducts(variables);
 
-  const productsItem:any = products;
+  const productsItem: any = products;
+
+  const collectionItems = products.filter((res) => {
+    return res?.pivot?.featureInfluencerImageUrl;
+  });
+
+  const productItems = products.filter((res) => {
+    return !res?.pivot?.featureInfluencerImageUrl;
+  });
+
+  const finalProductsItem = isCollection && collectionItems ? collectionItems.map((res) => {
+    return { ...res, image: JSON.parse(res.pivot.featureInfluencerImageUrl), gallery: [JSON.parse(res.pivot.featureInfluencerImageUrl), ...res.gallery] };
+  }) : productItems;
+
+
+
   return (
     <Grid
-      products={productsItem}
+      products={isInfluencerGrid ? finalProductsItem : productsItem}
       loadMore={loadMore}
       isLoading={isLoading}
       isLoadingMore={isLoadingMore}

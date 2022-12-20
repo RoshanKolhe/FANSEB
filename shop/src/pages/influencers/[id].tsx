@@ -43,57 +43,6 @@ const InfluencerPage: NextPageWithLayout<
   const [selectedIndex, setSelectedIndex] = useState(0)
   const isGerman = router.locale === 'de';
   const isBook = router.asPath.includes('/book');
-  let [categories] = useState({
-    Recent: [
-      {
-        id: 1,
-        title: 'Does drinking coffee make you smarter?',
-        date: '5h ago',
-        commentCount: 5,
-        shareCount: 2,
-      },
-      {
-        id: 2,
-        title: "So you've bought coffee... now what?",
-        date: '2h ago',
-        commentCount: 3,
-        shareCount: 2,
-      },
-    ],
-    Popular: [
-      {
-        id: 1,
-        title: 'Is tech making coffee better or worse?',
-        date: 'Jan 7',
-        commentCount: 29,
-        shareCount: 16,
-      },
-      {
-        id: 2,
-        title: 'The most innovative things happening in coffee',
-        date: 'Mar 19',
-        commentCount: 24,
-        shareCount: 12,
-      },
-    ],
-    Trending: [
-      {
-        id: 1,
-        title: 'Ask Me Anything: 10 answers to your questions about coffee',
-        date: '2d ago',
-        commentCount: 9,
-        shareCount: 5,
-      },
-      {
-        id: 2,
-        title: "The worst advice we've ever heard about coffee",
-        date: '4d ago',
-        commentCount: 1,
-        shareCount: 2,
-      },
-    ],
-  })
-
 
   return (
     <div className="flex flex-col bg-gray-100 lg:flex-row lg:items-start">
@@ -163,9 +112,9 @@ const InfluencerPage: NextPageWithLayout<
                 <Tab.List>
 
                   <Tab style={selectedIndex === 0 ? styles.text_color_selcted : styles.text_color_normal}>
-                    <div className='pr-3'>Products</div></Tab>
+                    <div className='pr-3'>Collection</div></Tab>
 
-                  <Tab style={selectedIndex === 1 ? styles.text_color_selcted : styles.text_color_normal}><div className='pr-3'>Collection</div></Tab>
+                  <Tab style={selectedIndex === 1 ? styles.text_color_selcted : styles.text_color_normal}><div className='pr-3'>Products</div></Tab>
                   <Tab style={selectedIndex === 2 ? styles.text_color_selcted : styles.text_color_normal}><div className='pr-3'>Reels</div></Tab>
                 </Tab.List>
 
@@ -186,6 +135,7 @@ const InfluencerPage: NextPageWithLayout<
                         }
                       )}
                       isInfluencerGrid={true}
+                      isCollection={true}
                       variables={variables} />
                   </div>
                 </Tab.Panel>

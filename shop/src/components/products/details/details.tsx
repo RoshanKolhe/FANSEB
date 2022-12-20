@@ -109,7 +109,7 @@ const Details: React.FC<Props> = ({
     slug,
     ratings,
   } = product ?? {};
-
+  console.log('product',product)
   const { t } = useTranslation('common');
   const [_, setShowStickyShortDetails] = useAtom(stickyShortDetailsAtom);
 
@@ -167,7 +167,7 @@ const Details: React.FC<Props> = ({
 
   const hasVariations = !isEmpty(variations);
   const previewImages = displayImage(selectedVariation?.image, gallery, image);
-
+  console.log("previewImages",previewImages)
   return (
     <article className="rounded-lg bg-light">
       <div className="flex flex-col border-b border-border-200 border-opacity-70 md:flex-row">

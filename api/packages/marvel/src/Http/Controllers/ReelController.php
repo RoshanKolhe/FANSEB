@@ -6,16 +6,16 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Marvel\Database\Models\Manufacturer;
-use Marvel\Database\Repositories\ManufacturerRepository;
+use Marvel\Database\Models\Reel;
+use Marvel\Database\Repositories\ReelRepository;
 use Marvel\Exceptions\MarvelException;
-use Marvel\Http\Requests\ManufacturerRequest;
+use Marvel\Http\Requests\ReelRequest;
 
-class ManufacturerController extends CoreController
+class ReelController extends CoreController
 {
     public $repository;
 
-    public function __construct(ManufacturerRepository $repository)
+    public function __construct(ReelRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -25,28 +25,27 @@ class ManufacturerController extends CoreController
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return Collection|Manufacturer[]
+     * @return Collection|Reel[]
      */
     public function index(Request $request)
     {
         $language = $request->language ?? DEFAULT_LANGUAGE;
         $limit = $request->limit ?   $request->limit : 15;
-        return $this->repository->where('language', $language)->with('type')->paginate($limit);
+        $user_id = $request->user()->id;
+        return $this->repository->where('language', $language)->where('user_id',$user_id)->paginate($limit);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param ManufacturerRequest $request
+     * @param ReelRequest $request
      * @return mixed
      */
-    public function store(ManufacturerRequest $request)
+    public function store(ReelRequest $request)
     {
-        if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
-            return $this->repository->storeManufacturer($request);
-        } else {
-            throw new MarvelException(NOT_AUTHORIZED);
-        }
+        $request['user_id'] = $request->user()->id;
+        return $this->repository->storeReel($request);
+
     }
 
     /**
@@ -58,16 +57,16 @@ class ManufacturerController extends CoreController
     public function show(Request $request, $slug)
     {
         $request->slug = $slug;
-        return $this->fetchManufacturer($request);
+        return $this->fetchReel($request);
     }
 
     /**
      * Display the specified resource.
-     *  
+     *
      * @param $slug
      * @return JsonResponse
      */
-    public function fetchManufacturer(Request $request)
+    public function fetchReel(Request $request)
     {
 
         try {
@@ -75,9 +74,9 @@ class ManufacturerController extends CoreController
             $language = $request->language ?? DEFAULT_LANGUAGE;
             if (is_numeric($slug)) {
                 $slug = (int) $slug;
-                return $this->repository->with('type')->where('id', $slug)->firstOrFail();
+                return $this->repository->where('id', $slug)->firstOrFail();
             }
-            return $this->repository->with('type')->where('slug', $slug)->where('language', $language)->firstOrFail();
+            return $this->repository->where('slug', $slug)->where('language', $language)->firstOrFail();
         } catch (\Exception $e) {
             throw new MarvelException(NOT_FOUND);
         }
@@ -90,24 +89,21 @@ class ManufacturerController extends CoreController
      * @param int $id
      * @return array
      */
-    public function update(ManufacturerRequest $request, $id)
+    public function update(ReelRequest $request, $id)
     {
         $request->id = $id;
-        return $this->updateManufacturer($request);
+        return $this->updateReel($request);
     }
 
-    public function updateManufacturer(Request $request)
+    public function updateReel(Request $request)
     {
-        if ($this->repository->hasPermission($request->user(), $request->shop_id)) {
             try {
-                $Manufacturer = $this->repository->findOrFail($request->id);
+                $Reel = $this->repository->findOrFail($request->id);
             } catch (\Exception $e) {
                 throw new MarvelException(NOT_FOUND);
             }
-            return $this->repository->updateManufacturer($request, $Manufacturer);
-        } else {
-            throw new MarvelException(NOT_AUTHORIZED);
-        }
+            return $this->repository->updateReel($request, $Reel);
+        
     }
 
     /**

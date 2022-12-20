@@ -87,18 +87,6 @@ const ShopPage: NextPageWithLayout<
             </a>
           ))}
         </div>
-        <div
-          className="align-items-center justify-content-center flex lg:pt-3"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            color: 'black',
-            fontSize: '25px',
-          }}
-        >
-          Showcase |{' '}
-          <span style={{ color: '#c77f3c', marginLeft: '5px' }}>Reels</span>
-        </div>
         <div className="flex flex-col bg-gray-100 lg:flex-row lg:items-start lg:p-8">
           <ProductsGrid
             className="py-8"

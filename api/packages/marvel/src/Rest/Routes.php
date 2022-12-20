@@ -21,6 +21,7 @@ use Marvel\Http\Controllers\OrderStatusController;
 use Marvel\Http\Controllers\ProductController;
 use Marvel\Http\Controllers\QuestionController;
 use Marvel\Http\Controllers\RefundController;
+use Marvel\Http\Controllers\ReelController;
 use Marvel\Http\Controllers\ReviewController;
 use Marvel\Http\Controllers\SettingsController;
 use Marvel\Http\Controllers\ShippingController;
@@ -198,6 +199,9 @@ Route::group(
         ]);
         Route::apiResource('attributes', AttributeController::class, [
             'only' => ['store', 'update', 'destroy'],
+        ]);
+        Route::apiResource('reels', ReelController::class, [
+            'only' => ['index','store', 'update', 'destroy','show'],
         ]);
         Route::apiResource('attribute-values', AttributeValueController::class, [
             'only' => ['store', 'update', 'destroy'],

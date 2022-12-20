@@ -670,6 +670,17 @@ export interface Manufacturer {
   website?: string;
 }
 
+export interface Reel{
+  id: string;
+  user_id?: string;
+  reel_link:string;
+  created_at?: string;
+  slug?: string;
+  updated_at?: string;
+  translated_languages: string[];
+  language?:string;
+}
+
 export interface OrderStatus {
   id: string;
   name: string;
@@ -749,6 +760,10 @@ export interface CreateManufacturerInput {
   socials?: ShopSocialInput[];
   type_id: string;
   website?: string;
+}
+
+export interface CreateReelInput{
+  reel_link:string;
 }
 
 export interface Withdraw {
@@ -1203,6 +1218,12 @@ export interface ManufacturerQueryOptions extends QueryOptions {
   is_approved: boolean;
   type: string;
 }
+export interface ReelQueryOptions extends QueryOptions {
+  user_id: string;
+  reel_link: string;
+  name:string;
+  search:string;
+}
 
 export interface OrderStatusQueryOptions extends QueryOptions {
   name: string;
@@ -1285,6 +1306,8 @@ export interface ShippingPaginator extends PaginatorInfo<Shipping> { }
 export interface AuthorPaginator extends PaginatorInfo<Author> { }
 
 export interface ManufacturerPaginator extends PaginatorInfo<Manufacturer> { }
+
+export interface ReelPaginator extends PaginatorInfo<Reel> { }
 
 export interface OrderStatusPaginator extends PaginatorInfo<OrderStatus> { }
 

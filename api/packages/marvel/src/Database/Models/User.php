@@ -167,4 +167,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Product::class, 'product_user')->withPivot('shop_id','type','featureInfluencerImageUrl');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function reels(): HasMany
+    {
+        return $this->hasMany(Reel::class, 'user_id');
+    }
+
 }

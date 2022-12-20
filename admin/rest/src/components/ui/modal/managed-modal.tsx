@@ -98,6 +98,10 @@ const ManufacturerDeleteView = dynamic(
   () => import('@/components/manufacturer/manufacturer-delete-view')
 );
 
+const ReelDeleteView = dynamic(
+  () => import('@/components/reels/reel-delete-view')
+);
+
 const ProductVariation = dynamic(
   () => import('@/components/product/variation/variation')
 );
@@ -129,6 +133,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <TagDeleteView />;
     case 'DELETE_MANUFACTURER':
       return <ManufacturerDeleteView />;
+    case 'DELETE_REEL':
+      return <ReelDeleteView />;
     case 'DELETE_AUTHOR':
       return <AuthorDeleteView />;
     case 'BAN_CUSTOMER':
