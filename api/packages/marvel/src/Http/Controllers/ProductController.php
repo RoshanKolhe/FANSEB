@@ -105,7 +105,7 @@ class ProductController extends CoreController
     }
 
     public function deleteInfluencerProduct(Request $request){
-        dd($request);
+        dd($request->all());
     }
 
     /**

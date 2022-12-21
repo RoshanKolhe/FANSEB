@@ -54,6 +54,9 @@ Route::get('top-manufacturers', [ManufacturerController::class, 'topManufacturer
 Route::get('popular-products', [ProductController::class, 'popularProducts']);
 Route::get('check-availability', [ProductController::class, 'checkAvailability']);
 Route::get('influencerProducts', [UserController::class, 'getUserProducts']);
+Route::apiResource('reels', ReelController::class, [
+    'only' => ['index','show'],
+]);
 Route::get('/influencerUser/{id}', [UserController::class, 'getUserInfluencer']);
 
 
@@ -201,7 +204,7 @@ Route::group(
             'only' => ['store', 'update', 'destroy'],
         ]);
         Route::apiResource('reels', ReelController::class, [
-            'only' => ['index','store', 'update', 'destroy','show'],
+            'only' => ['store', 'update', 'destroy'],
         ]);
         Route::apiResource('attribute-values', AttributeValueController::class, [
             'only' => ['store', 'update', 'destroy'],
@@ -214,7 +217,7 @@ Route::group(
         // Route::get('shops/refunds', 'Marvel\Http\Controllers\ShopController@refunds');
         Route::post('influencerProducts', 'Marvel\Http\Controllers\ProductController@createProductUser');
         Route::delete('influencerProducts', 'Marvel\Http\Controllers\ProductController@deleteInfluencerProduct');
-
+        
         Route::apiResource('questions', QuestionController::class, [
             'only' => ['update'],
         ]);

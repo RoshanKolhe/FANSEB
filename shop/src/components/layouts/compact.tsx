@@ -17,13 +17,13 @@ export default function CompactLayout({ variables }: HomePageProps) {
     <div className="flex flex-1 flex-col bg-white">
       <FilterBar className="lg:hidden" variables={variables.categories} />
       <main className="mt-6 block w-full xl:overflow-hidden">
-        <SectionBlock>
+        {/* <SectionBlock>
           <Banner layout="compact" variables={variables.types} />
-        </SectionBlock>
-        <PopularProductsGrid variables={variables.popularProducts} />
-        <Categories layout="compact" variables={variables.categories} />
-        <GroupProducts />
-        <SectionBlock title={t('text-new-arrival')}>
+        </SectionBlock> */}
+        {/* <PopularProductsGrid variables={variables.popularProducts} /> */}
+        {/* <Categories layout="compact" variables={variables.categories} /> */}
+        {/* <GroupProducts /> */}
+        {/* <SectionBlock title={t('text-new-arrival')}>
           <ProductGridHome
             column="five"
             variables={{
@@ -34,8 +34,8 @@ export default function CompactLayout({ variables }: HomePageProps) {
           />
         </SectionBlock>
         <TopAuthorsGrid />
-        <TopManufacturersGrid />
-        <CallToAction />
+        <TopManufacturersGrid /> */}
+        {/* <CallToAction /> */}
       </main>
     </div>
   );

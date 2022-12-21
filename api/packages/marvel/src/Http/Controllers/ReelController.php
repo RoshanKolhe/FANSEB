@@ -31,7 +31,7 @@ class ReelController extends CoreController
     {
         $language = $request->language ?? DEFAULT_LANGUAGE;
         $limit = $request->limit ?   $request->limit : 15;
-        $user_id = $request->user()->id;
+        $user_id = $request->user_id;
         return $this->repository->where('language', $language)->where('user_id',$user_id)->paginate($limit);
     }
 

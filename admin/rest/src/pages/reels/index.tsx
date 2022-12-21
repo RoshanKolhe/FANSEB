@@ -18,8 +18,10 @@ import { useManufacturersQuery } from '@/data/manufacturer';
 import { useRouter } from 'next/router';
 import { Config } from '@/config';
 import { useReelsQuery } from '@/data/reels';
+import { useMeQuery } from '@/data/user';
 
 export default function Reels() {
+  const userData = useMeQuery();
   const { permissions: currentUserPermissions } = getAuthCredentials();
   const { locale } = useRouter();
   const { t } = useTranslation();
@@ -33,6 +35,7 @@ export default function Reels() {
       name: searchTerm,
       page,
       orderBy,
+      user_id: userData.data?.id,
       sortedBy,
       language: locale,
       
@@ -41,7 +44,6 @@ export default function Reels() {
   if (error) return <ErrorMessage message={error.message} />;
 
   function handleSearch({ searchText }: { searchText: string }) {
-    console.log("searchText",searchText);
     setSearchTerm(searchText);
   }
 

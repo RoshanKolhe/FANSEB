@@ -148,6 +148,15 @@ class Client {
     createQuestion: (input: CreateQuestionInput) =>
       HttpClient.post<Review>(API_ENDPOINTS.PRODUCTS_QUESTIONS, input),
   };
+  reels = {
+    influencerReelsPaginated: ({
+      ...params
+    }: Partial<any>) => {
+      return HttpClient.get<any>(API_ENDPOINTS.REELS, {
+        ...params,
+      });
+    },
+  };
   myQuestions = {
     all: (params: MyQuestionQueryOptions) =>
       HttpClient.get<QuestionPaginator>(API_ENDPOINTS.MY_QUESTIONS, {

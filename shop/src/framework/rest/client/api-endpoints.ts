@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
   PRODUCTS: '/products',
+  REELS: '/reels',
   INFLUENCER_PRODUCTS:'/influencerProducts',
   PRODUCTS_POPULAR: '/popular-products',
   PRODUCTS_REVIEWS: '/reviews',

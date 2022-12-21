@@ -58,10 +58,10 @@ class UserRepository extends BaseRepository
             
             $user = $this->findOneByFieldOrFail('id', $request->userId);
             if($request->orderByColumn && $request->sortedByColumn ){
-                $products = $user->products()->with('shop')->orderBy($request->orderByColumn,$request->sortedByColumn)->paginate($limit);
+                $products = $user->products()->with('shop')->where('name','LIKE',"%{$request->name}%")->orderBy($request->orderByColumn,$request->sortedByColumn)->paginate($limit);
             }
             else{
-                $products = $user->products()->with('shop')->paginate($limit);
+                $products = $user->products()->where('name','LIKE',"%{$request->name}%")->with('shop')->paginate($limit);
 
             }
             if(sizeOf($products) > 0){                
