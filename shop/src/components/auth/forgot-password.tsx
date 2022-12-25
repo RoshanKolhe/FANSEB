@@ -27,6 +27,7 @@ import Logo from '@/components/ui/logo';
 import Alert from '../ui/alert';
 import { ArrowPrevIcon } from '../icons/arrow-prev';
 import { ArrowNextIcon } from '../icons/arrow-next';
+import { useRouter } from 'next/router';
 
 const emailFormValidation = yup.object().shape({
   email: yup
@@ -66,7 +67,7 @@ function EmailForm({
       {({ register, formState: { errors } }) => (
         <>
           <Input
-            label={t('text-email')}
+            label='Email'
             type="email"
             {...register('email')}
             error={t(errors.email?.message!)}
@@ -77,7 +78,7 @@ function EmailForm({
             loading={isLoading}
             disabled={isLoading}
           >
-            {t('text-submit-email')}
+            Submit Email
             <ArrowNextIcon className="w-5" />
           </Button>
         </>
@@ -282,7 +283,10 @@ export const updateFormState = (
 export default function ForgotUserPassword() {
   const { t } = useTranslation('common');
   const { openModal } = useModalAction();
-
+  const router = useRouter();
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
   return (
     <StateMachineProvider>
       <div className="flex h-full min-h-screen w-screen flex-col justify-center bg-light py-6 px-5 sm:p-8 md:h-auto md:min-h-0 md:max-w-[480px] md:rounded-xl">
@@ -290,22 +294,22 @@ export default function ForgotUserPassword() {
           <Logo />
         </div>
         <p className="mt-4 text-sm leading-relaxed text-center mb-7 text-body sm:mt-5 sm:mb-10 md:text-base">
-          {t('forgot-password-helper')}
+        We'll send you a link to reset your password
         </p>
         <RenderFormSteps />
         <div className="relative flex flex-col items-center justify-center text-sm mt-9 mb-7 text-heading sm:mt-11 sm:mb-8">
           <hr className="w-full" />
           <span className="start-2/4 -ms-4 absolute -top-2.5 bg-light px-2">
-            {t('text-or')}
+           Or
           </span>
         </div>
         <div className="text-sm text-center text-body sm:text-base">
-          {t('text-back-to')}{' '}
+          Back to{' '}
           <button
-            onClick={() => openModal('LOGIN_VIEW')}
+            onClick={() => handleNavigate('login')}
             className="font-semibold underline transition-colors duration-200 ms-1 text-accent hover:text-accent-hover hover:no-underline focus:text-accent-hover focus:no-underline focus:outline-none"
           >
-            {t('text-login')}
+            Login
           </button>
         </div>
       </div>

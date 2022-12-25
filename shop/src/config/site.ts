@@ -93,8 +93,8 @@ export const siteSettings = {
   },
   footer: {
     copyright: {
-      name: 'RedQ, Inc',
-      href: 'https://redq.io/',
+      name: 'Wolfizer LLP',
+      href: 'https://wolfizer.com/',
     },
     address: '2429 River Drive, Suite 35 Cottonhall, CA 2296 United Kingdom',
     email: 'dummy@dummy.com',

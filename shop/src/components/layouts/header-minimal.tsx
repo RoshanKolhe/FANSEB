@@ -22,6 +22,7 @@ const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
 const JoinButton = dynamic(() => import('./menu/join-button'), { ssr: false });
 
 const HeaderMinimal = ({ layout }: { layout: string }) => {
+  console.log("inside header minimal")
   const router = useRouter();
   const { t } = useTranslation('common');
   const [displayMobileHeaderSearch] = useAtom(displayMobileHeaderSearchAtom);
@@ -74,20 +75,20 @@ const HeaderMinimal = ({ layout }: { layout: string }) => {
             <SearchWithSuggestion
               label={t('text-search-label')}
               variant="minimal"
-              seeMore={true}
+              // seeMore={true}
             />
           </div>
         )}
 
-        {layout === 'compact' && (
+        {/* {layout === 'compact' && ( */}
           <div className="mx-auto hidden w-full px-8 xl:flex xl:w-6/12 xl:px-10 xl:rtl:w-4/12 2xl:rtl:w-5/12">
             <SearchWithSuggestion
               label={t('text-search-label')}
               variant="minimal"
-              seeMore={true}
+              // seeMore={true}
             />
           </div>
-        )}
+        {/* )} */}
 
         <div className="hidden shrink-0 items-center space-x-9 rtl:space-x-reverse lg:flex">
           {/* <GroupsDropdownMenu variant="minimal" /> */}

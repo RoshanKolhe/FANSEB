@@ -7,7 +7,7 @@ export const Routes = {
   changePassword: '/change-password',
   orders: '/orders',
   influencers: '/influencers',
-  influencer: (id: string) => `/influencers/${encodeURIComponent(id)}`,
+  influencer: (id: string,slug:string) => `/influencers/${encodeURIComponent(id)}?${slug}`,
   order: (tracking_number: string) =>
     `/orders/${encodeURIComponent(tracking_number)}`,
   refunds: '/refunds',

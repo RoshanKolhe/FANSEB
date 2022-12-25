@@ -11,7 +11,7 @@ export default function SiteLayout({ children }: React.PropsWithChildren<{}>) {
       {['minimal', 'compact'].includes(layout) ? (
         <HeaderMinimal layout={layout} />
       ) : (
-        <Header layout={layout} />
+        <HeaderMinimal layout={layout} />
       )}
       {children}
       {['compact'].includes(layout) && <Footer />}

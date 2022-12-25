@@ -87,7 +87,7 @@ const LoginForm = () => {
               </span>
             </div> */}
 
-            {/* <div className="text-center text-sm text-body sm:text-base">
+            <div className="text-center text-sm text-body sm:text-base">
               {t('form:text-no-account')}{' '}
               <Link
                 href={Routes.register}
@@ -95,7 +95,7 @@ const LoginForm = () => {
               >
                 {t('form:link-register-shop-owner')}
               </Link>
-            </div> */}
+            </div>
           </>
         )}
       </Form>

@@ -19,6 +19,8 @@ const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
 const JoinButton = dynamic(() => import('./menu/join-button'), { ssr: false });
 
 const Header = ({ layout }: { layout?: string }) => {
+  console.log("inside header")
+
   const { t } = useTranslation('common');
   const { show, hideHeaderSearch } = useHeaderSearch();
   const [displayMobileHeaderSearch] = useAtom(displayMobileHeaderSearchAtom);
@@ -74,7 +76,7 @@ const Header = ({ layout }: { layout?: string }) => {
             <GroupsDropdownMenu />
           </div> */}
         </div>
-        {isHomePage ? (
+        {/* {isHomePage ? ( */}
           <>
             {(show || layout === 'modern') && (
               <div className="mx-auto hidden w-full overflow-hidden px-10 lg:block xl:w-11/12 2xl:w-10/12">
@@ -88,7 +90,7 @@ const Header = ({ layout }: { layout?: string }) => {
               </div>
             )}
           </>
-        ) : null}
+        {/* ) : null} */}
         <ul className="hidden shrink-0 items-center space-x-7 rtl:space-x-reverse lg:flex 2xl:space-x-10">
           <StaticMenu />
           <div className="flex items-center space-x-4 rtl:space-x-reverse">

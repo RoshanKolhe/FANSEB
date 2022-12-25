@@ -32,7 +32,7 @@ const AutoSuggestion: React.FC<Props> = ({
   const router = useRouter();
 
   const handleClick = (path: string) => {
-    router.push(path);
+    router.replace(path);
   };
 
   return (

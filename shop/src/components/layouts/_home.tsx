@@ -21,7 +21,7 @@ export default function HomeLayout({
       {['minimal', 'compact'].includes(layout) ? (
         <HeaderMinimal layout={layout} />
       ) : (
-        <Header layout={layout} />
+        <HeaderMinimal layout={layout} />
       )}
       <div className="min-h-screen">{children}</div>
       {['compact'].includes(layout) && <Footer />}

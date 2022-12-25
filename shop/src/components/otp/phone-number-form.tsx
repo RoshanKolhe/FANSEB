@@ -10,7 +10,7 @@ type FormValues = {
 };
 
 const checkoutContactSchema = yup.object().shape({
-  phone_number: yup.string().required('error-contact-required'),
+  phone_number: yup.string().required('Contact Number is required'),
 });
 
 interface PhoneNumberFormProps {
@@ -59,11 +59,11 @@ export default function PhoneNumberForm({
               disabled={isLoading}
             >
               {view === 'login' ? (
-                t('text-send-otp')
+                'Send OTP'
               ) : (
                 <>
-                  {Boolean(phoneNumber) ? t('text-update') : t('text-add')}{' '}
-                  {t('nav-menu-contact')}
+                  {Boolean(phoneNumber) ? 'Update' : 'Add'}{' '}
+                  Contact
                 </>
               )}
             </Button>

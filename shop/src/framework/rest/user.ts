@@ -26,6 +26,7 @@ import {
   updateFormState,
 } from '@/components/auth/forgot-password';
 import { clearCheckoutAtom } from '@/store/checkout';
+import { useRouter } from 'next/router';
 
 export function useUser() {
   const [isAuthorized] = useAtom(authorizationAtom);
@@ -127,7 +128,11 @@ export function useLogin() {
   const { closeModal } = useModalAction();
   const { setToken } = useToken();
   let [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
 
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
   const { mutate, isLoading } = useMutation(client.users.login, {
     onSuccess: (data) => {
       if (!data.token) {
@@ -136,6 +141,7 @@ export function useLogin() {
       }
       setToken(data.token);
       setAuthorized(true);
+      handleNavigate('orders');
       closeModal();
     },
     onError: (error: Error) => {
@@ -237,6 +243,11 @@ export function useOtpLogin() {
   const [_, setAuthorized] = useAtom(authorizationAtom);
   const { closeModal } = useModalAction();
   const { setToken } = useToken();
+  const router = useRouter();
+
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
   const queryClient = new QueryClient();
   let [serverError, setServerError] = useState<string | null>(null);
 
@@ -251,6 +262,7 @@ export function useOtpLogin() {
       setOtpState({
         ...initialOtpState,
       });
+      handleNavigate('/orders')
       closeModal();
     },
     onError: (error: Error) => {
@@ -280,12 +292,17 @@ export function useRegister() {
   let [formError, setFormError] = useState<Partial<RegisterUserInput> | null>(
     null
   );
+  const router = useRouter();
 
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
   const { mutate, isLoading } = useMutation(client.users.register, {
     onSuccess: (data) => {
       if (data?.token && data?.permissions?.length) {
         setToken(data?.token);
         setAuthorized(true);
+        handleNavigate('/orders');
         closeModal();
         return;
       }

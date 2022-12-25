@@ -36,7 +36,7 @@ export default function OtpCodeForm({
         {({ control, formState: { errors } }) => (
           <>
             <div className="mb-5">
-              <Label>{t('text-otp-code')}</Label>
+              <Label>OTP-Code</Label>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -57,15 +57,15 @@ export default function OtpCodeForm({
               />
             </div>
             <div className="grid grid-cols-2 gap-5">
-              <Button
+              {/* <Button
                 variant="outline"
                 onClick={closeModal}
                 className="hover:border-red-500 hover:bg-red-500"
               >
-                {t('text-cancel')}
-              </Button>
+                Cancel
+              </Button> */}
               <Button loading={isLoading} disabled={isLoading}>
-                {t('text-verify-code')}
+                Verify Code
               </Button>
             </div>
           </>

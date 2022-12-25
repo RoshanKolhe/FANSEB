@@ -19,14 +19,17 @@ import { Routes } from '@/config/routes';
 const loginFormSchema = yup.object().shape({
   email: yup
     .string()
-    .email('error-email-format')
-    .required('error-email-required'),
-  password: yup.string().required('error-password-required'),
+    .email('The provided email address format is not valid')
+    .required('You must need to provide your email address'),
+  password: yup.string().required('You must need to provide your password'),
 });
 function LoginForm() {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { openModal } = useModalAction();
+
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
   const isCheckout = router.pathname.includes('checkout');
   const { mutate: login, isLoading, serverError, setServerError } = useLogin();
 
@@ -53,7 +56,7 @@ function LoginForm() {
         {({ register, formState: { errors } }) => (
           <>
             <Input
-              label={t('text-email')}
+              label='Email'
               {...register('email')}
               type="email"
               variant="outline"
@@ -61,12 +64,12 @@ function LoginForm() {
               error={t(errors.email?.message!)}
             />
             <PasswordInput
-              label={t('text-password')}
+              label='Password'
               {...register('password')}
               error={t(errors.password?.message!)}
               variant="outline"
               className="mb-5"
-              forgotPageRouteOnClick={() => openModal('FORGOT_VIEW')}
+              forgotPageRouteOnClick={() => handleNavigate('forgot-password')}
             />
             <div className="mt-8">
               <Button
@@ -74,7 +77,7 @@ function LoginForm() {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                {t('text-login')}
+                Login
               </Button>
             </div>
           </>
@@ -84,7 +87,7 @@ function LoginForm() {
       <div className="relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">
         <hr className="w-full" />
         <span className="absolute -top-2.5 bg-light px-2 ltr:left-2/4 ltr:-ml-4 rtl:right-2/4 rtl:-mr-4">
-          {t('text-or')}
+          Or
         </span>
       </div>
       <div className="mt-2 grid grid-cols-1 gap-4">
@@ -102,10 +105,10 @@ function LoginForm() {
         <Button
           className="h-11 w-full !bg-gray-500 !text-light hover:!bg-gray-600 sm:h-12"
           disabled={isLoading}
-          onClick={() => openModal('OTP_LOGIN')}
+          onClick={() => handleNavigate('otp-login')}
         >
           <MobileIcon className="h-5 text-light ltr:mr-2 rtl:ml-2" />
-          {t('text-login-mobile')}
+          Login with Mobile Number
         </Button>
 
         {isCheckout && (
@@ -115,7 +118,7 @@ function LoginForm() {
             onClick={() => router.push(Routes.checkoutGuest)}
           >
             <AnonymousIcon className="h-6 text-light ltr:mr-2 rtl:ml-2" />
-            {t('text-guest-checkout')}
+            Checkout as guest
           </Button>
         )}
       </div>
@@ -123,12 +126,12 @@ function LoginForm() {
         <hr className="w-full" />
       </div>
       <div className="text-center text-sm text-body sm:text-base">
-        {t('text-no-account')}{' '}
+        Don't have any account?{' '}
         <button
-          onClick={() => openModal('REGISTER')}
+          onClick={() => handleNavigate('register')}
           className="font-semibold text-accent underline transition-colors duration-200 hover:text-accent-hover hover:no-underline focus:text-accent-hover focus:no-underline focus:outline-none ltr:ml-1 rtl:mr-1"
         >
-          {t('text-register')}
+          Register
         </button>
       </div>
     </>
@@ -136,6 +139,7 @@ function LoginForm() {
 }
 
 export default function LoginView() {
+  
   const { t } = useTranslation('common');
   return (
     <div className="flex h-full min-h-screen w-screen flex-col justify-center bg-light py-6 px-5 sm:p-8 md:h-auto md:min-h-0 md:max-w-[480px] md:rounded-xl">
@@ -143,7 +147,7 @@ export default function LoginView() {
         <Logo />
       </div>
       <p className="mt-4 mb-8 text-center text-sm text-body sm:mt-5 sm:mb-10 md:text-base">
-        {t('login-helper')}
+        Login with your email & password
       </p>
       <LoginForm />
     </div>

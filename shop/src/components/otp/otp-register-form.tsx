@@ -44,7 +44,7 @@ export default function OtpRegisterForm({
         {({ register, control, formState: { errors } }) => (
           <>
             <Input
-              label={t('text-email')}
+              label='Email'
               {...register('email')}
               type="email"
               variant="outline"
@@ -52,7 +52,7 @@ export default function OtpRegisterForm({
               error={t(errors.email?.message!)}
             />
             <Input
-              label={t('text-name')}
+              label='Name'
               {...register('name')}
               variant="outline"
               className="mb-5"
@@ -60,7 +60,7 @@ export default function OtpRegisterForm({
             />
 
             <div className="mb-5">
-              <Label>{t('text-otp-code')}</Label>
+              <Label>OTP Code</Label>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -82,16 +82,16 @@ export default function OtpRegisterForm({
             </div>
 
             <div className="grid grid-cols-2 gap-5">
-              <Button
+              {/* <Button
                 variant="outline"
                 className="hover:border-red-500 hover:bg-red-500"
                 onClick={closeModal}
               >
-                {t('text-cancel')}
-              </Button>
+                Cancel
+              </Button> */}
 
               <Button loading={loading} disabled={loading}>
-                {t('text-verify-code')}
+                Verify Code
               </Button>
             </div>
           </>

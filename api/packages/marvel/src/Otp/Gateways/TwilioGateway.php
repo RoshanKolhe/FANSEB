@@ -72,7 +72,10 @@ class TwilioGateway implements OtpInterface
 		try {
 			$verification_check = $this->client->verify->v2->services($this->verification_sid)
 				->verificationChecks
-				->create($code, ['to' => $phone_number]);
+				->create([
+					"to" => $phone_number,
+					"code" =>$code
+				]);
 			if ($verification_check->status === 'approved') {
 				return new Result($verification_check->sid);
 			}

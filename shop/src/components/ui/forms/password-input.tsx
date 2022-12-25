@@ -67,7 +67,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
               type="button"
               className="text-xs text-accent transition-colors duration-200 focus:outline-none focus:text-accent-700 focus:font-semibold hover:text-accent-hover"
             >
-              {t('common:text-forgot-password')}
+              Forgot password?
             </button>
           )}
         </div>

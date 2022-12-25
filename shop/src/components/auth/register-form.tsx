@@ -11,16 +11,21 @@ import * as yup from 'yup';
 import { useRegister } from '@/framework/user';
 
 const registerFormSchema = yup.object().shape({
-  name: yup.string().required('error-name-required'),
+  name: yup.string().required('You must need to provide your name'),
   email: yup
     .string()
-    .email('error-email-format')
-    .required('error-email-required'),
-  password: yup.string().required('error-password-required'),
+    .email('The provided email address format is not valid')
+    .required('You must need to provide your email address'),
+  password: yup.string().required('You must need to provide your password'),
 });
 
 function RegisterForm() {
   const { t } = useTranslation('common');
+  const router = useRouter();
+
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
   const { openModal } = useModalAction();
   const { mutate, isLoading, formError } = useRegister();
 
@@ -42,14 +47,14 @@ function RegisterForm() {
         {({ register, formState: { errors } }) => (
           <>
             <Input
-              label={t('text-name')}
+              label='Name'
               {...register('name')}
               variant="outline"
               className="mb-5"
               error={t(errors.name?.message!)}
             />
             <Input
-              label={t('text-email')}
+              label='Email'
               {...register('email')}
               type="email"
               variant="outline"
@@ -57,7 +62,7 @@ function RegisterForm() {
               error={t(errors.email?.message!)}
             />
             <PasswordInput
-              label={t('text-password')}
+              label='Password'
               {...register('password')}
               error={t(errors.password?.message!)}
               variant="outline"
@@ -69,7 +74,7 @@ function RegisterForm() {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                {t('text-register')}
+                Register
               </Button>
             </div>
           </>
@@ -80,16 +85,16 @@ function RegisterForm() {
       <div className="relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">
         <hr className="w-full" />
         <span className="absolute -top-2.5 bg-light px-2 ltr:left-2/4 ltr:-ml-4 rtl:right-2/4 rtl:-mr-4">
-          {t('text-or')}
+          Or
         </span>
       </div>
       <div className="text-center text-sm text-body sm:text-base">
-        {t('text-already-account')}{' '}
+      Already have an account? {' '}
         <button
-          onClick={() => openModal('LOGIN_VIEW')}
+          onClick={() => handleNavigate('login')}
           className="font-semibold text-accent underline transition-colors duration-200 hover:text-accent-hover hover:no-underline focus:text-accent-hover focus:no-underline focus:outline-none ltr:ml-1 rtl:mr-1"
         >
-          {t('text-login')}
+          Login
         </button>
       </div>
     </>
@@ -110,19 +115,19 @@ export default function RegisterView() {
         <Logo />
       </div>
       <p className="mt-4 mb-7 px-2 text-center text-sm leading-relaxed text-body sm:mt-5 sm:mb-10 sm:px-0 md:text-base">
-        {t('registration-helper')}
+      By signing up, you agree to our
         <span
           onClick={() => handleNavigate('terms')}
           className="mx-1 cursor-pointer text-accent underline hover:no-underline"
         >
-          {t('text-terms')}
+         terms
         </span>
         &
         <span
           onClick={() => handleNavigate('privacy')}
           className="cursor-pointer text-accent underline hover:no-underline ltr:ml-1 rtl:mr-1"
         >
-          {t('text-policy')}
+         policy
         </span>
       </p>
       <RegisterForm />
