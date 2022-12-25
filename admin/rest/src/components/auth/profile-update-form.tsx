@@ -27,7 +27,7 @@ type FormValues = {
       original: string;
       id: string;
     };
-    socials: ProfileSocials;
+    socials?: ProfileSocials;
   };
 };
 
@@ -68,7 +68,6 @@ export default function ProfileUpdate({ me }: any) {
   const { t } = useTranslation();
   const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation();
   const { permissions: currentUserPermissions } = getAuthCredentials();
-  console.log("me", me);
   const {
     register,
     handleSubmit,
@@ -80,16 +79,16 @@ export default function ProfileUpdate({ me }: any) {
       
       profile: {
         socials: {
-          ...me?.profile.socials.socials,
-          socials: me?.profile.socials.socials
-            ? me?.profile.socials.socials.map((social: any) => ({
+          ...me?.profile?.socials?.socials,
+          socials: me?.profile?.socials?.socials
+            ? me?.profile?.socials?.socials.map((social: any) => ({
               type: updatedIcons?.find(
                 (icon) => icon?.value === social?.type
               ),
               link: social?.link,
             }))
             : [],
-          website:me?.profile.socials.website
+          website:me?.profile?.socials?.website
         },
 
         bio:me?.profile?.bio,
