@@ -27,5 +27,8 @@ export function crudFactory<Type, QueryParams extends LanguageParam, InputType>(
     delete({ id }: { id: string }) {
       return HttpClient.delete<boolean>(`${endpoint}/${id}`);
     },
+    deleteInfluencerProduct({ id }: { id: string }) {
+      return HttpClient.deleteInfluencerProduct<boolean>(`${endpoint}`,{'product_id':id});
+    },
   };
 }

@@ -82,6 +82,11 @@ export class HttpClient {
     return response.data;
   }
 
+  static async deleteInfluencerProduct<T>(url: string, data:any) {
+    const response = await Axios.delete<T>(url, { data: data });
+    return response.data;
+  }
+
   static formatSearchParams(params: Partial<SearchParamOptions>) {
     return Object.entries(params)
       .filter(([, value]) => Boolean(value))

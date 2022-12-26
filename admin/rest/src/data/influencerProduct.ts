@@ -52,7 +52,7 @@ export const useUpdateInfluencerProductMutation = () => {
 export const useDeleteInfluencerProductMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  return useMutation(influencerProductClient.delete, {
+  return useMutation(influencerProductClient.deleteInfluencerProduct, {
     onSuccess: () => {
       toast.success(t('common:successfully-deleted'));
     },

@@ -22,7 +22,7 @@ const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
 const JoinButton = dynamic(() => import('./menu/join-button'), { ssr: false });
 
 const HeaderMinimal = ({ layout }: { layout: string }) => {
-  console.log("inside header minimal")
+  console.log('inside header minimal');
   const router = useRouter();
   const { t } = useTranslation('common');
   const [displayMobileHeaderSearch] = useAtom(displayMobileHeaderSearchAtom);
@@ -81,13 +81,13 @@ const HeaderMinimal = ({ layout }: { layout: string }) => {
         )}
 
         {/* {layout === 'compact' && ( */}
-          <div className="mx-auto hidden w-full px-8 xl:flex xl:w-6/12 xl:px-10 xl:rtl:w-4/12 2xl:rtl:w-5/12">
-            <SearchWithSuggestion
-              label={t('text-search-label')}
-              variant="minimal"
-              // seeMore={true}
-            />
-          </div>
+        <div className="mx-auto hidden w-full px-8 xl:flex xl:w-6/12 xl:px-10 xl:rtl:w-4/12 2xl:rtl:w-5/12">
+          <SearchWithSuggestion
+            label={t('text-search-label')}
+            variant="minimal"
+            // seeMore={true}
+          />
+        </div>
         {/* )} */}
 
         <div className="hidden shrink-0 items-center space-x-9 rtl:space-x-reverse lg:flex">
@@ -104,9 +104,8 @@ const HeaderMinimal = ({ layout }: { layout: string }) => {
             <Link
               href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/influencer-register`}
               variant="button"
-              target="_blank"
             >
-              {t('text-become-seller')}
+              <a target="_blank">{t('text-become-seller')}</a>
             </Link>
             {isAuthorize ? <AuthorizedMenu minimal={true} /> : <JoinButton />}
           </div>
