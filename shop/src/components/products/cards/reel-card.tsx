@@ -3,16 +3,16 @@ import dynamic from 'next/dynamic';
 import { InstagramEmbed } from 'react-social-media-embed';
 
 interface ReelCardProps {
-  reel:any;
+  reel: any;
   className?: string;
   cardType?: any;
 }
-const ReelCard: React.FC<ReelCardProps> = ({
-  reel,
-  className,
-  ...props
-}) => {
-  console.log("reelData",reel);
-  return reel.reel_link ? <InstagramEmbed url={reel.reel_link} width={328} /> : null
+const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
+  return reel.reel_link ? (
+    <video controls width="100%">
+      <source src={reel.reel_link?.original} type="video/mp4" />
+      Sorry, your browser doesn't support videos.
+    </video>
+  ) : null;
 };
 export default ReelCard;

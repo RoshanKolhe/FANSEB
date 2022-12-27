@@ -94,9 +94,11 @@ class CreateMarvelTables extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('reel_link');
+            $table->json('reel_link')->nullable();
+            $table->json('thumbnail')->nullable();
             $table->string('name');
             $table->string('slug');
+            $table->string('language')->default('en');;
             $table->timestamps();
         });
 
@@ -263,6 +265,7 @@ class CreateMarvelTables extends Migration
             $table->json('avatar')->nullable();
             $table->text('bio')->nullable();
             $table->json('socials')->nullable();
+            $table->json('influencerPageImages')->nullable();
             $table->string('contact')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('users');

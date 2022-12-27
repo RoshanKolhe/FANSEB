@@ -40,7 +40,12 @@ const ProductBrandInput = ({ control, setValue, shopError }: Props) => {
       <SelectInput
         name="shops"
         control={control}
-        getOptionLabel={(option: any) => option.name}
+        getOptionLabel={(option: any) =>(
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={option?.logo?.thumbnail} height="30px" width="30px"/>
+            <span style={{ marginLeft: 5 }}>{option?.name}</span>
+          </div>
+        )}
         getOptionValue={(option: any) => option.id}
         // @ts-ignore
         options={shops}

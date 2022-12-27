@@ -118,10 +118,6 @@ export default function CreateOrUpdateInfluencerProduct({
     setValue('product_gallery_type', e);
     setGalleryType(e.value);
   }
-  useEffect(() => {
-    console.log("value changed");
-
-  }, [watchShposValueChange])
 
   return (
     <>

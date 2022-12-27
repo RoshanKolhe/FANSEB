@@ -23,6 +23,7 @@ class ReelRepository extends BaseRepository
     protected $dataArray = [
         'name',
         'reel_link',
+        'thumbnail',
         'user_id',
         'slug',
     ];
@@ -51,9 +52,9 @@ class ReelRepository extends BaseRepository
         return $this->create($data);
     }
 
-    public function updateReel($request, $author)
+    public function updateReel($request, $reel)
     {
-        $author->update($request->only($this->dataArray));
-        return $this->findOrFail($author->id);
+        $reel->update($request->only($this->dataArray));
+        return $this->findOrFail($reel->id);
     }
 }

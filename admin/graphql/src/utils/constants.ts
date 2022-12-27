@@ -8,4 +8,4 @@ export const AUTH_CRED = 'AUTH_CRED';
 export const CART_KEY = 'pick-cart';
 export const CHECKOUT = 'pickbazar-checkout';
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-export const ACCEPTED_FILE_TYPES = "image/*,application/pdf,application/zip,application/vnd.rar,application/epub+zip,.psd"
+export const ACCEPTED_FILE_TYPES = "image/*,application/pdf,application/zip,application/vnd.rar,application/epub+zip,.psd,video/*"

@@ -13,6 +13,7 @@ class Profile extends Model
 
     protected $casts = [
         'socials' => 'json',
+        'influencerPageImages' => 'json',
         'avatar' => 'json',
     ];
 

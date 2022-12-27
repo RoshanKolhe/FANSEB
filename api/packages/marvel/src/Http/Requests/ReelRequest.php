@@ -29,7 +29,8 @@ class ReelRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'reel_link' => ['required', 'string'],
+            'reel_link' => ['required'],
+            'thumbnail' => ['required'],
             'slug'        => ['nullable', 'string'],
         ];
     }

@@ -1129,6 +1129,7 @@ export interface UserProfileInput {
   avatar?: AttachmentInput;
   bio?: string;
   socials?: any;
+  influencerPageImages?: any;
   contact?: string;
 }
 

@@ -21,6 +21,11 @@ class Reel extends Model
 
     public $appends = ['translated_languages'];
 
+    protected $casts = [
+        'reel_link' => 'json',
+        'thumbnail' => 'json',
+    ];
+
     /**
      * Return the sluggable configuration array for this model.
      *

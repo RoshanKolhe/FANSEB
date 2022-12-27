@@ -50,7 +50,12 @@ const ProductInput = ({ control, setValue, productError, shop_id }: Props) => {
         name="products"
         control={control}
         isMulti
-        getOptionLabel={(option: any) => option.name}
+        getOptionLabel={(option: any) =>(
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={option?.image?.thumbnail} height="50px" width="50px"/>
+            <span style={{ marginLeft: 5 }}>{option?.name}</span>
+          </div>
+        )}
         getOptionValue={(option: any) => option.id}
         // @ts-ignore
         options={products}

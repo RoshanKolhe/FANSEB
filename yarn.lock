@@ -3008,6 +3008,14 @@
     "@typescript-eslint/types" "5.30.5"
     eslint-visitor-keys "^3.3.0"
 
+"@vimeo/player@^2.3.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@vimeo/player/-/player-2.18.0.tgz#74c2b9f21c28da768baa8e39131e0eec07d43d6e"
+  integrity sha512-AJ8LQJ0WQXoPO6GBiMRmcBpdpUMnNm12blG/H80BgKD75w/+pLw0t1vzDHCE915O2OlFau6u1Q0QVw2HS1eRvg==
+  dependencies:
+    native-promise-only "0.8.1"
+    weakmap-polyfill "2.0.4"
+
 "@wry/context@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@wry/context/-/context-0.6.1.tgz#c3c29c0ad622adb00f6a53303c4f965ee06ebeb2"
@@ -3892,6 +3900,11 @@ classnames@^2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
+
+clean-react-props@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/clean-react-props/-/clean-react-props-0.1.3.tgz#337d2b18dae60425372d69735fbcd2fd4c12debe"
+  integrity sha512-5feCdRvhyBttBqeaqC2ACBxtFYyD/Id/qAK8Xq9e8JdYbgTsnYDGfzKsjXyV/AWk/LahP3qZ5G9EjBNvoR9VMg==
 
 clean-stack@^2.0.0:
   version "2.2.0"
@@ -6750,6 +6763,11 @@ log-update@^2.3.0:
     cli-cursor "^2.0.0"
     wrap-ansi "^3.0.1"
 
+lomit@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/lomit/-/lomit-0.1.1.tgz#b9270fa45d80a352cfdcf2d019a97e91d6ec21e6"
+  integrity sha512-1WmzTB6ujYBYbVbsfy7jnQ9Tu9odzeB0m9Ijx//b6aKYS6KqaeWJVRl6XHVrczz8W76A0O239UJKsVirKzIIGg==
+
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
@@ -7028,6 +7046,11 @@ napi-build-utils@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
   integrity sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==
+
+native-promise-only@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/native-promise-only/-/native-promise-only-0.8.1.tgz#20a318c30cb45f71fe7adfbf7b21c99c1472ef11"
+  integrity sha512-zkVhZUA3y8mbz652WrL5x0fB0ehrBkulWT3TomAQ9iDtyXZvzKeEA6GPxAItBYeNYl5yngKRX612qHOhvMkDeg==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -7778,7 +7801,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.8.1, prop-types@^15.8.1:
+prop-types@15.8.1, prop-types@^15.6.1, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8211,6 +8234,17 @@ react-use@17.3.2:
     throttle-debounce "^3.0.1"
     ts-easing "^0.2.0"
     tslib "^2.1.0"
+
+react-video-players@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/react-video-players/-/react-video-players-0.1.11.tgz#f223e0587f6b58e2441e2803a98d7ed0f1f5ce5a"
+  integrity sha512-HuGHXhb/0yFAjaI+2NrlHfpH4JWRtZ/eJSgDXmv91OzPniByhQ//T+hhLnf+hFBCvcsPLRjdf3S+8E47H8CKFw==
+  dependencies:
+    "@vimeo/player" "^2.3.0"
+    clean-react-props "^0.1.3"
+    lomit "^0.1.1"
+    prop-types "^15.6.1"
+    youtube-player "^5.5.0"
 
 react-youtube@^10.1.0:
   version "10.1.0"
@@ -9814,6 +9848,11 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
+weakmap-polyfill@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/weakmap-polyfill/-/weakmap-polyfill-2.0.4.tgz#bcc301e4c8eb4eda3e406f08f1a691093e407884"
+  integrity sha512-ZzxBf288iALJseijWelmECm/1x7ZwQn3sMYIkDr2VvZp7r6SEKuT8D0O9Wiq6L9Nl5mazrOMcmiZE/2NCenaxw==
+
 web-streams-polyfill@4.0.0-beta.1:
   version "4.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-4.0.0-beta.1.tgz#3b19b9817374b7cee06d374ba7eeb3aeb80e8c95"
@@ -10213,7 +10252,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-youtube-player@5.5.2:
+youtube-player@5.5.2, youtube-player@^5.5.0:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/youtube-player/-/youtube-player-5.5.2.tgz#052b86b1eabe21ff331095ffffeae285fa7f7cb5"
   integrity sha512-ZGtsemSpXnDky2AUYWgxjaopgB+shFHgXVpiJFeNB5nWEugpW1KWYDaHKuLqh2b67r24GtP6HoSW5swvf0fFIQ==

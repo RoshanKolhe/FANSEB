@@ -10,10 +10,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { reelsValidationSchema } from './reels-validation-schema';
 import { useShopQuery } from '@/data/shop';
 import { useCreateReelsMutation, useUpdateReelsMutation } from '@/data/reels';
+import FileInput from '../ui/file-input';
+import { useEffect, useState } from 'react';
 
 type FormValues = {
-  reel_link: string;
+  // reel_link: string;
   name: string;
+  video: any;
+  thumbnail: any;
 };
 
 // const defaultValues = {
@@ -26,22 +30,21 @@ type FormValues = {
 type IProps = {
   initialValues?: any | null;
 };
-export default function CreateOrUpdateReelsForm({
-  initialValues,
-}: IProps) {
+export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
   const {
     query: { shop },
   } = router;
   const isNewTranslation = router?.query?.action === 'translate';
-
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [thumbnailError, setThumbnailError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     control,
     setError,
-
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     shouldUnregister: true,
@@ -49,27 +52,32 @@ export default function CreateOrUpdateReelsForm({
     ...(Boolean(initialValues) && {
       defaultValues: {
         ...initialValues,
+        video: initialValues.reel_link,
+        thumbnail: initialValues?.thumbnail,
       } as any,
     }),
   });
-
-  const { mutate: createReels, isLoading: creating } =
-    useCreateReelsMutation();
-  const { mutate: updateReels, isLoading: updating } =
-    useUpdateReelsMutation();
-
-
+  const watchVideo = watch("video", false);
+  const { mutate: createReels, isLoading: creating } = useCreateReelsMutation();
+  const { mutate: updateReels, isLoading: updating } = useUpdateReelsMutation();
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values);
-    const {
-      reel_link,
-      name
-    } = values;
+    console.log('thumbnail', values);
+    const { name, video, thumbnail } = values;
+    if (video.length == 0) {
+      setFileError('Video File is required');
+      return;
+    }
+    if (!thumbnail) {
+      setThumbnailError('Thumbnail is required');
+      return;
+    }
+
     const input = {
       language: router.locale,
-      reel_link,
-      name
+      reel_link: video,
+      name,
+      thumbnail: thumbnail,
     };
     try {
       if (
@@ -96,6 +104,9 @@ export default function CreateOrUpdateReelsForm({
       });
     }
   };
+  useEffect(() => {
+    console.log("video",watchVideo);
+  }, [watch]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -108,19 +119,56 @@ export default function CreateOrUpdateReelsForm({
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <Input
-            label="Name"
+            label="Name*"
             {...register('name')}
             error={t(errors.name?.message!)}
             variant="outline"
             className="mb-5"
           />
-          <Input
-            label="Reel URL"
+          {/* <Input
+            label="Reel URL*"
             {...register('reel_link')}
             error={t(errors.reel_link?.message!)}
             variant="outline"
             className="mb-5"
+          /> */}
+        </Card>
+      </div>
+      <div className="my-5 flex flex-wrap sm:my-8">
+        <Description
+          title="video"
+          details="Upload your video here"
+          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+        />
+
+        <Card className="w-full sm:w-8/12 md:w-2/3">
+          <FileInput
+            name="video"
+            control={control}
+            multiple={false}
+            acceptFile={true}
+            helperText={fileError ? fileError : 'Please upload a video file'}
           />
+          <span>{errors.video?.message}</span>
+        </Card>
+
+        {/* <video controls width="100%">
+          <source src={reel.reel_link?.original} type="video/mp4" />
+          Sorry, your browser doesn't support videos.
+        </video> */}
+      </div>
+
+      <div className="my-5 flex flex-wrap sm:my-8">
+        <Description
+          title="thumbnail image"
+          details="Upload your thumbnail image here"
+          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+        />
+        <Card className="w-full sm:w-8/12 md:w-2/3">
+          <FileInput name="thumbnail" control={control} multiple={false} />
+          <span style={{ color: 'red', marginTop: '10px' }}>
+            {thumbnailError ? thumbnailError : null}
+          </span>
         </Card>
       </div>
 
@@ -137,10 +185,7 @@ export default function CreateOrUpdateReelsForm({
         )}
 
         <Button loading={updating || creating}>
-          {initialValues
-            ? 'Update Reel'
-            : 'Add Reel'
-          }
+          {initialValues ? 'Update Reel' : 'Add Reel'}
         </Button>
       </div>
     </form>
