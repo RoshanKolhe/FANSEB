@@ -11,7 +11,7 @@ import { reelsValidationSchema } from './reels-validation-schema';
 import { useShopQuery } from '@/data/shop';
 import { useCreateReelsMutation, useUpdateReelsMutation } from '@/data/reels';
 import FileInput from '../ui/file-input';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type FormValues = {
   // reel_link: string;
@@ -31,6 +31,7 @@ type IProps = {
   initialValues?: any | null;
 };
 export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
+  const videoEl = useRef(null);
   const router = useRouter();
   const { t } = useTranslation();
   const {
@@ -38,6 +39,7 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
   } = router;
   const isNewTranslation = router?.query?.action === 'translate';
   const [fileError, setFileError] = useState<string | null>(null);
+  const [videoDuration, setVideoDuration] = useState<string | null>(null);
   const [thumbnailError, setThumbnailError] = useState<string | null>(null);
   const {
     register,
@@ -57,18 +59,22 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
       } as any,
     }),
   });
-  const watchVideo = watch("video", false);
+  const watchVideo = watch('video', false);
+  const watchThumbnail = watch('thumbnail', false);
   const { mutate: createReels, isLoading: creating } = useCreateReelsMutation();
   const { mutate: updateReels, isLoading: updating } = useUpdateReelsMutation();
 
   const onSubmit = async (values: FormValues) => {
-    console.log('thumbnail', values);
     const { name, video, thumbnail } = values;
     if (video.length == 0) {
       setFileError('Video File is required');
       return;
     }
-    if (!thumbnail) {
+    if (
+      !thumbnail &&
+      !thumbnail.length &&
+      Object.keys(thumbnail).length === 0
+    ) {
       setThumbnailError('Thumbnail is required');
       return;
     }
@@ -78,6 +84,7 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
       reel_link: video,
       name,
       thumbnail: thumbnail,
+      videoDuration: videoDuration || '00:00',
     };
     try {
       if (
@@ -104,9 +111,16 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
       });
     }
   };
+  const handleLoadedMetadata = () => {
+    const video: any = videoEl.current;
+    if (!video) return;
+    setVideoDuration(`${video?.duration}`);
+  };
   useEffect(() => {
-    console.log("video",watchVideo);
-  }, [watch]);
+    if (watchThumbnail || Object.keys(watchThumbnail)) {
+      setThumbnailError('');
+    }
+  }, [watchThumbnail]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -150,12 +164,20 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
             helperText={fileError ? fileError : 'Please upload a video file'}
           />
           <span>{errors.video?.message}</span>
+          {watchVideo.length || Object.keys(watchVideo).length ? (
+            <video
+              autoPlay
+              controls
+              width="200px"
+              height="200px"
+              ref={videoEl}
+              onLoadedMetadata={handleLoadedMetadata}
+            >
+              <source src={watchVideo?.original} type="video/mp4" />
+              Sorry, your browser doesn't support videos.
+            </video>
+          ) : null}
         </Card>
-
-        {/* <video controls width="100%">
-          <source src={reel.reel_link?.original} type="video/mp4" />
-          Sorry, your browser doesn't support videos.
-        </video> */}
       </div>
 
       <div className="my-5 flex flex-wrap sm:my-8">

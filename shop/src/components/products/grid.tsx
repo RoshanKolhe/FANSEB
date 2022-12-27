@@ -42,7 +42,7 @@ export function Grid({
   column = 'auto',
   isReelGrid = 'false'
 }: Props) {
-  console.log('isReelGrid',isReelGrid);
+
   const { t } = useTranslation('common');
 
   if (error) return <ErrorMessage message={error.message} />;
@@ -60,9 +60,9 @@ export function Grid({
       {isReelGrid ? <div
         className={cn(
           {
-            'grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3':
+            'grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-3':
               column === 'auto',
-            'grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 gap-y-10 lg:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] xl:gap-8 xl:gap-y-11 2xl:grid-cols-5 3xl:grid-cols-[repeat(auto-fill,minmax(360px,1fr))]':
+            'grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6 gap-y-10 lg:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] xl:gap-8 xl:gap-y-11 2xl:grid-cols-5 3xl:grid-cols-[repeat(auto-fill,minmax(360px,1fr))]':
               column === 'five',
           },
           gridClassName

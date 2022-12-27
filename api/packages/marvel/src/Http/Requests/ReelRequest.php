@@ -32,6 +32,7 @@ class ReelRequest extends FormRequest
             'reel_link' => ['required'],
             'thumbnail' => ['required'],
             'slug'        => ['nullable', 'string'],
+            'videoDuration' =>['nullable','string']
         ];
     }
 

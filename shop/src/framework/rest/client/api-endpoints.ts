@@ -24,7 +24,7 @@ export const API_ENDPOINTS = {
   ORDERS_CHECKOUT_VERIFY: '/orders/checkout/verify',
   ORDERS_DOWNLOADS: '/downloads',
   GENERATE_DOWNLOADABLE_PRODUCT_LINK: '/downloads/digital_file',
-  USERS: '/influencers',
+  USERS: '/users',
   USERS_ADDRESS: '/address',
   USERS_ME: '/me',
   INFLUENCER_ME:'/influencerUser',

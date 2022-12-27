@@ -22,6 +22,7 @@ class ReelRepository extends BaseRepository
 
     protected $dataArray = [
         'name',
+        'videoDuration',
         'reel_link',
         'thumbnail',
         'user_id',

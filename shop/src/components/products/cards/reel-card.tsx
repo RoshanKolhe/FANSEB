@@ -9,10 +9,24 @@ interface ReelCardProps {
 }
 const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
   return reel.reel_link ? (
-    <video controls width="100%">
-      <source src={reel.reel_link?.original} type="video/mp4" />
-      Sorry, your browser doesn't support videos.
-    </video>
-  ) : null;
+    <div>
+      <img
+        src={reel.thumbnail?.thumbnail}
+        alt="reel"
+        style={{
+          width: '100%',
+          height: '100%',
+          borderBottomRightRadius: '20px',
+          top: '0px',
+          right: '0px',
+        }}
+      />
+      <div>some text...</div>
+    </div>
+  ) : // <video controls width="100%">
+  //   <source src={reel.reel_link?.original} type="video/mp4" />
+  //   Sorry, your browser doesn't support videos.
+  // </video>
+  null;
 };
 export default ReelCard;

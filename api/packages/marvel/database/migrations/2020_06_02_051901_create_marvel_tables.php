@@ -96,6 +96,7 @@ class CreateMarvelTables extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->json('reel_link')->nullable();
             $table->json('thumbnail')->nullable();
+            $table->string('videoDuration')->nullable();
             $table->string('name');
             $table->string('slug');
             $table->string('language')->default('en');;
