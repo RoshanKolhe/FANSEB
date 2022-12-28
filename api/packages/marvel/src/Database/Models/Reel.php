@@ -51,4 +51,14 @@ class Reel extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Follow products
+     *
+     * @return BelongsToMany
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_reel');
+    }
 }

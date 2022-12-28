@@ -58,6 +58,13 @@ class CreateNewMarvelTables extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+        Schema::create('product_reel', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('reel_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('reel_id')->references('id')->on('reels')->onDelete('cascade');
+        });
         Schema::table('products', function (Blueprint $table) {
             $table->float('min_price')->after('sale_price')->nullable();
             $table->float('max_price')->after('min_price')->nullable();
@@ -196,6 +203,7 @@ class CreateNewMarvelTables extends Migration
         Schema::dropIfExists('variation_options');
         Schema::dropIfExists('product_tag');
         Schema::dropIfExists('product_user');
+        Schema::dropIfExists('product_reel');
         Schema::dropIfExists('tags');
     }
 }

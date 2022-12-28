@@ -159,6 +159,14 @@ class Product extends Model
     {
         return $this->belongsToMany(User::class, 'product_user');
     }
+
+    /**
+     * @return BelongsToMany
+    */
+    public function reels(): BelongsToMany
+    {
+        return $this->belongsToMany(Reel::class, 'product_reel');
+    }
     /**
      * @return HasMany
      */
