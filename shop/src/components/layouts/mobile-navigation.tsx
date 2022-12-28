@@ -31,6 +31,9 @@ export default function MobileNavigation({
   function handleJoin() {
     return openModal('LOGIN_VIEW');
   }
+  function handleNavigate(path: string) {
+    router.push(`/${path}`);
+  }
 
   return (
     <div className="visible h-12 md:h-14 lg:hidden">
@@ -81,7 +84,7 @@ export default function MobileNavigation({
         ) : (
           <motion.button
             whileTap={{ scale: 0.88 }}
-            onClick={handleJoin}
+            onClick={() => handleNavigate('login')}
             className="flex h-full items-center justify-center p-2 focus:text-accent focus:outline-none"
           >
             <span className="sr-only">{t('text-user')}</span>

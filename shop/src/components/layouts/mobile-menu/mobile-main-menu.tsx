@@ -6,12 +6,14 @@ import { useAtom } from 'jotai';
 import { drawerAtom } from '@/store/drawer-atom';
 
 const headerLinks = [
-  { href: Routes.shops, label: 'nav-menu-shops' },
-  { href: Routes.manufacturers, label: 'text-manufacturers' },
-  { href: Routes.authors, label: 'text-authors' },
-  { href: Routes.coupons, label: 'nav-menu-offer' },
-  { href: Routes.help, label: 'nav-menu-faq' },
-  { href: Routes.contactUs, label: 'nav-menu-contact' },
+  { href: Routes.shops, icon: null, label: 'nav-menu-shops' },
+  { href: Routes.influencers, icon: null, label: 'nav-menu-offer' },
+  // { href: Routes.shops, label: 'nav-menu-shops' },
+  // // { href: Routes.manufacturers, label: 'text-manufacturers' },
+  // // { href: Routes.authors, label: 'text-authors' },
+  // { href: Routes.coupons, label: 'nav-menu-offer' },
+  // { href: Routes.help, label: 'nav-menu-faq' },
+  // { href: Routes.contactUs, label: 'nav-menu-contact' },
 ];
 
 export default function MobileMainMenu() {

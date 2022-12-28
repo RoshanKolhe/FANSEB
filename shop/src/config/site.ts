@@ -34,9 +34,7 @@ export const siteSettings = {
     { href: Routes.profile, label: 'auth-menu-profile' },
     { href: Routes.orders, label: 'auth-menu-my-orders' },
     { href: Routes.wishlists, label: 'profile-sidebar-my-wishlist' },
-    { href: Routes.refunds, label: 'text-my-refunds' },
     { href: Routes.checkout, label: 'auth-menu-checkout' },
-    { href: Routes.changePassword, label: 'profile-sidebar-password' },
   ],
   dashboardSidebarMenu: [
     {
