@@ -29,6 +29,7 @@ use Marvel\Http\Requests\UserUpdateRequest;
 use Illuminate\Validation\ValidationException;
 use Marvel\Http\Requests\ChangePasswordRequest;
 use Marvel\Database\Repositories\UserRepository;
+use Marvel\Database\Repositories\ProductRepository;
 use Marvel\Database\Repositories\DownloadRepository;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Marvel\Database\Models\Permission as ModelsPermission;
@@ -37,10 +38,12 @@ class UserController extends CoreController
 {
     use Wallets;
     public $repository;
+    public $productRepository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $repository ,ProductRepository $productRepository)
     {
         $this->repository = $repository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -554,6 +557,23 @@ class UserController extends CoreController
 
     public function getUserProducts(Request $request){
        return $this->repository->fetchRelated($request);
+    }
+
+    public function getUserSingleProduct(Request $request, $slug){
+        $request->slug = $slug; 
+        $limit = isset($request->limit) ? $request->limit : 10;
+        $user = $request->user();
+        $product =  $this->repository->fetchSingle($request);
+        $product['related_products'] = $this->productRepository->fetchRelated($slug, $limit, DEFAULT_LANGUAGE);
+
+        if (
+            in_array('variation_options.digital_file', explode(';', $request->with)) || in_array('digital_file', explode(';', $request->with))
+        ) {
+            if (!$this->productRepository->hasPermission($user, $product->shop_id)) {
+                throw new MarvelException(config('shop.app_notice_domain') . 'ERROR.NOT_AUTHORIZED');
+            }
+        }
+        return $product;
     }
 
     public function getUserInfluencer($id){

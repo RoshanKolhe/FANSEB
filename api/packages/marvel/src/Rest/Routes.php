@@ -54,6 +54,7 @@ Route::get('top-manufacturers', [ManufacturerController::class, 'topManufacturer
 Route::get('popular-products', [ProductController::class, 'popularProducts']);
 Route::get('check-availability', [ProductController::class, 'checkAvailability']);
 Route::get('influencerProducts', [UserController::class, 'getUserProducts']);
+Route::get('singleInfluencerProducts/{slug}', [UserController::class, 'getUserSingleProduct']);
 Route::apiResource('reels', ReelController::class, [
     'only' => ['index','show'],
 ]);

@@ -7,12 +7,15 @@ import { stickyShortDetailsAtom } from '@/store/sticky-short-details-atom';
 import { useAtom } from 'jotai';
 import { AttributesProvider } from './attributes.context';
 import { useProduct } from '@/framework/product';
+import { useRouter } from 'next/router';
 
 const RelatedProducts = dynamic(() => import('./related-products'));
 interface ProductPopupProps {
   productSlug: string;
 }
 const Popup: React.FC<ProductPopupProps> = ({ productSlug }) => {
+  const router = useRouter()
+  console.log('query',router.query);
   const { t } = useTranslation('common');
   const [showStickyShortDetails] = useAtom(stickyShortDetailsAtom);
   const { product, isLoading } = useProduct({ slug: productSlug });

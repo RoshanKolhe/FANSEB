@@ -74,6 +74,27 @@ class UserRepository extends BaseRepository
             return [];
         }
     }
+    public function fetchSingle($request ,$language = DEFAULT_LANGUAGE)
+    {
+        $slug = $request->slug;
+        $language = $request->language ?? DEFAULT_LANGUAGE;
+        $user = $this->findOneByFieldOrFail('id', $request->userId);
+
+        try {
+            if (is_numeric($slug)) {
+                $slug = (int) $slug;
+                $product = $user->products()->where('id',$slug)->with('shop')->firstOrFail();;
+            }
+
+            $product = $user->products()->where('language', $language)->where('slug', $slug)
+                ->with(['type', 'shop', 'categories', 'tags', 'variations.attribute.values', 'variation_options', 'author', 'manufacturer'])
+                ->firstOrFail();
+        } catch (\Exception $e) {
+            throw new MarvelException(NOT_FOUND);
+        }
+        
+        return $product;
+    }
 
 
     public function storeUser($request)

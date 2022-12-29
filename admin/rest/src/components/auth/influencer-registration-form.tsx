@@ -124,7 +124,7 @@ const InfluencerRegistrationForm = () => {
           />
         ) : null}
       </form>
-      <div className="relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">
+      {/* <div className="relative mt-8 mb-6 flex flex-col items-center justify-center text-sm text-heading sm:mt-11 sm:mb-8">
         <hr className="w-full" />
         <span className="start-2/4 -ms-4 absolute -top-2.5 bg-light px-2">
           {t('common:text-or')}
@@ -138,7 +138,7 @@ const InfluencerRegistrationForm = () => {
         >
           {t('form:button-label-login')}
         </Link>
-      </div>
+      </div> */}
     </>
   );
 };
