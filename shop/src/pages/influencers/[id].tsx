@@ -74,12 +74,11 @@ const InfluencerPage: NextPageWithLayout<
           {influencerSliderImages && influencerSliderImages.length > 0 ? (
             <SimpleImageSlider
               width={windoWidth}
-              height='70vh'
+              height="70vh"
               images={influencerSliderImages}
               showBullets={true}
               autoPlay={false}
               showNavs={true}
-            
             />
           ) : (
             <Image
@@ -108,7 +107,13 @@ const InfluencerPage: NextPageWithLayout<
             </div>
             <div
               className="align-items-center justify-content-center flex lg:pt-3"
-              style={{ display: 'flex', justifyContent: 'center' }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '50%',
+                textAlign: 'center',
+                margin:'auto'
+              }}
             >
               {influencer?.profile?.bio}
             </div>

@@ -18,7 +18,7 @@ const InfluencerCard: React.FC<InfluencerCardProps> = ({ influencer }) => {
   const isNew = false;
 
   return (
-    <Link href={Routes.influencer(influencer?.id.toString(),influencer.name)}>
+    <Link href={Routes.influencer(influencer?.id.toString(), influencer.name)}>
       <div className="relative flex cursor-pointer items-center rounded border border-gray-200 p-5">
         {isNew && (
           <span className="absolute top-2 rounded bg-blue-500 px-2 py-1 text-xs text-light ltr:right-2 rtl:left-2">
@@ -43,9 +43,21 @@ const InfluencerCard: React.FC<InfluencerCardProps> = ({ influencer }) => {
             {/* {!isEmpty(formatAddress(influencer?.address))
               ? formatAddress(influencer?.address)
               : t('common:text-no-address')} */}
-            {influencer?.profile?.bio}
+            <p
+              style={{
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: '200px',
+              }}
+            >
+              {influencer?.profile?.bio}
+            </p>
           </span>
-          <span className="flex text-xs text-body mt-2 font-bold">
+          <span
+            className="mt-2 flex text-xs font-bold text-body"
+            style={{ color: '#0E4380' }}
+          >
             View Store
           </span>
         </div>
