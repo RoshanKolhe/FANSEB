@@ -9,7 +9,6 @@ export function displayImage(
     return [selectedVariationImage];
   }
   if (gallery?.length) {
-    console.log('gallery',gallery);
     return gallery;
   }
   if (image) {

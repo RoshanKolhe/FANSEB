@@ -15,7 +15,6 @@ export default function AppLayout({
     return <AdminLayout {...props} />;
   }
   if(userPermissions?.includes(INFLUENCER)){
-    console.log("Inside Influencer");
     return <InfluencerLayout {...props} />;
   }
   return <OwnerLayout {...props} />;

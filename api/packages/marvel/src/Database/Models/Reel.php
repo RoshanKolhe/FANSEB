@@ -57,7 +57,7 @@ class Reel extends Model
      *
      * @return BelongsToMany
      */
-    public function products(): BelongsToMany
+    public function products()
     {
         return $this->belongsToMany(Product::class, 'product_reel');
     }

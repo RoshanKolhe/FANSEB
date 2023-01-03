@@ -87,7 +87,6 @@ export default function CreateOrUpdateInfluencerProduct({
       product_gallery_type: values.product_gallery_type.value,
       userId: data?.id || undefined
     }
-    console.log(inputValues);
     try {
       if (
         !initialValues ||

@@ -113,7 +113,6 @@ export default function ProfileUpdate({ me }: any) {
 
   async function onSubmit(values: FormValues) {
     const { name, profile } = values;
-    console.log('profile', profile);
     const socials = {
       ...values?.profile.socials,
       socials: values?.profile?.socials

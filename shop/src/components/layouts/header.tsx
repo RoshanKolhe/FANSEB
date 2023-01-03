@@ -19,7 +19,6 @@ const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
 const JoinButton = dynamic(() => import('./menu/join-button'), { ssr: false });
 
 const Header = ({ layout }: { layout?: string }) => {
-  console.log("inside header")
 
   const { t } = useTranslation('common');
   const { show, hideHeaderSearch } = useHeaderSearch();

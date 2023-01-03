@@ -16,12 +16,12 @@ const RelatedProducts = ({
 
   return (
     <>
-      <h2 className="text-lg text-heading tracking-tight font-semibold mb-6">
+      <h2 className="mb-6 text-lg font-semibold tracking-tight text-heading">
         {t('text-related-products')}
       </h2>
       <div
         className={cn(
-          'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4',
+          'grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-2',
           gridClassName
         )}
       >
@@ -30,7 +30,12 @@ const RelatedProducts = ({
             return null;
           }
           return (
-            <ProductCard product={item} key={idx} cardType={item?.type?.slug} />
+            <ProductCard
+              product={item}
+              key={idx}
+              cardType={item?.type?.slug}
+              isNotInfluencerProduct={true}
+            />
           );
         })}
       </div>

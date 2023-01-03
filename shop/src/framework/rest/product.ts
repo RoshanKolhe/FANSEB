@@ -65,16 +65,24 @@ export function useProducts(options?: Partial<ProductQueryOptions>) {
   };
 }
 
-export const useInfluecnerProductsQuery = (
-  params: any,
-) => {
-  const { data, error, isLoading, fetchNextPage, hasNextPage, isFetching,isFetchingNextPage, } = useInfiniteQuery<any, Error>(
+export const useInfluecnerProductsQuery = (params: any) => {
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery<any, Error>(
     [API_ENDPOINTS.INFLUENCER_PRODUCTS, params],
     ({ queryKey, pageParam }) =>
-      client.products.influencerProductsPaginated(Object.assign({}, queryKey[1], pageParam)),
+      client.products.influencerProductsPaginated(
+        Object.assign({}, queryKey[1], pageParam)
+      ),
     {
       getNextPageParam: ({ current_page, last_page }) =>
-      last_page > current_page && { page: current_page + 1 },
+        last_page > current_page && { page: current_page + 1 },
     }
   );
 
@@ -125,6 +133,20 @@ export function useProduct({ slug }: { slug: string }) {
   const { data, isLoading, error } = useQuery<Product, Error>(
     [API_ENDPOINTS.PRODUCTS, { slug, language }],
     () => client.products.get({ slug, language })
+  );
+  return {
+    product: data,
+    isLoading,
+    error,
+  };
+}
+
+export function useInfluencerProduct(params: { slug: string; id: any }) {
+  const { locale: language } = useRouter();
+
+  const { data, isLoading, error } = useQuery<Product, Error>(
+    [API_ENDPOINTS.PRODUCTS, { ...params,language }],
+    () => client.products.influencerProduct({ ...params,language })
   );
   return {
     product: data,

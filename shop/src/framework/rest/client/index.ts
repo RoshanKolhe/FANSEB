@@ -80,15 +80,15 @@ import { OTPVerifyResponse } from '@/types';
 
 class Client {
   products = {
-    influencerProductsPaginated: ({
-      ...params
-    }: Partial<any>) => {
+    influencerProductsPaginated: ({ ...params }: Partial<any>) => {
       return HttpClient.get<any>(API_ENDPOINTS.INFLUENCER_PRODUCTS, {
         ...params,
       });
     },
-    influencerProduct:(params: any) => {
-      return HttpClient.get<any>('influencerProduct', params);
+    influencerProduct: (params: any) => {
+      return HttpClient.get<any>(
+        `influencerProduct/${params.slug}?userId=${params.id}`
+      );
     },
     all: ({
       type,
@@ -149,13 +149,15 @@ class Client {
       HttpClient.post<Review>(API_ENDPOINTS.PRODUCTS_QUESTIONS, input),
   };
   reels = {
-    influencerReelsPaginated: ({
-      ...params
-    }: Partial<any>) => {
+    influencerReelsPaginated: ({ ...params }: Partial<any>) => {
       return HttpClient.get<any>(API_ENDPOINTS.REELS, {
         ...params,
       });
     },
+    get: ({ slug, language }: GetParams) =>
+      HttpClient.get<any>(`${API_ENDPOINTS.REELS}/${slug}`, {
+        with: 'products',
+      }),
   };
   myQuestions = {
     all: (params: MyQuestionQueryOptions) =>
@@ -226,12 +228,12 @@ class Client {
   };
   influencers = {
     all: ({ name, ...params }: Partial<QueryOptionsType>) =>
-    HttpClient.get<UserPaginator>(API_ENDPOINTS.INFLUENCERS, {
-      searchJoin: 'and',
-      with: 'wallet',
-      ...params,
-      search: HttpClient.formatSearchParams({ name }),
-    }),
+      HttpClient.get<UserPaginator>(API_ENDPOINTS.INFLUENCERS, {
+        searchJoin: 'and',
+        with: 'wallet',
+        ...params,
+        search: HttpClient.formatSearchParams({ name }),
+      }),
     get: (slug: string) =>
       HttpClient.get<User>(`${API_ENDPOINTS.INFLUENCERS}/${slug}`),
   };
@@ -311,9 +313,7 @@ class Client {
   users = {
     me: () => HttpClient.get<User>(API_ENDPOINTS.USERS_ME),
     influencerMe: ({ user_id }: { user_id: string }) =>
-    HttpClient.get<any>(
-      `${API_ENDPOINTS.INFLUENCER_ME}/${user_id}`
-    ),
+      HttpClient.get<any>(`${API_ENDPOINTS.INFLUENCER_ME}/${user_id}`),
     update: (user: UpdateUserInput) =>
       HttpClient.put<User>(`${API_ENDPOINTS.USERS}/${user.id}`, user),
     login: (input: LoginUserInput) =>

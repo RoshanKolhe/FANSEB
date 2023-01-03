@@ -163,7 +163,7 @@ class Product extends Model
     /**
      * @return BelongsToMany
     */
-    public function reels(): BelongsToMany
+    public function reels()
     {
         return $this->belongsToMany(Reel::class, 'product_reel');
     }

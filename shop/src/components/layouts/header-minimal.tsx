@@ -22,7 +22,6 @@ const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
 const JoinButton = dynamic(() => import('./menu/join-button'), { ssr: false });
 
 const HeaderMinimal = ({ layout }: { layout: string }) => {
-  console.log('inside header minimal');
   const router = useRouter();
   const { t } = useTranslation('common');
   const [displayMobileHeaderSearch] = useAtom(displayMobileHeaderSearchAtom);

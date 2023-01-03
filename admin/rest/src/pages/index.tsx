@@ -25,7 +25,6 @@ export default function Dashboard({
     return <AdminDashboard />;
   }
   if (userPermissions?.includes(INFLUENCER)) {
-    console.log("InfluencerDashboardindex");
     return <InfluencerDashboard />;
   }
   return <OwnerDashboard />;

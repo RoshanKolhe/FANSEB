@@ -1,3 +1,4 @@
+import { useModalAction } from '@/components/ui/modal/modal.context';
 import type { Product } from '@/types';
 import dynamic from 'next/dynamic';
 import { InstagramEmbed } from 'react-social-media-embed';
@@ -8,8 +9,13 @@ interface ReelCardProps {
   cardType?: any;
 }
 const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
+  const { openModal } = useModalAction();
+  function handleReelQuickView() {
+    return openModal('REEL_DETAILS', reel.id);
+  }
   return reel.reel_link ? (
     <div
+    onClick={handleReelQuickView}
       style={{
         position: 'relative',
       }}

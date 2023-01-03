@@ -50,12 +50,19 @@ class ReelRepository extends BaseRepository
     public function storeReel($request)
     {
         $data = $request->only($this->dataArray);
-        return $this->create($data);
+        $reel = $this->create($data);
+        if($request->products){
+            $reel->products()->sync($request->products);
+        }
+        return $reel;
     }
 
     public function updateReel($request, $reel)
     {
         $reel->update($request->only($this->dataArray));
+        if($request->products){
+            $reel->products()->sync($request->products);    
+        }
         return $this->findOrFail($reel->id);
     }
 }

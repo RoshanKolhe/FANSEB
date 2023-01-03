@@ -24,7 +24,6 @@ const CartCounterButton = dynamic(
 const ShopPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ shop, variables }) => {
-  console.log('shopDetails', shop);
   const router = useRouter();
   const { width } = useWindowSize();
   const { t } = useTranslation('banner');

@@ -10,9 +10,14 @@ import { productPlaceholder } from '@/lib/placeholders';
 type XenonProps = {
   product: any;
   className?: string;
+  isNotInfluencerProduct?: any;
 };
 
-const Xenon: React.FC<XenonProps> = ({ product, className }) => {
+const Xenon: React.FC<XenonProps> = ({
+  product,
+  className,
+  isNotInfluencerProduct,
+}) => {
   const { t } = useTranslation('common');
   const { name, image, quantity, min_price, max_price, product_type } =
     product ?? {};
@@ -29,18 +34,21 @@ const Xenon: React.FC<XenonProps> = ({ product, className }) => {
   const { openModal } = useModalAction();
 
   function handleProductQuickView() {
-    return openModal('PRODUCT_DETAILS', product.slug);
+    return openModal('PRODUCT_DETAILS', {
+      productSlug: product.slug,
+      isNotInfluencerProduct: isNotInfluencerProduct,
+    });
   }
 
   return (
     <article
       className={cn(
-        'product-card cart-type-xenon rounded h-full bg-light overflow-hidden border border-border-200 border-opacity-70 transform transition-all duration-200 hover:shadow hover:border-transparent hover:-translate-y-0.5',
+        'product-card cart-type-xenon h-full transform overflow-hidden rounded border border-border-200 border-opacity-70 bg-light transition-all duration-200 hover:-translate-y-0.5 hover:border-transparent hover:shadow',
         className
       )}
     >
       <div
-        className="relative flex items-center justify-center cursor-pointer w-auto h-48 sm:h-64"
+        className="relative flex h-48 w-auto cursor-pointer items-center justify-center sm:h-64"
         onClick={handleProductQuickView}
       >
         <span className="sr-only">{t('text-product-image')}</span>
@@ -52,7 +60,7 @@ const Xenon: React.FC<XenonProps> = ({ product, className }) => {
           className="product-image"
         />
         {discount && (
-          <div className="absolute top-3 ltr:left-3 rtl:right-3 md:top-4 ltr:md:left-4 rtl:md:right-4 rounded text-xs leading-6 font-semibold px-1.5 md:px-2 lg:px-2.5 bg-accent text-light">
+          <div className="absolute top-3 rounded bg-accent px-1.5 text-xs font-semibold leading-6 text-light ltr:left-3 rtl:right-3 md:top-4 md:px-2 ltr:md:left-4 rtl:md:right-4 lg:px-2.5">
             {discount}
           </div>
         )}
@@ -61,7 +69,7 @@ const Xenon: React.FC<XenonProps> = ({ product, className }) => {
 
       <header className="p-3 md:p-6">
         <h3
-          className="text-xs md:text-sm text-body truncate cursor-pointer"
+          className="cursor-pointer truncate text-xs text-body md:text-sm"
           onClick={handleProductQuickView}
         >
           {name}
@@ -69,15 +77,15 @@ const Xenon: React.FC<XenonProps> = ({ product, className }) => {
         {/* End of product name */}
 
         {/* End of price */}
-        <div className="flex items-center justify-between mt-2">
+        <div className="mt-2 flex items-center justify-between">
           {product_type.toLowerCase() === 'variable' ? (
             <>
               <div>
-                <span className="text-sm md:text-base text-heading font-semibold">
+                <span className="text-sm font-semibold text-heading md:text-base">
                   {minPrice}
                 </span>
                 <span> - </span>
-                <span className="text-sm md:text-base text-heading font-semibold">
+                <span className="text-sm font-semibold text-heading md:text-base">
                   {maxPrice}
                 </span>
               </div>
@@ -85,21 +93,21 @@ const Xenon: React.FC<XenonProps> = ({ product, className }) => {
               {Number(quantity) > 0 && (
                 <button
                   onClick={handleProductQuickView}
-                  className="w-7 h-7 md:w-9 md:h-9 flex items-center justify-center text-sm text-accent bg-light rounded border border-border-200 transition-colors hover:bg-accent hover:border-accent hover:text-light focus:outline-none focus:bg-accent focus:border-accent focus:text-light"
+                  className="flex h-7 w-7 items-center justify-center rounded border border-border-200 bg-light text-sm text-accent transition-colors hover:border-accent hover:bg-accent hover:text-light focus:border-accent focus:bg-accent focus:text-light focus:outline-none md:h-9 md:w-9"
                 >
                   <span className="sr-only">plus</span>
-                  <PlusIcon className="w-5 h-5 stroke-2" />
+                  <PlusIcon className="h-5 w-5 stroke-2" />
                 </button>
               )}
             </>
           ) : (
             <>
-              <div className="flex md:items-center flex-col md:flex-row">
-                <span className="text-sm md:text-base text-heading font-semibold">
+              <div className="flex flex-col md:flex-row md:items-center">
+                <span className="text-sm font-semibold text-heading md:text-base">
                   {price}
                 </span>
                 {basePrice && (
-                  <del className="text-xs text-muted mt-1 md:mt-0 ltr:md:ml-2 rtl:md:mr-2">
+                  <del className="mt-1 text-xs text-muted md:mt-0 ltr:md:ml-2 rtl:md:mr-2">
                     {basePrice}
                   </del>
                 )}
@@ -116,7 +124,7 @@ const Xenon: React.FC<XenonProps> = ({ product, className }) => {
           )}
 
           {Number(quantity) <= 0 && (
-            <div className="bg-red-500 rounded text-xs text-light px-1 py-1 truncate">
+            <div className="truncate rounded bg-red-500 px-1 py-1 text-xs text-light">
               {t('text-out-stock')}
             </div>
           )}

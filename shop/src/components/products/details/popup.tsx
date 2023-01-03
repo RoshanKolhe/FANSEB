@@ -6,37 +6,85 @@ import ShortDetails from './short-details';
 import { stickyShortDetailsAtom } from '@/store/sticky-short-details-atom';
 import { useAtom } from 'jotai';
 import { AttributesProvider } from './attributes.context';
-import { useProduct } from '@/framework/product';
+import { useInfluencerProduct, useProduct } from '@/framework/product';
 import { useRouter } from 'next/router';
 
 const RelatedProducts = dynamic(() => import('./related-products'));
 interface ProductPopupProps {
   productSlug: string;
+  isNotInfluencerProduct?: any;
 }
-const Popup: React.FC<ProductPopupProps> = ({ productSlug }) => {
-  const router = useRouter()
-  console.log('query',router.query);
+const Popup: React.FC<ProductPopupProps> = ({
+  productSlug,
+  isNotInfluencerProduct = false,
+}) => {
+  const router = useRouter();
   const { t } = useTranslation('common');
   const [showStickyShortDetails] = useAtom(stickyShortDetailsAtom);
-  const { product, isLoading } = useProduct({ slug: productSlug });
+  let product: any;
+  let isLoading: any;
+  if (isNotInfluencerProduct) {
+    const data = useProduct({ slug: productSlug });
+    product = data.product;
+    isLoading = data.isLoading;
+  } else {
+    const data = router.query.id
+      ? useInfluencerProduct({ slug: productSlug, id: router.query.id })
+      : useProduct({ slug: productSlug });
+    product = data.product;
+    isLoading = data.isLoading;
+  }
 
-  const productItem:any = product;
+  const productItem: any = product;
 
   const { id, related_products } = product ?? {};
 
   if (isLoading || !product)
     return (
-      <div className="relative flex items-center justify-center w-96 h-96 bg-light">
+      <div className="relative flex h-96 w-96 items-center justify-center bg-light">
         <Spinner text={t('common:text-loading')} />
       </div>
     );
   return (
     <AttributesProvider>
-      <article className="bg-light w-full max-w-6xl xl:min-w-[1152px] relative z-[51] md:rounded-xl">
+      <article className="relative z-[51] w-full max-w-6xl bg-light md:rounded-xl xl:min-w-[1152px]">
         {/* Sticky bar */}
-        <ShortDetails product={productItem} isSticky={showStickyShortDetails} />
+        <ShortDetails
+          product={
+            router.query.id && !isNotInfluencerProduct
+              ? {
+                  ...productItem,
+                  image: JSON.parse(
+                    productItem?.pivot?.featureInfluencerImageUrl
+                  ),
+                  gallery: [
+                    JSON.parse(productItem?.pivot?.featureInfluencerImageUrl),
+                    ...productItem.gallery,
+                  ],
+                }
+              : productItem
+          }
+          isSticky={showStickyShortDetails}
+        />
         {/* End of sticky bar */}
-        <Details product={productItem} backBtn={false} isModal={true} />
+        <Details
+          product={
+            router.query.id && !isNotInfluencerProduct
+              ? {
+                  ...productItem,
+                  image: JSON.parse(
+                    productItem?.pivot?.featureInfluencerImageUrl
+                  ),
+                  gallery: [
+                    JSON.parse(productItem?.pivot?.featureInfluencerImageUrl),
+                    ...productItem.gallery,
+                  ],
+                }
+              : productItem
+          }
+          backBtn={false}
+          isModal={true}
+        />
 
         {related_products?.length! > 1 && (
           <div className="p-5 md:pb-10 lg:p-14 xl:p-16">

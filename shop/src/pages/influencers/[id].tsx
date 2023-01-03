@@ -19,6 +19,7 @@ import { Tab } from '@headlessui/react';
 import { useEffect, useState } from 'react';
 import SimpleImageSlider from 'react-simple-image-slider';
 export { getStaticPaths, getStaticProps };
+import useResizeObserver from 'use-resize-observer';
 
 const CartCounterButton = dynamic(
   () => import('@/components/cart/cart-counter-button'),
@@ -35,8 +36,13 @@ const InfluencerPage: NextPageWithLayout<
   }: { influencer: any; isLoading: any; error: any } = getInfluencerUser({
     user_id: id,
   });
-  console.log('influecner', influencer);
   const { t } = useTranslation('banner');
+  const {
+    ref,
+    width: windoWidth = 1,
+    height = 1,
+  } = useResizeObserver<HTMLDivElement>();
+
   const router = useRouter();
   const { width } = useWindowSize();
   const styles = {
@@ -56,21 +62,24 @@ const InfluencerPage: NextPageWithLayout<
       return res.original;
     }
   );
-  console.log('influencerSliderImages', influencerSliderImages);
   return (
-    <div className="flex flex-col bg-gray-100 lg:flex-row lg:items-start">
+    <div
+      className="flex flex-col bg-gray-100 lg:flex-row lg:items-start"
+      ref={ref}
+    >
       {/* <ShopSidebar shop={shop} className="sticky top-24 lg:top-28" /> */}
 
-      <div className="ltr:lg rtl:lg flex w-full flex-col p-4 lg:p-0">
+      <div className="ltr:lg rtl:lg flex w-full flex-col lg:p-0">
         <div className="relative h-full w-full overflow-hidden rounded">
-          {influencerSliderImages ? (
+          {influencerSliderImages && influencerSliderImages.length > 0 ? (
             <SimpleImageSlider
-              width={1519}
-              height={564}
+              width={windoWidth}
+              height='70vh'
               images={influencerSliderImages}
-              showBullets={false}
-              autoPlay
+              showBullets={true}
+              autoPlay={false}
               showNavs={true}
+            
             />
           ) : (
             <Image
@@ -78,8 +87,8 @@ const InfluencerPage: NextPageWithLayout<
               alt={t('heading')}
               src={productPlaceholder}
               layout="responsive"
-              width={2340}
-              height={870}
+              width={windoWidth}
+              height={height / 2.5}
               className="h-full w-full"
             />
           )}

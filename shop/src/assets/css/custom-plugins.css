@@ -797,3 +797,9 @@ html[dir='rtl'] .react-tel-input .country-list .flag {
 [dir="rtl"] .react-tel-input .selected-flag .arrow {
   right: 29px;
 }
+
+/* .rsis-image {
+  background-size: contain !important;
+  background-repeat: no-repeat;
+  width: 100%;
+} */

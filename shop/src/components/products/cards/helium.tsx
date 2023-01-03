@@ -10,9 +10,15 @@ import CartIcon from '@/components/icons/cart';
 type HeliumProps = {
   product: any;
   className?: string;
+  isNotInfluencerProduct?: any;
 };
 
-const Helium: React.FC<HeliumProps> = ({ product, className }) => {
+const Helium: React.FC<HeliumProps> = ({
+  product,
+  className,
+  isNotInfluencerProduct = false,
+}) => {
+  console.log('isNotInfluencerProducthelium', isNotInfluencerProduct);
   const { t } = useTranslation('common');
   const { name, image, unit, quantity, min_price, max_price, product_type } =
     product ?? {};
@@ -30,7 +36,10 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
   const { openModal } = useModalAction();
 
   function handleProductQuickView() {
-    return openModal('PRODUCT_DETAILS', product.slug);
+    return openModal('PRODUCT_DETAILS', {
+      productSlug: product.slug,
+      isNotInfluencerProduct: isNotInfluencerProduct,
+    });
   }
 
   return (

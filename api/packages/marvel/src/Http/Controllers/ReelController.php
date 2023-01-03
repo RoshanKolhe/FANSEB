@@ -68,7 +68,6 @@ class ReelController extends CoreController
      */
     public function fetchReel(Request $request)
     {
-
         try {
             $slug = $request->slug;
             $language = $request->language ?? DEFAULT_LANGUAGE;

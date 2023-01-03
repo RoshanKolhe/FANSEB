@@ -10,9 +10,10 @@ import { PlusIcon } from '@/components/icons/plus-icon';
 type ArgonProps = {
   product: any;
   className?: string;
+  isNotInfluencerProduct?: any;
 };
 
-const Argon: React.FC<ArgonProps> = ({ product, className }) => {
+const Argon: React.FC<ArgonProps> = ({ product, className,isNotInfluencerProduct}) => {
   const { t } = useTranslation('common');
   const { name, image, quantity, min_price, max_price, product_type } =
     product ?? {};
@@ -30,7 +31,10 @@ const Argon: React.FC<ArgonProps> = ({ product, className }) => {
   const { openModal } = useModalAction();
 
   function handleProductQuickView() {
-    return openModal('PRODUCT_DETAILS', product.slug);
+    return openModal('PRODUCT_DETAILS', {
+      productSlug: product.slug,
+      isNotInfluencerProduct: isNotInfluencerProduct,
+    });
   }
 
   return (

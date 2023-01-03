@@ -21,15 +21,25 @@ interface ProductCardProps {
   product: Product;
   className?: string;
   cardType?: any;
+  isNotInfluencerProduct?: any;
 }
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   className,
+  isNotInfluencerProduct = false,
   ...props
 }) => {
+
   const Component = product?.type?.settings?.productCard
     ? MAP_PRODUCT_TO_CARD[product?.type?.settings?.productCard]
     : Helium;
-  return <Component product={product} {...props} className={className} />;
+  return (
+    <Component
+      product={product}
+      isNotInfluencerProduct={isNotInfluencerProduct}
+      {...props}
+      className={className}
+    />
+  );
 };
 export default ProductCard;

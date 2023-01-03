@@ -11,7 +11,6 @@ const TaxDeleteView = () => {
   const { closeModal } = useModalAction();
 
   async function handleDelete() {
-    console.log(data);
     deleteTax({
       id: data,
     });

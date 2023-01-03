@@ -12,12 +12,16 @@ import { useShopQuery } from '@/data/shop';
 import { useCreateReelsMutation, useUpdateReelsMutation } from '@/data/reels';
 import FileInput from '../ui/file-input';
 import { useEffect, useRef, useState } from 'react';
+import ProductBrandInput from '../product/product-brand-input';
+import ProductInput from '../product/product-input copy';
 
 type FormValues = {
   // reel_link: string;
   name: string;
   video: any;
   thumbnail: any;
+  shops?: any;
+  products?: any;
 };
 
 // const defaultValues = {
@@ -30,7 +34,9 @@ type FormValues = {
 type IProps = {
   initialValues?: any | null;
 };
+
 export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
+  
   const videoEl = useRef(null);
   const router = useRouter();
   const { t } = useTranslation();
@@ -47,6 +53,7 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
     control,
     setError,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     shouldUnregister: true,
@@ -56,16 +63,19 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
         ...initialValues,
         video: initialValues.reel_link,
         thumbnail: initialValues?.thumbnail,
+        shops: initialValues?.products[0]?.shop_id,
+        products: initialValues?.products,
       } as any,
     }),
   });
   const watchVideo = watch('video', false);
   const watchThumbnail = watch('thumbnail', false);
+  const watchShposValueChange = watch('shops');
   const { mutate: createReels, isLoading: creating } = useCreateReelsMutation();
   const { mutate: updateReels, isLoading: updating } = useUpdateReelsMutation();
 
   const onSubmit = async (values: FormValues) => {
-    const { name, video, thumbnail } = values;
+    const { name, video, thumbnail, shops, products } = values;
     if (video.length == 0) {
       setFileError('Video File is required');
       return;
@@ -85,6 +95,12 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
       name,
       thumbnail: thumbnail,
       videoDuration: videoDuration || '00:00',
+      shops: watchShposValueChange ? shops.id : null,
+      products: products
+        ? products.map((res: any) => {
+            return res.id;
+          })
+        : null,
     };
     try {
       if (
@@ -191,6 +207,30 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
           <span style={{ color: 'red', marginTop: '10px' }}>
             {thumbnailError ? thumbnailError : null}
           </span>
+        </Card>
+      </div>
+
+      <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+        <Description
+          title="Brands & Products"
+          details="Select Brands and Products from here"
+          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+        />
+
+        <Card className="w-full sm:w-8/12 md:w-2/3">
+          <ProductBrandInput
+            control={control}
+            setValue={setValue}
+            shopError={t((errors?.shops as any)?.message)}
+          />
+          {watchShposValueChange ? (
+            <ProductInput
+              control={control}
+              setValue={setValue}
+              productError={t((errors?.products as any)?.message)}
+              shop_id={watchShposValueChange.id}
+            />
+          ) : null}
         </Card>
       </div>
 
