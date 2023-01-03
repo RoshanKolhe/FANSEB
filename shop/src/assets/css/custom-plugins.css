@@ -791,15 +791,13 @@ html[dir='rtl'] .react-tel-input .country-list .flag {
   opacity: 1;
   stroke-dashoffset: 0;
 }
-[dir="rtl"] .react-tel-input .selected-flag {
+[dir='rtl'] .react-tel-input .selected-flag {
   padding-right: 11px !important;
 }
-[dir="rtl"] .react-tel-input .selected-flag .arrow {
+[dir='rtl'] .react-tel-input .selected-flag .arrow {
   right: 29px;
 }
 
-/* .rsis-image {
-  background-size: contain !important;
-  background-repeat: no-repeat;
-  width: 100%;
-} */
+.rsis-container > * {
+  background-size: 100% 100% !important;
+}

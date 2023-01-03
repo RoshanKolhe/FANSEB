@@ -61,7 +61,7 @@ class ProductController extends CoreController
         foreach( $products as  $product){
             $product_id =  $product['id'];
             $shop_id =  $product['shop_id'];
-            $results = DB::select(DB::raw("SELECT * FROM product_user WHERE product_id = '$product_id' and shop_id='$shop_id' and user_id='$request->userId' and type=''"));
+            $results = DB::select(DB::raw("SELECT * FROM product_user WHERE product_id = '$product_id' and shop_id='$shop_id' and user_id='$request->userId' and type='$request->product_gallery_type'"));
             if(sizeOf($results) == 0){
                 if($request->image){
                     DB::table('product_user')->insert([

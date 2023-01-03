@@ -54,7 +54,7 @@ class CreateNewMarvelTables extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('shop_id');
             $table->string('type');
-            $table->string('featureInfluencerImageUrl');
+            $table->text('featureInfluencerImageUrl')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
