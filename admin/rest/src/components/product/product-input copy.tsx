@@ -12,8 +12,8 @@ import { useProductsQuery } from '@/data/product';
 interface Props {
   control: Control<any>;
   setValue: any;
-  productError:any;
-  shop_id:any;
+  productError: any;
+  shop_id: any;
 }
 
 const ProductInput = ({ control, setValue, productError, shop_id }: Props) => {
@@ -50,10 +50,21 @@ const ProductInput = ({ control, setValue, productError, shop_id }: Props) => {
         name="products"
         control={control}
         isMulti
-        getOptionLabel={(option: any) =>(
+        getOptionLabel={(option: any) => (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={option?.image?.thumbnail} height="50px" width="50px"/>
-            <span style={{ marginLeft: 5 }}>{option?.name}</span>
+            <img src={option?.image?.thumbnail} height="50px" width="50px" style={{maxHeight:'50px'}} />
+            <span style={{ marginLeft: 5 }}>
+              <p
+                style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '200px',
+                }}
+              >
+                {option?.name}
+              </p>
+            </span>
           </div>
         )}
         getOptionValue={(option: any) => option.id}

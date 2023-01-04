@@ -112,7 +112,7 @@ export default function ShopPage() {
               <MapPin width={16} />
             </span>
 
-            <address className="text-sm not-italic text-body">
+            <address className="text-sm not-italic text-body" style={{display:'flex',flexDirection:'column',width:'100%'}}>
               {!isEmpty(formatAddress(address!))
                 ? formatAddress(address!)
                 : t('common:text-no-address')}
