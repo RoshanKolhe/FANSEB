@@ -59,7 +59,7 @@ class UserController extends CoreController
                 $query->whereHas('permissions', function ( $subquery ){
                     $subquery->where('name', 'influencer');
                 });
-            })->paginate($limit);
+            })->where('is_active','1')->paginate($limit);
         }
         return $this->repository->with(['profile', 'address', 'permissions'])->paginate($limit);
         
