@@ -15,7 +15,7 @@ export default function CompactLayout({ variables }: HomePageProps) {
   const { t } = useTranslation('common');
   return (
     <div className="flex flex-1 flex-col bg-white">
-      <FilterBar className="lg:hidden" variables={variables.categories} />
+      {/* <FilterBar className="lg:hidden" variables={variables.categories} /> */}
       <main className="mt-6 block w-full xl:overflow-hidden">
         {/* <SectionBlock>
           <Banner layout="compact" variables={variables.types} />

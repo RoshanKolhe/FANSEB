@@ -357,6 +357,7 @@ class ProductController extends CoreController
                     throw new MarvelException("MARVEL_ERROR.WRONG_CSV");
                 }
                 unset($product['id']);
+                unset($product['blocked_dates']);
                 $product['shop_id'] = $shop_id;
                 $product['image'] = json_decode($product['image'], true);
                 $product['gallery'] = json_decode($product['gallery'], true);
@@ -367,6 +368,7 @@ class ProductController extends CoreController
                     }
                 } catch (Exception $e) {
                     //
+                    return $e;
                 }
             }
             return true;
