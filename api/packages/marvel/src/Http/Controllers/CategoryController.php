@@ -5,6 +5,8 @@ namespace Marvel\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Marvel\Database\Models\Type;
+use Exception;
 use Illuminate\Http\Request;
 use Marvel\Database\Models\Category;
 use Marvel\Database\Repositories\CategoryRepository;
@@ -62,7 +64,7 @@ class CategoryController extends CoreController
     {
         $language = $request->language ?? DEFAULT_LANGUAGE;
         $parent = $request->parent;
-        $limit = $request->limit ?   $request->limit : 15;
+        $limit = $request->limit ? $request->limit : 15;
         if ($parent === 'null') {
             return $this->repository->with(['type', 'parent', 'children'])->where('parent', null)->where('language', $language)->paginate($limit);
         } else {
@@ -138,5 +140,38 @@ class CategoryController extends CoreController
         } catch (\Exception $e) {
             throw new MarvelException(NOT_FOUND);
         }
+    }
+
+    public function importCategories(Request $request)
+    {
+        $requestFile = $request->file();
+        $user = $request->user();
+        if (count($requestFile)) {
+            if (isset($requestFile['csv'])) {
+                $uploadedCsv = $requestFile['csv'];
+            } else {
+                $uploadedCsv = current($requestFile);
+            }
+        }
+        $file = $uploadedCsv->storePubliclyAs('csv-files', 'category-' . $uploadedCsv->getClientOriginalExtension(), 'public');
+
+        $categories = $this->repository->csvToArray(storage_path() . '/app/public/' . $file);
+        foreach ($categories as $key => $category) {
+            if (!isset($category['type_id'])) {
+                throw new MarvelException("MARVEL_ERROR.WRONG_CSV");
+            }
+            unset($category['id']);
+            $category['image'] = json_decode($category['image'], true);
+            try {
+                $type = Type::findOrFail($category['type_id']);
+                if (isset($type->id)) {
+                    Category::firstOrCreate($category);
+                }
+            } catch (Exception $e) {
+                //
+                return $e;
+            }
+        }
+        return true;
     }
 }

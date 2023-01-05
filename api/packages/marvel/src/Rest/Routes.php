@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Marvel\Database\Models\Category;
 use Marvel\Enums\Permission;
 use Marvel\Http\Controllers\AbusiveReportController;
 use Marvel\Http\Controllers\AddressController;
@@ -235,6 +236,7 @@ Route::group(
 );
 
 Route::post('import-products', [ProductController::class, 'importProducts']);
+Route::post('import-categories', [CategoryController::class, 'importCategories']);
 Route::post('import-variation-options', [ProductController::class, 'importVariationOptions']);
 Route::get('export-products/{shop_id}', [ProductController::class, 'exportProducts']);
 Route::get('export-variation-options/{shop_id}', [ProductController::class, 'exportVariableOptions']);

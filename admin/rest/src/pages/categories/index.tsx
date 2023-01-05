@@ -60,13 +60,13 @@ export default function Categories() {
           <div className="ms-auto flex w-full flex-col items-center space-y-4 md:flex-row md:space-y-0 xl:w-3/4">
             <Search onSearch={handleSearch} />
 
-            <TypeFilter
+            {/* <TypeFilter
               className="md:ms-6"
               onTypeFilter={({ slug }: { slug: string }) => {
                 setType(slug);
                 setPage(1);
               }}
-            />
+            /> */}
 
             {locale === Config.defaultLanguage && (
               <LinkButton

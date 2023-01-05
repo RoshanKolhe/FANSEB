@@ -11,7 +11,7 @@ export default function ClassicLayout({ variables }: HomePageProps) {
     <>
       <Banner layout="classic" variables={variables.types} />
       <PromotionSliders variables={variables.types} />
-      <FilterBar variables={variables.categories} />
+      {/* <FilterBar variables={variables.categories} /> */}
       <Element
         name="grid"
         className="flex border-t border-solid border-border-200 border-opacity-70"
