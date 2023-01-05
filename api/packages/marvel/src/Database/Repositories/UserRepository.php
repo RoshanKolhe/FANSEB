@@ -68,7 +68,7 @@ class UserRepository extends BaseRepository
                 return $products;
             }
             return [
-                'message' => 'No products found'
+                'data' => []
             ];
         } catch (Exception $e) {
             return [];

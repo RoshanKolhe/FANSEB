@@ -93,7 +93,7 @@ export function Grid({
             <ProductLoader key={i} uniqueKey={`product-${i}`} />
           ))
           : products?.map((product) => (
-            <ProductCard product={product} key={product.id} />
+            <ProductCard product={product} key={product?.id} />
           ))}
       </div>}
 
