@@ -15,7 +15,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
   }
   return reel.reel_link ? (
     <div
-    onClick={handleReelQuickView}
+      onClick={handleReelQuickView}
       style={{
         position: 'relative',
       }}
@@ -26,7 +26,8 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
         style={{
           width: '100%',
           height: '100%',
-          borderBottomRightRadius: '20px',
+          borderRadius: '20px',
+          cursor:'pointer'
         }}
       />
       <div
@@ -37,15 +38,25 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
           top: '0%',
         }}
       >
-        <p> {reel.videoDuration} </p>
+        <p
+          style={{
+            backgroundColor: '#fff',
+            color: '#000',
+            marginTop: '5px',
+            padding: '4px',
+            borderRadius: '15px',
+          }}
+        >
+          {' '}
+          {reel.videoDuration}{' '}
+        </p>
       </div>
       <div
         style={{
           width: '47%',
           position: 'absolute',
-          right: '0%',
-          color: 'black',
-          left: '50%',
+          right: '50%',
+          color: '#fff',
           bottom: '0%',
         }}
       >
