@@ -67,6 +67,7 @@ export function Grid({
           },
           gridClassName
         )}
+        style={{padding:'20px'}}
       >
         {isLoading && !products?.length
           ? rangeMap(limit, (i) => (

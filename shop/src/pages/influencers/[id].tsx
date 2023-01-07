@@ -228,12 +228,12 @@ const InfluencerPage: NextPageWithLayout<
                     <ProductsGrid
                       className="py-8"
                       gridClassName={classNames(
-                        'grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3',
+                        'grid  grid-cols-[repeat(auto-fill,minmax(150px,1fr))] h-[22rem]  md:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] md:h-[32rem] sm:h-[16rem] lg:h-[32rem] gap-3',
                         {
                           'gap-6 md:gap-8': isBook,
                         },
                         {
-                          'md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-[repeat(auto-fill,minmax(270px,1fr))]':
+                          'md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]':
                             isGerman,
                         }
                       )}
