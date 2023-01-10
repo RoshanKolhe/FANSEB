@@ -138,6 +138,20 @@ export const useAddWalletPointsMutation = () => {
   });
 };
 
+export const useAddInfluencerCommisionMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(userClient.addInfluencerCommision, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.USERS);
+    },
+  });
+};
+
 export const useUserQuery = ({ id }: { id: string }) => {
   return useQuery<User, Error>(
     [API_ENDPOINTS.USERS, id],

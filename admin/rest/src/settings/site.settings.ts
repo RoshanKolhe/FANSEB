@@ -122,6 +122,11 @@ export const siteSettings = {
         icon: 'WithdrawIcon',
       },
       {
+        href: Routes.influencerWithdraw.list,
+        label: 'Influencer Withdrawls',
+        icon: 'AttributeIcon',
+      },
+      {
         href: Routes.refund.list,
         label: 'sidebar-nav-item-refunds',
         icon: 'RefundsIcon',
@@ -197,6 +202,7 @@ export const siteSettings = {
         icon: 'AttributeIcon',
         permissions: adminAndOwnerOnly,
       },
+     
       {
         href: (shop: string) => `/${shop}${Routes.reviews.list}`,
         label: 'sidebar-nav-item-reviews',
@@ -225,6 +231,11 @@ export const siteSettings = {
         href: Routes.reels.list,
         label: 'Reels',
         icon: 'ReelsIcon',
+      },
+      {
+        href: Routes.influencerWithdraw.list,
+        label: 'sidebar-nav-item-withdraws',
+        icon: 'AttributeIcon',
       },
     ],
   },

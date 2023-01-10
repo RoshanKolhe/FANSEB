@@ -241,6 +241,9 @@ class OrderRepository extends BaseRepository
             $order->products()->attach($products);
             $this->createChildOrder($order->id, $request);
             $this->calculateShopIncome($order);
+            if (isset($request['influencer_id'])) {
+                $this->calculateInfluecnerIncome($order); 
+            }
             // event(new OrderCreated($order));
             return $order;
         } catch (Exception $e) {

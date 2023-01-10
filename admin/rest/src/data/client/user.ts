@@ -61,6 +61,9 @@ export const userClient = {
   addWalletPoints: (variables: WalletPointsInput) => {
     return HttpClient.post<any>(API_ENDPOINTS.ADD_WALLET_POINTS, variables);
   },
+  addInfluencerCommision: (variables: any) => {
+    return HttpClient.post<any>(API_ENDPOINTS.ADD_INFLUENCER_COMMISION, variables);
+  },
   fetchUsers: ({ name, ...params }: Partial<UserQueryOptions>) => {
     return HttpClient.get<UserPaginator>(API_ENDPOINTS.USERS, {
       searchJoin: 'and',

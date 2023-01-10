@@ -11,6 +11,7 @@ import FileInput from '@/components/ui/file-input';
 import pick from 'lodash/pick';
 import {
   AttachmentInput,
+  BalanceInput,
   ProfileSocials,
   ShopSocialInput,
   SocialInput,
@@ -35,6 +36,7 @@ type FormValues = {
     };
     influencerPageImages?: AttachmentInput[];
     socials?: ProfileSocials;
+    influencer_balance: BalanceInput;
   };
 };
 
@@ -103,6 +105,10 @@ export default function ProfileUpdate({ me }: any) {
         influencerPageImages: me?.profile?.influencerPageImages?.map(
           (gi: any) => omitTypename(gi)
         ),
+        influencer_balance: {
+          id: me?.influencer_balance?.id,
+          payment_info: { ...me?.influencer_balance?.payment_info },
+        },
       },
     },
   });
@@ -141,8 +147,9 @@ export default function ProfileUpdate({ me }: any) {
               id: profile?.avatar?.id,
             },
             socials: formattedSocials,
-            influencerPageImages:profile?.influencerPageImages||null
+            influencerPageImages: profile?.influencerPageImages || null,
           },
+          influencer_balance:profile?.influencer_balance
         },
       });
     } else {
@@ -159,6 +166,7 @@ export default function ProfileUpdate({ me }: any) {
               original: profile?.avatar?.original,
               id: profile?.avatar?.id,
             },
+            
           },
         },
       });
@@ -191,7 +199,57 @@ export default function ProfileUpdate({ me }: any) {
           </Card>
         </div>
       )}
+      {currentUserPermissions?.includes('influencer') && (
+        <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
+          <Description
+            title={t('form:shop-payment-info')}
+            details={t('form:payment-info-helper-text')}
+            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+          />
 
+          <Card className="w-full sm:w-8/12 md:w-2/3">
+            <Input
+              label={t('form:input-label-account-holder-name')}
+              {...register('profile.influencer_balance.payment_info.name')}
+              variant="outline"
+              className="mb-5"
+              error={t(
+                errors?.profile?.influencer_balance?.payment_info?.name
+                  ?.message!
+              )}
+            />
+            <Input
+              label={t('form:input-label-account-holder-email')}
+              {...register('profile.influencer_balance.payment_info.email')}
+              variant="outline"
+              className="mb-5"
+              error={t(
+                errors?.profile?.influencer_balance?.payment_info?.email
+                  ?.message!
+              )}
+            />
+            <Input
+              label={t('form:input-label-bank-name')}
+              {...register('profile.influencer_balance.payment_info.bank')}
+              variant="outline"
+              className="mb-5"
+              error={t(
+                errors?.profile?.influencer_balance?.payment_info?.bank
+                  ?.message!
+              )}
+            />
+            <Input
+              label={t('form:input-label-account-number')}
+              {...register('profile.influencer_balance.payment_info.account')}
+              variant="outline"
+              error={t(
+                errors?.profile?.influencer_balance?.payment_info?.account
+                  ?.message!
+              )}
+            />
+          </Card>
+        </div>
+      )}
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title={t('form:form-title-information')}

@@ -188,6 +188,7 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
               height="200px"
               ref={videoEl}
               onLoadedMetadata={handleLoadedMetadata}
+              playsInline
             >
               <source src={watchVideo?.original} type="video/mp4" />
               Sorry, your browser doesn't support videos.

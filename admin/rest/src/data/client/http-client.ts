@@ -57,6 +57,7 @@ interface SearchParamOptions {
   type: string;
   name: string;
   shop_id: string;
+  influencer_id?:string;
   is_approved: boolean;
   tracking_number: string;
 }

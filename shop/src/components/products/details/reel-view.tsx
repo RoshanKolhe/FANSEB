@@ -103,6 +103,7 @@ const ReelView: React.FC<Props> = ({
                 loop
                 ref={videoEl}
                 key={reel_link?.original}
+                playsInline
               >
                 <source src={reel_link?.original} type="video/mp4" />
                 Sorry, your browser doesn't support videos.

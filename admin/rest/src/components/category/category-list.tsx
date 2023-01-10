@@ -145,21 +145,21 @@ const CategoryList = ({
         </div>
       ),
     },
-    {
-      title: t('table:table-item-group'),
-      dataIndex: 'type',
-      key: 'type',
-      align: 'center',
-      width: 120,
-      render: (type: any) => (
-        <div
-          className="overflow-hidden truncate whitespace-nowrap"
-          title={type?.name}
-        >
-          {type?.name}
-        </div>
-      ),
-    },
+    // {
+    //   title: t('table:table-item-group'),
+    //   dataIndex: 'type',
+    //   key: 'type',
+    //   align: 'center',
+    //   width: 120,
+    //   render: (type: any) => (
+    //     <div
+    //       className="overflow-hidden truncate whitespace-nowrap"
+    //       title={type?.name}
+    //     >
+    //       {type?.name}
+    //     </div>
+    //   ),
+    // },
     {
       title: t('table:table-item-actions'),
       dataIndex: 'slug',

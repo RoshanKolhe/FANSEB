@@ -65,6 +65,9 @@ export const Routes = {
   influencerProduct: {
     ...routesFactory('/influencerProducts'),
   },
+  influencerWithdraw:{
+    ...routesFactory('/influencerWithdraw'),
+  },
   shop: {
     ...routesFactory('/shops'),
   },

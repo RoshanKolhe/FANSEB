@@ -269,6 +269,16 @@ export interface Balance {
   payment_info?: PaymentInfo;
 }
 
+export interface InfluencerBalance {
+  id?: string;
+  influencer_commission_rate?: number;
+  user?: User;
+  total_earnings?: number;
+  withdrawn_amount?: number;
+  current_balance?: number;
+  payment_info?: PaymentInfo;
+}
+
 export interface PaymentInfo {
   account?: string;
   name?: string;
@@ -333,6 +343,7 @@ export interface User {
   name: string;
   shops: Shop[];
   managed_shop: Shop;
+  influencer_balance?: InfluencerBalance;
   is_active: boolean;
   email: string;
   created_at: string;
@@ -340,12 +351,14 @@ export interface User {
   profile?: Profile;
   address: Address[];
   orders?: OrderPaginator;
+
 }
 
 export interface UpdateUser {
   name?: string;
   profile?: UserProfileInput;
   address?: UserAddressUpsertInput[];
+  influencer_balance?:any;
 }
 
 export interface Profile {
@@ -631,6 +644,14 @@ export interface CreateWithdrawInput {
   note?: string;
 }
 
+export interface CreateInfluencerWithdrawInput {
+  amount: number;
+  influencer_id: number;
+  payment_method?: string;
+  details?: string;
+  note?: string;
+}
+
 export interface ApproveWithdrawInput {
   id: string;
   status: WithdrawStatus;
@@ -772,6 +793,17 @@ export interface Withdraw {
   status?: WithdrawStatus;
   shop_id?: number;
   shop?: Shop;
+  payment_method?: string;
+  details?: string;
+  note?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+export interface InfluencerWithdraw {
+  id?: string;
+  amount?: number;
+  status?: WithdrawStatus;
+  influencer_id?: number;
   payment_method?: string;
   details?: string;
   note?: string;
@@ -1239,6 +1271,11 @@ export interface WithdrawQueryOptions extends Omit<QueryOptions, 'language'> {
   shop_id: string;
   parent: number | null;
 }
+export interface InfluencerWithdrawQueryOptions extends Omit<QueryOptions, 'language'> {
+  name: string;
+  influencer_id: string;
+  parent: number | null;
+}
 
 export interface OrderQueryOptions extends QueryOptions {
   type: string;
@@ -1274,6 +1311,8 @@ export interface ShopQueryOptions extends Omit<QueryOptions, 'language'> {
 export interface ShopPaginator extends PaginatorInfo<Shop> { }
 
 export interface WithdrawPaginator extends PaginatorInfo<Withdraw> { }
+
+export interface InfluencerWithdrawPaginator extends PaginatorInfo<InfluencerWithdraw> { }
 
 export interface UserPaginator extends PaginatorInfo<User> { }
 

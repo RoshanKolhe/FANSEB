@@ -100,12 +100,12 @@ const CustomerList = ({
         );
       },
     },
-    {
-      title: t('table:table-item-available_wallet_points'),
-      dataIndex: ['wallet', 'available_points'],
-      key: 'available_wallet_points',
-      align: 'center',
-    },
+    // {
+    //   title: t('table:table-item-available_wallet_points'),
+    //   dataIndex: ['wallet', 'available_points'],
+    //   key: 'available_wallet_points',
+    //   align: 'center',
+    // },
     {
       title: (
         <TitleWithSort
@@ -129,7 +129,7 @@ const CustomerList = ({
       dataIndex: 'id',
       key: 'actions',
       align: 'right',
-      render: function Render(id: string, { is_active }: any) {
+      render: function Render(id: string, row: any, { is_active }: any) {
         const { data } = useMeQuery();
         return (
           <>
@@ -138,7 +138,14 @@ const CustomerList = ({
                 id={id}
                 userStatus={true}
                 isUserActive={is_active}
-                showAddWalletPoints={true}
+                // showAddWalletPoints={
+                //   row.permissions.filter(
+                //     (value: any) => value.name == 'influencer'
+                //   ).length > 0
+                //     ? true
+                //     : false
+                // }
+                showAddWalletPoints={false}
                 showMakeAdminButton={true}
               />
             )}

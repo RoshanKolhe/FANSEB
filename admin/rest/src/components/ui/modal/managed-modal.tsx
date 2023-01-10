@@ -9,6 +9,9 @@ const BanCustomerView = dynamic(
 const UserWalletPointsAddView = dynamic(
   () => import('@/components/user/user-wallet-points-add-view')
 );
+const UserCommisionAddView = dynamic(
+  () => import('@/components/user/user-influencerCommision-add-view')
+);
 const MakeAdminView = dynamic(
   () => import('@/components/user/make-admin-view')
 );
@@ -161,6 +164,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <AttributeExportImport />;
     case 'ADD_WALLET_POINTS':
       return <UserWalletPointsAddView />;
+    case 'ADD_INFLUENCER_COMMISION':
+      return <UserCommisionAddView />;
     case 'SELECT_PRODUCT_VARIATION':
       return <ProductVariation productSlug={data} />;
     case 'SELECT_CUSTOMER':

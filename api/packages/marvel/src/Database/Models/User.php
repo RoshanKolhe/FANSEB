@@ -176,4 +176,21 @@ class User extends Authenticatable
         return $this->hasMany(Reel::class, 'user_id');
     }
 
+    
+    /**
+     * @return HasOne
+     */
+    public function influencerBalance(): HasOne
+    {
+        return $this->hasOne(InfluencerBalance::class, 'influencer_id');
+    }
+
+     /**
+     * @return HasMany
+     */
+    public function influencerWithdraws(): HasMany
+    {
+        return $this->hasMany(InfluencerWithdraw::class, 'influencer_id');
+    }
+
 }

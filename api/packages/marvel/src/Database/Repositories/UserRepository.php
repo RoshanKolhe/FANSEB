@@ -55,16 +55,15 @@ class UserRepository extends BaseRepository
     public function fetchRelated($request, $limit = 20, $language = DEFAULT_LANGUAGE)
     {
         try {
-            
+
             $user = $this->findOneByFieldOrFail('id', $request->userId);
-            if($request->orderByColumn && $request->sortedByColumn ){
-                $products = $user->products()->with('shop')->where('name','LIKE',"%{$request->name}%")->orderBy($request->orderByColumn,$request->sortedByColumn)->paginate($limit);
-            }
-            else{
-                $products = $user->products()->where('name','LIKE',"%{$request->name}%")->with('shop')->paginate($limit);
+            if ($request->orderByColumn && $request->sortedByColumn) {
+                $products = $user->products()->with('shop')->where('name', 'LIKE', "%{$request->name}%")->orderBy($request->orderByColumn, $request->sortedByColumn)->paginate($limit);
+            } else {
+                $products = $user->products()->where('name', 'LIKE', "%{$request->name}%")->with('shop')->paginate($limit);
 
             }
-            if(sizeOf($products) > 0){                
+            if (sizeOf($products) > 0) {
                 return $products;
             }
             return [
@@ -74,7 +73,7 @@ class UserRepository extends BaseRepository
             return [];
         }
     }
-    public function fetchSingle($request ,$language = DEFAULT_LANGUAGE)
+    public function fetchSingle($request, $language = DEFAULT_LANGUAGE)
     {
         $slug = $request->slug;
         $language = $request->language ?? DEFAULT_LANGUAGE;
@@ -83,7 +82,8 @@ class UserRepository extends BaseRepository
         try {
             if (is_numeric($slug)) {
                 $slug = (int) $slug;
-                $product = $user->products()->where('id',$slug)->with('shop')->firstOrFail();;
+                $product = $user->products()->where('id', $slug)->with('shop')->firstOrFail();
+                ;
             }
 
             $product = $user->products()->where('language', $language)->where('slug', $slug)
@@ -92,7 +92,7 @@ class UserRepository extends BaseRepository
         } catch (\Exception $e) {
             throw new MarvelException(NOT_FOUND);
         }
-        
+
         return $product;
     }
 
@@ -101,8 +101,8 @@ class UserRepository extends BaseRepository
     {
         try {
             $user = $this->create([
-                'name'     => $request->name,
-                'email'    => $request->email,
+                'name' => $request->name,
+                'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
             $user->givePermissionTo(UserPermission::CUSTOMER);
@@ -138,6 +138,12 @@ class UserRepository extends BaseRepository
             if (isset($request['profile'])) {
                 if (isset($request['profile']['id'])) {
                     Profile::findOrFail($request['profile']['id'])->update($request['profile']);
+                    if (isset($request['influencer_balance'])) {
+                        $influencerBalance = $request['influencer_balance'] + [
+                            'influencer_commission_rate' => '10',
+                        ];
+                        $user->influencerBalance()->updateOrCreate(['influencer_id' => $user->id], $influencerBalance);
+                    }
                 } else {
                     $profile = $request['profile'];
                     $profile['customer_id'] = $user->id;
@@ -148,6 +154,7 @@ class UserRepository extends BaseRepository
             $user->profile = $user->profile;
             $user->address = $user->address;
             $user->shop = $user->shop;
+            $user->influencer_balance = $request['influencer_balance'];
             $user->managed_shop = $user->managed_shop;
             return $user;
         } catch (ValidationException $e) {

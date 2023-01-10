@@ -16,6 +16,7 @@ use Marvel\Http\Controllers\CheckoutController;
 use Marvel\Http\Controllers\CouponController;
 use Marvel\Http\Controllers\DownloadController;
 use Marvel\Http\Controllers\FeedbackController;
+use Marvel\Http\Controllers\InfluencerWithdrawController;
 use Marvel\Http\Controllers\ManufacturerController;
 use Marvel\Http\Controllers\OrderController;
 use Marvel\Http\Controllers\OrderStatusController;
@@ -229,6 +230,9 @@ Route::group(
         Route::apiResource('manufacturers', ManufacturerController::class, [
             'only' => ['store'],
         ]);
+        Route::apiResource('influencer-withdraws', InfluencerWithdrawController::class, [
+            'only' => ['store','index','show', 'update', 'destroy'],
+        ]);
 
         Route::get('export-order-url/{shop_id?}', 'Marvel\Http\Controllers\OrderController@exportOrderUrl');
         Route::post('download-invoice-url', 'Marvel\Http\Controllers\OrderController@downloadInvoiceUrl');
@@ -323,7 +327,10 @@ Route::group(['middleware' => ['permission:' . Permission::SUPER_ADMIN, 'auth:sa
     Route::post('approve-shop', [ShopController::class, 'approveShop']);
     Route::post('disapprove-shop', [ShopController::class, 'disApproveShop']);
     Route::post('approve-withdraw', [WithdrawController::class, 'approveWithdraw']);
+    Route::post('approve-influencer-withdraw', [InfluencerWithdrawController::class, 'approveWithdraw']);
     Route::post('add-points', [UserController::class, 'addPoints']);
+    Route::post('add-commision', [UserController::class, 'addCommision']);
+
     Route::post('users/make-admin', [UserController::class, 'makeOrRevokeAdmin']);
     Route::apiResource(
         'refunds',

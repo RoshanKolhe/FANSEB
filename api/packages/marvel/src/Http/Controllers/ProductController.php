@@ -4,8 +4,10 @@ namespace Marvel\Http\Controllers;
 
 use Exception;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Marvel\Database\Models\Attachment;
 use Marvel\Database\Models\Type;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +22,7 @@ use Marvel\Http\Requests\ProductUpdateRequest;
 use Marvel\Database\Repositories\ProductRepository;
 use Marvel\Database\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductController extends CoreController
 {
@@ -38,7 +41,7 @@ class ProductController extends CoreController
      */
     public function index(Request $request)
     {
-        $limit = $request->limit ?   $request->limit : 15;
+        $limit = $request->limit ? $request->limit : 15;
         return $this->fetchProducts($request)->paginate($limit);
     }
 
@@ -56,55 +59,64 @@ class ProductController extends CoreController
         return $this->repository->where('language', $language)->whereNotIn('id', $unavailableProducts);
     }
 
-    public function createProductUser(Request $request){
+    public function createProductUser(Request $request)
+    {
         $products = $request->products;
-        foreach( $products as  $product){
-            $product_id =  $product['id'];
-            $shop_id =  $product['shop_id'];
+        foreach ($products as $product) {
+            $product_id = $product['id'];
+            $shop_id = $product['shop_id'];
             $results = DB::select(DB::raw("SELECT * FROM product_user WHERE product_id = '$product_id' and shop_id='$shop_id' and user_id='$request->userId' and type='$request->product_gallery_type'"));
-            if(sizeOf($results) == 0){
-                if($request->image){
+            if (sizeOf($results) == 0) {
+                if ($request->image) {
                     DB::table('product_user')->insert([
                         'product_id' => $product['id'],
                         'user_id' => $request->userId,
                         'shop_id' => $product['shop_id'],
                         'type' => $request->product_gallery_type,
-                        'featureInfluencerImageUrl' =>  json_encode($request->image) 
+                        'featureInfluencerImageUrl' => json_encode($request->image)
                     ]);
-                }else{
+                } else {
                     DB::table('product_user')->insert([
-                        'product_id' =>  $product['id'],
+                        'product_id' => $product['id'],
                         'shop_id' => $product['shop_id'],
                         'user_id' => $request->userId,
-                        'type'=>$request->product_gallery_type,
-                     
+                        'type' => $request->product_gallery_type,
+
                     ]);
                 }
-            }else{
-                if($request->image){
+            } else {
+                if ($request->image) {
                     DB::table('product_user')->where('id', $results[0]->id)->update(
-                    array('product_id' => $product['id'],'user_id' => $request->userId,
-                    'shop_id' => $product['shop_id'],
-                    'type' => $request->product_gallery_type,
-                    'featureInfluencerImageUrl' =>  json_encode($request->image) ));  
-                }else{
+                        array(
+                            'product_id' => $product['id'],
+                            'user_id' => $request->userId,
+                            'shop_id' => $product['shop_id'],
+                            'type' => $request->product_gallery_type,
+                            'featureInfluencerImageUrl' => json_encode($request->image)
+                        )
+                    );
+                } else {
                     DB::table('product_user')->where('id', $results[0]->id)->update(
-                        array('product_id' =>  $product['id'],
-                        'shop_id' => $product['shop_id'],
-                        'user_id' => $request->userId,
-                        'type'=>$request->product_gallery_type, 
-                        'featureInfluencerImageUrl' =>  ''));  
-                        
+                        array(
+                            'product_id' => $product['id'],
+                            'shop_id' => $product['shop_id'],
+                            'user_id' => $request->userId,
+                            'type' => $request->product_gallery_type,
+                            'featureInfluencerImageUrl' => ''
+                        )
+                    );
+
                 }
             }
-           
+
         }
-        
+
         return 'success';
 
     }
 
-    public function deleteInfluencerProduct(Request $request){
+    public function deleteInfluencerProduct(Request $request)
+    {
         $user_id = $request->user()->id;
         $results = DB::delete(DB::raw("DELETE FROM product_user WHERE product_id = '$request->product_id' AND user_id='$user_id'"));
         return $results;
@@ -154,12 +166,12 @@ class ProductController extends CoreController
             if (is_numeric($slug)) {
                 $slug = (int) $slug;
                 $product = $this->repository->where('id', $slug)
-                    // ->with(['type', 'shop', 'categories', 'tags', 'variations.attribute.values', 'variation_options', 'author', 'manufacturer'])
+                        // ->with(['type', 'shop', 'categories', 'tags', 'variations.attribute.values', 'variation_options', 'author', 'manufacturer'])
                     ->firstOrFail();
             }
 
             $product = $this->repository->where('language', $language)->where('slug', $slug)
-                // ->with(['type', 'shop', 'categories', 'tags', 'variations.attribute.values', 'variation_options', 'author', 'manufacturer'])
+                    // ->with(['type', 'shop', 'categories', 'tags', 'variations.attribute.values', 'variation_options', 'author', 'manufacturer'])
                 ->firstOrFail();
         } catch (\Exception $e) {
             throw new MarvelException(NOT_FOUND);
@@ -216,7 +228,7 @@ class ProductController extends CoreController
     public function relatedProducts(Request $request)
     {
         $limit = isset($request->limit) ? $request->limit : 10;
-        $slug =  $request->slug;
+        $slug = $request->slug;
         $language = $request->language ?? DEFAULT_LANGUAGE;
         return $this->repository->fetchRelated($slug, $limit, $language);
     }
@@ -227,11 +239,11 @@ class ProductController extends CoreController
 
         $filename = 'products-for-shop-id-' . $shop_id . '.csv';
         $headers = [
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-type'        => 'text/csv',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename=' . $filename,
-            'Expires'             => '0',
-            'Pragma'              => 'public'
+            'Expires' => '0',
+            'Pragma' => 'public'
         ];
 
         $list = $this->repository->where('shop_id', $shop_id)->get()->toArray();
@@ -286,11 +298,11 @@ class ProductController extends CoreController
     {
         $filename = 'variable-options-' . Str::random(5) . '.csv';
         $headers = [
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-type'        => 'text/csv',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename=' . $filename,
-            'Expires'             => '0',
-            'Pragma'              => 'public'
+            'Expires' => '0',
+            'Pragma' => 'public'
         ];
 
         $products = $this->repository->where('shop_id', $shop_id)->get();
@@ -330,8 +342,76 @@ class ProductController extends CoreController
         return response()->stream($callback, 200, $headers);
     }
 
+    // public function importProducts(Request $request)
+    // {
+    //     $requestFile = $request->file();
+    //     $user = $request->user();
+    //     $shop_id = $request->shop_id;
+
+    //     if (count($requestFile)) {
+    //         if (isset($requestFile['csv'])) {
+    //             $uploadedCsv = $requestFile['csv'];
+    //         } else {
+    //             $uploadedCsv = current($requestFile);
+    //         }
+    //     }
+
+    //     if (!$this->repository->hasPermission($user, $shop_id)) {
+    //         throw new MarvelException(NOT_AUTHORIZED);
+    //     }
+    //     if (isset($shop_id)) {
+    //         $file = $uploadedCsv->storePubliclyAs('csv-files', 'products-' . $shop_id . '.' . $uploadedCsv->getClientOriginalExtension(), 'public');
+
+    //         $products = $this->repository->csvToArray(storage_path() . '/app/public/' . $file);
+
+    //         foreach ($products as $key => $product) {
+    //             if (!isset($product['type_id'])) {
+    //                 throw new MarvelException("MARVEL_ERROR.WRONG_CSV");
+    //             }
+    //             unset($product['id']);
+    //             unset($product['blocked_dates']);
+    //             $product['shop_id'] = $shop_id;
+    //             $product['image'] = json_decode($product['image'], true);
+    //             $product['gallery'] = json_decode($product['gallery'], true);
+    //             try {
+    //                 $type = Type::findOrFail($product['type_id']);
+    //                 if (isset($type->id)) {
+    //                     Product::firstOrCreate($product);
+    //                 }
+    //             } catch (Exception $e) {
+    //                 //
+    //                 // return $e;
+    //             }
+    //         }
+    //         return true;
+    //     }
+    // }
     public function importProducts(Request $request)
     {
+        $url = "https://www.gstatic.com/webp/gallery/1.sm.webp";
+        $contents = file_get_contents($url);
+        $name = substr($url, strrpos($url, '/') + 1);
+        Storage::disk('public')->put($name, $contents);
+        $path = Storage::disk('public')->getAdapter()->applyPathPrefix('/' . $name);
+        $attachment = new Attachment;
+        $attachment->save();
+        $attachment->addMedia($path)->toMediaCollection();
+        foreach ($attachment->getMedia() as $media) {
+            if (strpos($media->mime_type, 'image/') !== false) {
+                $converted_url = [
+                    'thumbnail' => $media->getUrl('thumbnail'),
+                    'original' => $media->getUrl(),
+                    'id' => $attachment->id
+                ];
+            } else {
+                $converted_url = [
+                    'thumbnail' => '',
+                    'original' => $media->getUrl(),
+                    'id' => $attachment->id
+                ];
+            }
+        }
+        dd($converted_url);
         $requestFile = $request->file();
         $user = $request->user();
         $shop_id = $request->shop_id;
@@ -351,13 +431,13 @@ class ProductController extends CoreController
             $file = $uploadedCsv->storePubliclyAs('csv-files', 'products-' . $shop_id . '.' . $uploadedCsv->getClientOriginalExtension(), 'public');
 
             $products = $this->repository->csvToArray(storage_path() . '/app/public/' . $file);
-
             foreach ($products as $key => $product) {
                 if (!isset($product['type_id'])) {
                     throw new MarvelException("MARVEL_ERROR.WRONG_CSV");
                 }
                 unset($product['id']);
                 unset($product['blocked_dates']);
+                dd($product['image']);
                 $product['shop_id'] = $shop_id;
                 $product['image'] = json_decode($product['image'], true);
                 $product['gallery'] = json_decode($product['gallery'], true);
@@ -368,13 +448,12 @@ class ProductController extends CoreController
                     }
                 } catch (Exception $e) {
                     //
-                    return $e;
+                    // return $e;
                 }
             }
             return true;
         }
     }
-
     public function importVariationOptions(Request $request)
     {
         $requestFile = $request->file();
@@ -444,7 +523,7 @@ class ProductController extends CoreController
     {
         $limit = $request->limit ? $request->limit : 10;
         $language = $request->language ?? DEFAULT_LANGUAGE;
-        $range = !empty($request->range) && $request->range !== 'undefined'  ? $request->range : '';
+        $range = !empty($request->range) && $request->range !== 'undefined' ? $request->range : '';
         $type_id = $request->type_id ? $request->type_id : '';
         if (isset($request->type_slug) && empty($type_id)) {
             try {

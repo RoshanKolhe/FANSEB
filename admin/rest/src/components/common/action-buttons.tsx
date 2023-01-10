@@ -61,6 +61,9 @@ const ActionButtons = ({
   function handleAddWalletPoints() {
     openModal('ADD_WALLET_POINTS', id);
   }
+  function handleAddInfluencerCommision() {
+    openModal('ADD_INFLUENCER_COMMISION', id);
+  } 
 
   function handleMakeAdmin() {
     openModal('MAKE_ADMIN', id);
@@ -103,9 +106,9 @@ const ActionButtons = ({
       )}
       {showAddWalletPoints && (
         <button
-          onClick={handleAddWalletPoints}
+          onClick={handleAddInfluencerCommision}
           className="text-accent transition duration-200 hover:text-accent-hover focus:outline-none"
-          title={t('common:text-add-wallet-points')}
+          title='add influencer commision'
         >
           <WalletPointsIcon width={22} />
         </button>

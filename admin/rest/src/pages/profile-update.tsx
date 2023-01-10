@@ -6,9 +6,11 @@ import Loader from '@/components/ui/loader/loader';
 import { useMeQuery } from '@/data/user';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { getAuthCredentials } from '@/utils/auth-utils';
 
 export default function ProfilePage() {
   const { t } = useTranslation();
+  const { permissions: currentUserPermissions } = getAuthCredentials();
   const { data, isLoading: loading, error } = useMeQuery();
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;

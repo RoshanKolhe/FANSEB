@@ -27,7 +27,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
           width: '100%',
           height: '100%',
           borderRadius: '20px',
-          cursor:'pointer'
+          cursor: 'pointer',
         }}
       />
       <div
@@ -48,7 +48,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, className, ...props }) => {
           }}
         >
           {' '}
-          {reel.videoDuration}{' '}
+          {parseFloat(reel.videoDuration).toFixed(2)}{' '}
         </p>
       </div>
       <div

@@ -3,6 +3,7 @@
 namespace Marvel\Http\Controllers;
 
 use Exception;
+use Marvel\Database\Models\InfluencerBalance;
 use Newsletter;
 use Carbon\Carbon;
 use Marvel\Traits\Wallets;
@@ -40,7 +41,7 @@ class UserController extends CoreController
     public $repository;
     public $productRepository;
 
-    public function __construct(UserRepository $repository ,ProductRepository $productRepository)
+    public function __construct(UserRepository $repository, ProductRepository $productRepository)
     {
         $this->repository = $repository;
         $this->productRepository = $productRepository;
@@ -53,16 +54,17 @@ class UserController extends CoreController
      */
     public function index(Request $request)
     {
-        $limit = $request->limit ?   $request->limit : 15;
-        if($request->permission == 'influencer'){
-            return $this->repository->with(['profile', 'address', 'permissions'])->where(function($query){
-                $query->whereHas('permissions', function ( $subquery ){
+        $limit = $request->limit ? $request->limit : 15;
+        if ($request->permission == 'influencer') {
+            return $this->repository->with(['profile', 'address', 'permissions'])->where(function ($query) {
+                $query->whereHas('permissions', function ($subquery) {
                     $subquery->where('name', 'influencer');
-                });
-            })->where('is_active','1')->paginate($limit);
+                }
+                );
+            })->where('is_active', '1')->paginate($limit);
         }
         return $this->repository->with(['profile', 'address', 'permissions'])->paginate($limit);
-        
+
     }
 
     /**
@@ -129,7 +131,7 @@ class UserController extends CoreController
         $user = $request->user();
 
         if (isset($user)) {
-            return $this->repository->with(['profile', 'wallet', 'address', 'shops.balance', 'managed_shop.balance'])->find($user->id);
+            return $this->repository->with(['profile', 'wallet', 'address', 'shops.balance', 'managed_shop.balance', 'influencerBalance'])->find($user->id);
         }
         throw new MarvelException(NOT_AUTHORIZED);
     }
@@ -137,7 +139,7 @@ class UserController extends CoreController
     public function token(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
@@ -168,23 +170,24 @@ class UserController extends CoreController
         if (isset($request->permission)) {
             $permissions[] = isset($request->permission->value) ? $request->permission->value : $request->permission;
         }
-        $influencerExists = in_array( 'influencer', $permissions );
-        if($influencerExists){
+        $influencerExists = in_array('influencer', $permissions);
+        if ($influencerExists) {
             $user = $this->repository->create([
-                'name'     => $request->name,
-                'email'    => $request->email,
+                'name' => $request->name,
+                'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'is_active' => '0',
             ]);
-        }else{
+            $user->influencerBalance()->create(['influencer_commission_rate'=>'10']);
+        } else {
             $user = $this->repository->create([
-                'name'     => $request->name,
-                'email'    => $request->email,
+                'name' => $request->name,
+                'email' => $request->email,
                 'password' => Hash::make($request->password),
-                
+
             ]);
         }
-       
+
 
         $user->givePermissionTo($permissions);
         $this->giveSignupPointsToCustomer($user->id);
@@ -195,7 +198,7 @@ class UserController extends CoreController
     {
         $user = $request->user();
         if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN) && $user->id != $request->id) {
-            $banUser =  User::find($request->id);
+            $banUser = User::find($request->id);
             $banUser->is_active = false;
             $banUser->save();
             return $banUser;
@@ -207,7 +210,7 @@ class UserController extends CoreController
     {
         $user = $request->user();
         if ($user && $user->hasPermissionTo(Permission::SUPER_ADMIN) && $user->id != $request->id) {
-            $activeUser =  User::find($request->id);
+            $activeUser = User::find($request->id);
             $activeUser->is_active = true;
             $activeUser->save();
             return $activeUser;
@@ -326,7 +329,7 @@ class UserController extends CoreController
 
         try {
             $user = Socialite::driver($provider)->userFromToken($token);
-            $userExist = User::where('email',  $user->email)->exists();
+            $userExist = User::where('email', $user->email)->exists();
 
             $userCreated = User::firstOrCreate(
                 [
@@ -454,10 +457,10 @@ class UserController extends CoreController
                     $email = $request->email;
                     if ($name && $email) {
                         $user = User::firstOrCreate([
-                            'email'     => $email
+                            'email' => $email
                         ], [
-                            'name'    => $name,
-                        ]);
+                                'name' => $name,
+                            ]);
                         $user->givePermissionTo(Permission::CUSTOMER);
                         $user->profile()->updateOrCreate(
                             ['customer_id' => $user->id],
@@ -523,6 +526,19 @@ class UserController extends CoreController
         $wallet->save();
     }
 
+    public function addCommision(Request $request)
+    {
+        $request->validate([
+            'commision' => 'required|numeric',
+            'customer_id' => ['required', 'exists:Marvel\Database\Models\User,id']
+        ]);
+        $commision_rate = $request->commision;
+        $customer_id = $request->customer_id;
+        $influencerBalance = InfluencerBalance::firstOrCreate(['influencer_id' => $customer_id]);
+        $influencerBalance->influencer_commission_rate = $commision_rate;
+        $influencerBalance->save();
+    }
+
     public function makeOrRevokeAdmin(Request $request)
     {
         $user = $request->user();
@@ -555,15 +571,17 @@ class UserController extends CoreController
         }
     }
 
-    public function getUserProducts(Request $request){
-       return $this->repository->fetchRelated($request);
+    public function getUserProducts(Request $request)
+    {
+        return $this->repository->fetchRelated($request);
     }
 
-    public function getUserSingleProduct(Request $request, $slug){
-        $request->slug = $slug; 
+    public function getUserSingleProduct(Request $request, $slug)
+    {
+        $request->slug = $slug;
         $limit = isset($request->limit) ? $request->limit : 10;
         $user = $request->user();
-        $product =  $this->repository->fetchSingle($request);
+        $product = $this->repository->fetchSingle($request);
         $product['related_products'] = $this->productRepository->fetchRelated($slug, $limit, DEFAULT_LANGUAGE);
 
         if (
@@ -576,10 +594,9 @@ class UserController extends CoreController
         return $product;
     }
 
-    public function getUserInfluencer($id){
+    public function getUserInfluencer($id)
+    {
         return $this->repository->with(['profile'])->find($id);
-
-     }
-
+    }
     
 }

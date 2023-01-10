@@ -102,6 +102,18 @@ class CreateNewMarvelTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('influencerBalances', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('influencer_id');
+            $table->foreign('influencer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->double('influencer_commission_rate')->nullable();
+            $table->double('total_earnings')->default(0);
+            $table->double('withdrawn_amount')->default(0);
+            $table->double('current_balance')->default(0);
+            $table->json('payment_info')->nullable();
+            $table->timestamps();
+        });
+
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('shop_id')->nullable();
             $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
@@ -127,6 +139,25 @@ class CreateNewMarvelTables extends Migration
             $table->id();
             $table->unsignedBigInteger('shop_id');
             $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
+            $table->float('amount');
+            $table->string('payment_method')->nullable();
+            $table->enum('status', [
+                WithdrawStatus::APPROVED,
+                WithdrawStatus::PROCESSING,
+                WithdrawStatus::REJECTED,
+                WithdrawStatus::PENDING,
+                WithdrawStatus::ON_HOLD,
+            ])->default(WithdrawStatus::PENDING);
+            $table->text('details')->nullable();
+            $table->text('note')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('influencer_withdraws', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('influencer_id');
+            $table->foreign('influencer_id')->references('id')->on('users')->onDelete('cascade');
             $table->float('amount');
             $table->string('payment_method')->nullable();
             $table->enum('status', [
