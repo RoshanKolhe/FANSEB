@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import { useRouter } from 'next/router';
 interface Item {
   id: string | number;
   name: string;
@@ -22,6 +23,8 @@ interface Variation {
   [key: string]: unknown;
 }
 export function generateCartItem(item: Item, variation: Variation) {
+  const router = useRouter();
+  console.log('router', router.query);
   const {
     id,
     name,
@@ -32,7 +35,7 @@ export function generateCartItem(item: Item, variation: Variation) {
     quantity,
     unit,
     is_digital,
-    language
+    language,
   } = item;
   if (!isEmpty(variation)) {
     return {
@@ -48,7 +51,8 @@ export function generateCartItem(item: Item, variation: Variation) {
       ),
       image: image?.thumbnail,
       variationId: variation.id,
-      language
+      language,
+      influencer_id: router?.query?.id ? router?.query?.id : '0',
     };
   }
   return {
@@ -60,6 +64,7 @@ export function generateCartItem(item: Item, variation: Variation) {
     image: image?.thumbnail,
     stock: quantity,
     price: Number(sale_price ? sale_price : price),
-    language
+    language,
+    influencer_id: router?.query?.id ? router?.query?.id : 0,
   };
 }

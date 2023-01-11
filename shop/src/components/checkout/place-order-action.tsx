@@ -21,7 +21,7 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
   const { createOrder, isLoading } = useCreateOrder();
   const { locale } : any = useRouter();
   const { items } = useCart();
-
+  console.log('items',items);
   const { orderStatuses } = useOrderStatuses({
     limit: 1,
     language: locale
@@ -75,6 +75,7 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
     let input = {
       //@ts-ignore
       products: available_items?.map((item) => formatOrderedProduct(item)),
+      influencer_id : available_items[0].influencer_id,
       status: orderStatuses[0]?.id ?? '1',
       amount: subtotal,
       coupon_id: Number(coupon?.id),

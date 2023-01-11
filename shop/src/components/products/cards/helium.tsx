@@ -18,7 +18,6 @@ const Helium: React.FC<HeliumProps> = ({
   className,
   isNotInfluencerProduct = false,
 }) => {
-  console.log('isNotInfluencerProducthelium', isNotInfluencerProduct);
   const { t } = useTranslation('common');
   const { name, image, unit, quantity, min_price, max_price, product_type } =
     product ?? {};

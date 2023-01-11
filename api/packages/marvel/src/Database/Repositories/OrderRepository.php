@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Marvel\Database\Models\Balance;
 use Marvel\Database\Models\Coupon;
+use Marvel\Database\Models\InfluencerBalance;
 use Marvel\Database\Models\Order;
 use Marvel\Database\Models\OrderedFile;
 use Marvel\Database\Models\OrderWalletPoint;
@@ -90,11 +91,10 @@ class OrderRepository extends BaseRepository
      */
     public function storeOrder($request)
     {
-
         $useWalletPoints = isset($request->use_wallet_points) ? $request->use_wallet_points : false;
         $request['tracking_number'] = Str::random(12);
         if ($request->user() && !$request->user()->hasPermissionTo(Permission::SUPER_ADMIN) && isset($request['customer_id'])) {
-            $request['customer_id'] =  $request['customer_id'];
+            $request['customer_id'] = $request['customer_id'];
         } else {
             $request['customer_id'] = $request->user()->id ?? null;
         }
@@ -107,7 +107,7 @@ class OrderRepository extends BaseRepository
         if ($discount) {
             $request['paid_total'] = $request['amount'] + $request['sales_tax'] + $request['delivery_fee'] - $discount;
             $request['total'] = $request['amount'] + $request['sales_tax'] + $request['delivery_fee'] - $discount;
-            $request['discount'] =  $discount;
+            $request['discount'] = $discount;
         } else {
             $request['paid_total'] = $request['amount'] + $request['sales_tax'] + $request['delivery_fee'];
             $request['total'] = $request['amount'] + $request['sales_tax'] + $request['delivery_fee'];
@@ -175,7 +175,7 @@ class OrderRepository extends BaseRepository
     public function storeOrderWalletPoint($amount, $order_id)
     {
         if ($amount > 0) {
-            OrderWalletPoint::create(['amount' =>  $amount, 'order_id' =>  $order_id]);
+            OrderWalletPoint::create(['amount' => $amount, 'order_id' => $order_id]);
         }
     }
 
@@ -214,7 +214,7 @@ class OrderRepository extends BaseRepository
         }
 
         $payment_info = array(
-            'amount'   => $amount,
+            'amount' => $amount,
             'currency' => $currency,
         );
         if (Omnipay::getGateway() === 'STRIPE') {
@@ -234,16 +234,14 @@ class OrderRepository extends BaseRepository
      */
     protected function createOrder($request)
     {
+
         try {
             $orderInput = $request->only($this->dataArray);
             $order = $this->create($orderInput);
             $products = $this->processProducts($request['products'], $request['customer_id'], $order);
             $order->products()->attach($products);
             $this->createChildOrder($order->id, $request);
-            $this->calculateShopIncome($order);
-            if (isset($request['influencer_id'])) {
-                $this->calculateInfluecnerIncome($order); 
-            }
+            $this->calculateShopAndInfluencerIncome($order, $request);
             // event(new OrderCreated($order));
             return $order;
         } catch (Exception $e) {
@@ -251,15 +249,31 @@ class OrderRepository extends BaseRepository
         }
     }
 
-    protected function calculateShopIncome($parent_order)
+    protected function calculateShopAndInfluencerIncome($parent_order, $request)
     {
-        foreach ($parent_order->children as  $order) {
+        foreach ($parent_order->children as $order) {
             $balance = Balance::where('shop_id', '=', $order->shop_id)->first();
-            $adminCommissionRate = $balance->admin_commission_rate;
-            $shop_earnings = ($order->total * (100 - $adminCommissionRate)) / 100;
-            $balance->total_earnings = $balance->total_earnings + $shop_earnings;
-            $balance->current_balance = $balance->current_balance + $shop_earnings;
-            $balance->save();
+            if ($request['influencer_id'] != '0') {
+                $influencerBalance = InfluencerBalance::where('influencer_id', '=',$request['influencer_id'])->first();
+                $influencerCommisionRate = $influencerBalance->influencer_commission_rate;
+                $adminCommissionRate = $balance->admin_commission_rate;
+                $shop_earnings = ($order->total * (100 - ($adminCommissionRate + $influencerCommisionRate))) / 100;
+                $balance->total_earnings = $balance->total_earnings + $shop_earnings;
+                $balance->current_balance = $balance->current_balance + $shop_earnings;
+                $balance->save();
+                $influencer_earnings = ($order->total *  $influencerCommisionRate) / 100;
+                $influencerBalance->total_earnings = $influencerBalance->total_earnings + $influencer_earnings;
+                $influencerBalance->current_balance = $influencerBalance->current_balance + $influencer_earnings;
+                $influencerBalance->save();
+            } else {
+                $adminCommissionRate = $balance->admin_commission_rate;
+                $shop_earnings = ($order->total * (100 - $adminCommissionRate)) / 100;
+                $balance->total_earnings = $balance->total_earnings + $shop_earnings;
+                $balance->current_balance = $balance->current_balance + $shop_earnings;
+                $balance->save();
+            }
+
+
         }
     }
 
@@ -402,26 +416,26 @@ class OrderRepository extends BaseRepository
         foreach ($productsByShop as $shop_id => $cartProduct) {
             $amount = array_sum(array_column($cartProduct, 'subtotal'));
             $orderInput = [
-                'tracking_number'  => Str::random(12),
-                'shop_id'          => $shop_id,
-                'status'           => $request->status,
-                'customer_id'      => $request->customer_id,
+                'tracking_number' => Str::random(12),
+                'shop_id' => $shop_id,
+                'status' => $request->status,
+                'customer_id' => $request->customer_id,
                 'shipping_address' => $request->shipping_address,
-                'billing_address'  => $request->billing_address,
+                'billing_address' => $request->billing_address,
                 'customer_contact' => $request->customer_contact,
-                'delivery_time'    => $request->delivery_time,
-                'delivery_fee'     => 0,
-                'sales_tax'        => 0,
-                'discount'         => 0,
-                'parent_id'        => $id,
-                'amount'           => $amount,
-                'total'            => $amount,
-                'paid_total'       => $amount,
-                'language'         => $language
+                'delivery_time' => $request->delivery_time,
+                'delivery_fee' => 0,
+                'sales_tax' => 0,
+                'discount' => 0,
+                'parent_id' => $id,
+                'amount' => $amount,
+                'total' => $amount,
+                'paid_total' => $amount,
+                'language' => $language
             ];
 
             $order = $this->create($orderInput);
-            $order->products()->attach($this->processProducts($cartProduct,  $request['customer_id'],  $order));
+            $order->products()->attach($this->processProducts($cartProduct, $request['customer_id'], $order));
             // event(new OrderReceived($order));
         }
     }
