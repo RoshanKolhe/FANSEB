@@ -77,7 +77,7 @@ const InfluencerPage: NextPageWithLayout<
               height="70vh"
               images={influencerSliderImages}
               showBullets={true}
-              autoPlay={false}
+              autoPlay={true}
               showNavs={true}
             />
           ) : (

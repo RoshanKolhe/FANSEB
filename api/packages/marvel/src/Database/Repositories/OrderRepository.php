@@ -264,6 +264,7 @@ class OrderRepository extends BaseRepository
                 $influencer_earnings = ($order->total *  $influencerCommisionRate) / 100;
                 $influencerBalance->total_earnings = $influencerBalance->total_earnings + $influencer_earnings;
                 $influencerBalance->current_balance = $influencerBalance->current_balance + $influencer_earnings;
+                $influencerBalance->total_orders = $influencerBalance->total_orders + 1;
                 $influencerBalance->save();
             } else {
                 $adminCommissionRate = $balance->admin_commission_rate;

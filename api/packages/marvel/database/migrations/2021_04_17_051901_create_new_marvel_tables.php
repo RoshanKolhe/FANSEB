@@ -110,6 +110,7 @@ class CreateNewMarvelTables extends Migration
             $table->double('total_earnings')->default(0);
             $table->double('withdrawn_amount')->default(0);
             $table->double('current_balance')->default(0);
+            $table->double('total_orders')->default(0);
             $table->json('payment_info')->nullable();
             $table->timestamps();
         });
