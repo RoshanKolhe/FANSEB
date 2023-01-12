@@ -388,30 +388,29 @@ class ProductController extends CoreController
     // }
     public function importProducts(Request $request)
     {
-        $url = "https://www.gstatic.com/webp/gallery/1.sm.webp";
-        $contents = file_get_contents($url);
-        $name = substr($url, strrpos($url, '/') + 1);
-        Storage::disk('public')->put($name, $contents);
-        $path = Storage::disk('public')->getAdapter()->applyPathPrefix('/' . $name);
-        $attachment = new Attachment;
-        $attachment->save();
-        $attachment->addMedia($path)->toMediaCollection();
-        foreach ($attachment->getMedia() as $media) {
-            if (strpos($media->mime_type, 'image/') !== false) {
-                $converted_url = [
-                    'thumbnail' => $media->getUrl('thumbnail'),
-                    'original' => $media->getUrl(),
-                    'id' => $attachment->id
-                ];
-            } else {
-                $converted_url = [
-                    'thumbnail' => '',
-                    'original' => $media->getUrl(),
-                    'id' => $attachment->id
-                ];
-            }
-        }
-        dd($converted_url);
+        // $url = "https://www.gstatic.com/webp/gallery/1.sm.webp";
+        // $contents = file_get_contents($url);
+        // $name = substr($url, strrpos($url, '/') + 1);
+        // Storage::disk('public')->put($name, $contents);
+        // $path = Storage::disk('public')->getAdapter()->applyPathPrefix('/' . $name);
+        // $attachment = new Attachment;
+        // $attachment->save();
+        // $attachment->addMedia($path)->toMediaCollection();
+        // foreach ($attachment->getMedia() as $media) {
+        //     if (strpos($media->mime_type, 'image/') !== false) {
+        //         $converted_url = [
+        //             'thumbnail' => $media->getUrl('thumbnail'),
+        //             'original' => $media->getUrl(),
+        //             'id' => $attachment->id
+        //         ];
+        //     } else {
+        //         $converted_url = [
+        //             'thumbnail' => '',
+        //             'original' => $media->getUrl(),
+        //             'id' => $attachment->id
+        //         ];
+        //     }
+        // }
         $requestFile = $request->file();
         $user = $request->user();
         $shop_id = $request->shop_id;
@@ -432,12 +431,12 @@ class ProductController extends CoreController
 
             $products = $this->repository->csvToArray(storage_path() . '/app/public/' . $file);
             foreach ($products as $key => $product) {
+                $product['type_id'] = '1';
                 if (!isset($product['type_id'])) {
                     throw new MarvelException("MARVEL_ERROR.WRONG_CSV");
                 }
                 unset($product['id']);
                 unset($product['blocked_dates']);
-                dd($product['image']);
                 $product['shop_id'] = $shop_id;
                 $product['image'] = json_decode($product['image'], true);
                 $product['gallery'] = json_decode($product['gallery'], true);

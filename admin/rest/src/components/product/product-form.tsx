@@ -169,7 +169,7 @@ export default function CreateOrUpdateProductForm({
               <div style={{ display: 'none' }}>
                 <ProductAuthorInput control={control} />
               </div>
-              <ProductManufacturerInput control={control} setValue={setValue} />
+              {/* <ProductManufacturerInput control={control} setValue={setValue} /> */}
               <ProductTagInput control={control} setValue={setValue} />
             </Card>
           </div>
