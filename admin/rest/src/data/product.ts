@@ -42,6 +42,9 @@ export const useUpdateProductMutation = () => {
     onSuccess: () => {
       toast.success(t('common:successfully-updated'));
     },
+    onError:(error)=>{
+      toast.error('Please fill all of the required fields marked as *');
+    },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.PRODUCTS);
