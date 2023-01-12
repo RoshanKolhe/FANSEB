@@ -51,7 +51,7 @@ class OrderController extends CoreController
      */
     public function index(Request $request)
     {
-        $limit = $request->limit ?   $request->limit : 10;
+        $limit = $request->limit ? $request->limit : 10;
         return $this->fetchOrders($request)->paginate($limit)->withQueryString();
     }
 
@@ -168,8 +168,17 @@ class OrderController extends CoreController
 
     public function changeOrderStatus($order, $status)
     {
-        $order->status = $status;
-        $order->save();
+        if ($order->parent_id != NULL) {
+            $order = $this->repository->findOrFail($order->parent_id);
+            $order->status = $status;
+            $order->save();
+        } else {
+            $order->status = $status;
+            $order->save();
+        }
+        //previous code
+        // $order->status = $status;
+        // $order->save();
         try {
             $children = json_decode($order->children);
         } catch (\Throwable $th) {
@@ -216,7 +225,7 @@ class OrderController extends CoreController
 
         $dataArray = [
             'user_id' => $user->id,
-            'token'   => Str::random(16),
+            'token' => Str::random(16),
             'payload' => $request->shop_id
         ];
         $newToken = DownloadToken::create($dataArray);
@@ -268,7 +277,7 @@ class OrderController extends CoreController
             throw new MarvelException(NOT_AUTHORIZED);
         }
 
-        if(empty($request->order_id)){
+        if (empty($request->order_id)) {
             throw new NotFoundException(NOT_FOUND);
         }
 
@@ -278,16 +287,16 @@ class OrderController extends CoreController
         $translatedText = $this->formatInvoiceTranslateText($request->translated_text);
 
         $payload = [
-            'user_id'           => $user->id,
-            'order_id'          => intval($request->order_id),
-            'language'          => $language,
-            'translated_text'   => $translatedText,
-            'is_rtl'            => $isRTL
+            'user_id' => $user->id,
+            'order_id' => intval($request->order_id),
+            'language' => $language,
+            'translated_text' => $translatedText,
+            'is_rtl' => $isRTL
         ];
 
         $data = [
             'user_id' => $user->id,
-            'token'   => Str::random(16),
+            'token' => Str::random(16),
             'payload' => serialize($payload)
         ];
 
@@ -305,15 +314,15 @@ class OrderController extends CoreController
     public function formatInvoiceTranslateText($translatedText = [])
     {
         return [
-            'subtotal'      => Arr::has($translatedText, 'subtotal') ? $translatedText['subtotal'] : 'SubTotal',
-            'discount'      => Arr::has($translatedText, 'discount') ? $translatedText['discount'] : 'Discount',
-            'tax'           => Arr::has($translatedText, 'tax') ? $translatedText['tax'] : 'Tax',
-            'delivery_fee'  => Arr::has($translatedText, 'delivery_fee') ? $translatedText['delivery_fee'] : 'Delivery Fee',
-            'total'         => Arr::has($translatedText, 'total') ? $translatedText['total'] : 'Total',
-            'products'      => Arr::has($translatedText, 'products') ? $translatedText['products'] : 'Products',
-            'quantity'      => Arr::has($translatedText, 'quantity') ? $translatedText['quantity'] : 'Qty',
-            'invoice_no'    => Arr::has($translatedText, 'invoice_no') ? $translatedText['invoice_no'] : 'Invoice No',
-            'date'          => Arr::has($translatedText, 'date') ? $translatedText['date'] : 'Date',
+            'subtotal' => Arr::has($translatedText, 'subtotal') ? $translatedText['subtotal'] : 'SubTotal',
+            'discount' => Arr::has($translatedText, 'discount') ? $translatedText['discount'] : 'Discount',
+            'tax' => Arr::has($translatedText, 'tax') ? $translatedText['tax'] : 'Tax',
+            'delivery_fee' => Arr::has($translatedText, 'delivery_fee') ? $translatedText['delivery_fee'] : 'Delivery Fee',
+            'total' => Arr::has($translatedText, 'total') ? $translatedText['total'] : 'Total',
+            'products' => Arr::has($translatedText, 'products') ? $translatedText['products'] : 'Products',
+            'quantity' => Arr::has($translatedText, 'quantity') ? $translatedText['quantity'] : 'Qty',
+            'invoice_no' => Arr::has($translatedText, 'invoice_no') ? $translatedText['invoice_no'] : 'Invoice No',
+            'date' => Arr::has($translatedText, 'date') ? $translatedText['date'] : 'Date',
         ];
     }
 
@@ -328,7 +337,7 @@ class OrderController extends CoreController
         $payloads = [];
         try {
             $downloadToken = DownloadToken::where('token', $token)->first();
-            $payloads      = unserialize($downloadToken->payload);
+            $payloads = unserialize($downloadToken->payload);
 
             if ($downloadToken) {
                 $downloadToken->delete();
@@ -347,11 +356,11 @@ class OrderController extends CoreController
         }
 
         $invoiceData = [
-            'order'           => $order,
-            'settings'        => $settings,
+            'order' => $order,
+            'settings' => $settings,
             'translated_text' => $payloads['translated_text'],
-            'is_rtl'          => $payloads['is_rtl'],
-            'language'        => $payloads['language'],
+            'is_rtl' => $payloads['is_rtl'],
+            'language' => $payloads['language'],
         ];
 
         $pdf = PDF::loadView('pdf.order-invoice', $invoiceData);
