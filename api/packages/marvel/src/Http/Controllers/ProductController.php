@@ -440,6 +440,7 @@ class ProductController extends CoreController
                 $product['shop_id'] = $shop_id;
                 $product['image'] = json_decode($product['image'], true);
                 $product['gallery'] = json_decode($product['gallery'], true);
+                $product['status']='draft';
                 try {
                     $type = Type::findOrFail($product['type_id']);
                     if (isset($type->id)) {
