@@ -22,6 +22,7 @@ export const withdrawClient = {
       searchJoin: 'and',
       ...params,
       search: HttpClient.formatSearchParams({ shop_id }),
+      shop_id:shop_id
     });
   },
   approve(data: ApproveWithdrawInput) {
