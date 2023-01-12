@@ -50,6 +50,7 @@ class OrderRepository extends BaseRepository
         'tracking_number',
         'customer_id',
         'shop_id',
+        'influencer_id',
         'language',
         'status',
         'amount',
@@ -254,14 +255,14 @@ class OrderRepository extends BaseRepository
         foreach ($parent_order->children as $order) {
             $balance = Balance::where('shop_id', '=', $order->shop_id)->first();
             if ($request['influencer_id'] != '0') {
-                $influencerBalance = InfluencerBalance::where('influencer_id', '=',$request['influencer_id'])->first();
+                $influencerBalance = InfluencerBalance::where('influencer_id', '=', $request['influencer_id'])->first();
                 $influencerCommisionRate = $influencerBalance->influencer_commission_rate;
                 $adminCommissionRate = $balance->admin_commission_rate;
                 $shop_earnings = ($order->total * (100 - ($adminCommissionRate + $influencerCommisionRate))) / 100;
                 $balance->total_earnings = $balance->total_earnings + $shop_earnings;
                 $balance->current_balance = $balance->current_balance + $shop_earnings;
                 $balance->save();
-                $influencer_earnings = ($order->total *  $influencerCommisionRate) / 100;
+                $influencer_earnings = ($order->total * $influencerCommisionRate) / 100;
                 $influencerBalance->total_earnings = $influencerBalance->total_earnings + $influencer_earnings;
                 $influencerBalance->current_balance = $influencerBalance->current_balance + $influencer_earnings;
                 $influencerBalance->total_orders = $influencerBalance->total_orders + 1;

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Marvel\Database\Models\Balance;
+use Marvel\Database\Models\InfluencerBalance;
 use Marvel\Database\Models\Order;
 use Marvel\Database\Models\Wallet;
 use Marvel\Database\Repositories\RefundRepository;
@@ -139,9 +140,26 @@ class RefundController extends CoreController
                     $order = Order::findOrFail($refund->order_id);
                     foreach ($order->children as $childOrder) {
                         $balance = Balance::where('shop_id', $childOrder->shop_id)->first();
-                        $balance->total_earnings = $balance->total_earnings - $childOrder->amount;
-                        $balance->current_balance = $balance->current_balance - $childOrder->amount;
-                        $balance->save();
+                        if ($order->influencer_id != '0' && $order->influencer_id != NULL) {
+                            $influencerBalance = InfluencerBalance::where('influencer_id', '=', $order->influencer_id)->first();
+                            $influencerCommisionRate = $influencerBalance->influencer_commission_rate;
+                            $adminCommissionRate = $balance->admin_commission_rate;
+                            $shop_earnings = ($childOrder->amount * (100 - ($adminCommissionRate + $influencerCommisionRate))) / 100;
+                            $balance->total_earnings = $balance->total_earnings - $shop_earnings;
+                            $balance->current_balance = $balance->current_balance - $shop_earnings;
+                            $balance->save();
+                            $influencer_earnings = ($childOrder->amount * $influencerCommisionRate) / 100;
+                            $influencerBalance->total_earnings = $influencerBalance->total_earnings - $influencer_earnings;
+                            $influencerBalance->current_balance = $influencerBalance->current_balance - $influencer_earnings;
+                            $influencerBalance->total_orders = $influencerBalance->total_orders - 1;
+                            $influencerBalance->save();
+                        }else{
+                            $adminCommissionRate = $balance->admin_commission_rate;
+                            $shop_earnings = ($childOrder->amount * (100 - ($adminCommissionRate ))) / 100;
+                            $balance->total_earnings = $balance->total_earnings - $shop_earnings;
+                            $balance->current_balance = $balance->current_balance - $shop_earnings;
+                            $balance->save();
+                        }
                     }
                 } catch (Exception $e) {
                     throw new MarvelException(NOT_FOUND);

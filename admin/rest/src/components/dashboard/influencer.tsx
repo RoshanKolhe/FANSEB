@@ -131,7 +131,7 @@ export default function InfluencerDashboard() {
         <div className="relative order-1 col-span-12 h-full min-h-[400px] overflow-hidden rounded bg-light xl:order-2 xl:col-span-8 3xl:col-span-9">
           <Image
             src={
-              data?.profile?.influencerPageImages[0].original ??
+              data?.profile?.influencerPageImages[0]?.original ??
               '/product-placeholder-borderless.svg'
             }
             layout="fill"
