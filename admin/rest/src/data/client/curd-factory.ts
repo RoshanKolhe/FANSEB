@@ -18,7 +18,7 @@ export function crudFactory<Type, QueryParams extends LanguageParam, InputType>(
     get({ slug, language }: any) {
       return HttpClient.get<Type>(`${endpoint}/${slug}`, {
         language,
-        with: 'products',
+        // with: 'products',
       });
     },
     create(data: InputType) {
