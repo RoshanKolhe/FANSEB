@@ -36,7 +36,6 @@ type IProps = {
 };
 
 export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
-  
   const videoEl = useRef(null);
   const router = useRouter();
   const { t } = useTranslation();
@@ -63,7 +62,9 @@ export default function CreateOrUpdateReelsForm({ initialValues }: IProps) {
         ...initialValues,
         video: initialValues.reel_link,
         thumbnail: initialValues?.thumbnail,
-        shops: initialValues?.products[0]?.shop_id,
+        shops: initialValues?.products
+          ? initialValues?.products[0]?.shop_id
+          : '',
         products: initialValues?.products,
       } as any,
     }),
