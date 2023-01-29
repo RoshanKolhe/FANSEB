@@ -44,9 +44,13 @@ class AttachmentController extends CoreController
     {
         $urls = [];
         foreach ($request->attachment as $media) {
+
             $attachment = new Attachment;
             $attachment->save();
-            $attachment->addMedia($media)->toMediaCollection();
+            if (strpos($media->getClientMimeType(), 'image/') !== false ||strpos($media->getClientMimeType(), 'video/') !== false ) {
+                $attachment->addMedia($media)->toMediaCollection();
+            }
+            $converted_url = [];
             foreach ($attachment->getMedia() as $media) {
                 if (strpos($media->mime_type, 'image/') !== false) {
                     $converted_url = [
@@ -54,12 +58,14 @@ class AttachmentController extends CoreController
                         'original' => $media->getUrl(),
                         'id' => $attachment->id
                     ];
-                } else {
+                } else if (strpos($media->mime_type, 'video/') !== false) {
                     $converted_url = [
                         'thumbnail' => '',
                         'original' => $media->getUrl(),
                         'id' => $attachment->id
                     ];
+                } else {
+                    $converted_url = [];
                 }
             }
             $urls[] = $converted_url;
