@@ -22,7 +22,13 @@ const Popup: React.FC<ReelPopupProps> = ({ reel_id }) => {
 
   const reelItem: any = reel;
 
-  const { id, products: related_products } = reelItem ?? {};
+  const { id, products: related_products_new } = reelItem ?? {};
+
+  if (related_products_new && related_products_new.length) {
+    var related_products = related_products_new.filter((res: any) => {
+      return res.status === 'publish';
+    });
+  }
 
   if (isLoading || !reel)
     return (

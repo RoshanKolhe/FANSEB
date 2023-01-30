@@ -235,7 +235,6 @@ class OrderRepository extends BaseRepository
      */
     protected function createOrder($request)
     {
-
         try {
             $orderInput = $request->only($this->dataArray);
             $order = $this->create($orderInput);
@@ -246,7 +245,7 @@ class OrderRepository extends BaseRepository
             // event(new OrderCreated($order));
             return $order;
         } catch (Exception $e) {
-            throw new MarvelException(SOMETHING_WENT_WRONG);
+            throw new MarvelException($e);
         }
     }
 

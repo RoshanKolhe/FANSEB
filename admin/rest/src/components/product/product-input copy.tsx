@@ -67,7 +67,7 @@ const ProductInput = ({ control, setValue, productError, shop_id }: Props) => {
             </span>
           </div>
         )}
-        getOptionValue={(option: any) => option.id}
+        getOptionValue={(option: any) => option.name}
         // @ts-ignore
         options={products}
         isLoading={loading}
