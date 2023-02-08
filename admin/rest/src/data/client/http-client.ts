@@ -29,6 +29,7 @@ Axios.interceptors.request.use((config) => {
   };
   return config;
 });
+Axios.defaults.timeout = 100000;
 
 // Change response data/error here
 Axios.interceptors.response.use(
@@ -57,7 +58,7 @@ interface SearchParamOptions {
   type: string;
   name: string;
   shop_id: string;
-  influencer_id?:string;
+  influencer_id?: string;
   is_approved: boolean;
   tracking_number: string;
 }
@@ -83,7 +84,7 @@ export class HttpClient {
     return response.data;
   }
 
-  static async deleteInfluencerProduct<T>(url: string, data:any) {
+  static async deleteInfluencerProduct<T>(url: string, data: any) {
     const response = await Axios.delete<T>(url, { data: data });
     return response.data;
   }
