@@ -93,8 +93,8 @@ export function Grid({
           ? rangeMap(limit, (i) => (
             <ProductLoader key={i} uniqueKey={`product-${i}`} />
           ))
-          : products?.map((product) => (
-            <ProductCard product={product} key={product?.id} />
+          : products?.map((product:any) => (
+            <ProductCard product={product} key={product?.id} isNotInfluencerProduct={product?.pivot?.featureInfluencerImageUrl === "" ? true :false}/>
           ))}
       </div>}
 
