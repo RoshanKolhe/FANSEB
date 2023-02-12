@@ -24,7 +24,6 @@ interface Variation {
 }
 export function generateCartItem(item: Item, variation: Variation) {
   const router = useRouter();
-  console.log('router', router.query);
   const {
     id,
     name,

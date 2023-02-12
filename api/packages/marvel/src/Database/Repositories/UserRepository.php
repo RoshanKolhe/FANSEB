@@ -76,6 +76,7 @@ class UserRepository extends BaseRepository
     public function fetchSingle($request, $language = DEFAULT_LANGUAGE)
     {
         $slug = $request->slug;
+        $type = $request->type;
         $language = $request->language ?? DEFAULT_LANGUAGE;
         $user = $this->findOneByFieldOrFail('id', $request->userId);
 
@@ -83,10 +84,9 @@ class UserRepository extends BaseRepository
             if (is_numeric($slug)) {
                 $slug = (int) $slug;
                 $product = $user->products()->where('id', $slug)->with('shop')->firstOrFail();
-                ;
             }
 
-            $product = $user->products()->where('language', $language)->where('slug', $slug)
+            $product = $user->products()->wherePivot('type', $type)->where('language', $language)->where('slug', $slug)
                 ->with(['type', 'shop', 'categories', 'tags', 'variations.attribute.values', 'variation_options', 'author', 'manufacturer'])
                 ->firstOrFail();
         } catch (\Exception $e) {

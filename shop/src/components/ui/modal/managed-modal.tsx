@@ -74,7 +74,7 @@ const ManagedModal = () => {
       )}
       {view === 'DELETE_ADDRESS' && <AddressDeleteView />}
       {view === 'PRODUCT_DETAILS' && (
-        <ProductDetailsModalView productSlug={data.productSlug} isNotInfluencerProduct={data.isNotInfluencerProduct}/>
+        <ProductDetailsModalView productSlug={data.productSlug} isNotInfluencerProduct={data.isNotInfluencerProduct} receivedProduct={data.receivedProduct}/>
       )}
       {view === 'REEL_DETAILS' && (
         <ReelDetailsModalView reel_id={data} />

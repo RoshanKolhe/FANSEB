@@ -123,13 +123,13 @@ const InfluencerProductList = ({
       ),
     },
     {
-      title: 'Product Type',
-      dataIndex: 'product_type',
-      key: 'product_type',
+      title: 'Product Gallery Type',
+      dataIndex: 'pivot',
+      key: 'pivot',
       width: 120,
       align: 'center',
-      render: (product_type: string) => (
-        <span className="truncate whitespace-nowrap">{product_type}</span>
+      render: (pivot: any) => (
+        <span className="truncate whitespace-nowrap">{pivot?.type}</span>
       ),
     },
     {
@@ -238,6 +238,7 @@ const InfluencerProductList = ({
           slug={slug}
           record={record}
           showEdit={false}
+          isInfluencerProduct={true}
           deleteModalView="DELETE_INFLUENCER_PRODUCT"
           routes={Routes?.influencerProduct}
         />

@@ -62,7 +62,13 @@ const ShopPage: NextPageWithLayout<
         </div>
         <div
           className="align-items-center justify-content-center flex lg:pt-3"
-          style={{ display: 'flex', justifyContent: 'center' }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            width: '50%',
+            textAlign: 'center',
+            margin:'auto'
+          }}
         >
           {shop.description}
         </div>

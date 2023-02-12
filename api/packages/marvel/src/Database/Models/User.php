@@ -165,7 +165,7 @@ class User extends Authenticatable
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_user')->withPivot('shop_id','type','featureInfluencerImageUrl');
+        return $this->belongsToMany(Product::class, 'product_user')->withPivot('id','shop_id','type','featureInfluencerImageUrl');
     }
 
     /**

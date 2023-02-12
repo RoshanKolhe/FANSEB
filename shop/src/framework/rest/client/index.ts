@@ -87,7 +87,7 @@ class Client {
     },
     influencerProduct: (params: any) => {
       return HttpClient.get<any>(
-        `influencerProduct/${params.slug}?userId=${params.id}`
+        `influencerProduct/${params.slug}?userId=${params.id}&type=${params.type}`
       );
     },
     all: ({

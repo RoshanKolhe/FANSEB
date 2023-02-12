@@ -118,7 +118,7 @@ class ProductController extends CoreController
     public function deleteInfluencerProduct(Request $request)
     {
         $user_id = $request->user()->id;
-        $results = DB::delete(DB::raw("DELETE FROM product_user WHERE product_id = '$request->product_id' AND user_id='$user_id'"));
+        $results = DB::delete(DB::raw("DELETE FROM product_user WHERE id = '$request->product_id'"));
         return $results;
     }
 

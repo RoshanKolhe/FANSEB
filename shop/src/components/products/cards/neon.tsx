@@ -18,7 +18,6 @@ const Neon: React.FC<NeonProps> = ({
   className,
   isNotInfluencerProduct = false,
 }) => {
-
   const { t } = useTranslation('common');
   const { name, image, quantity, min_price, max_price, product_type } =
     product ?? {};
@@ -39,6 +38,7 @@ const Neon: React.FC<NeonProps> = ({
     return openModal('PRODUCT_DETAILS', {
       productSlug: product.slug,
       isNotInfluencerProduct: true,
+      receivedProduct: product,
     });
   }
   return (

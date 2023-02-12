@@ -38,6 +38,7 @@ const Helium: React.FC<HeliumProps> = ({
     return openModal('PRODUCT_DETAILS', {
       productSlug: product.slug,
       isNotInfluencerProduct: isNotInfluencerProduct,
+      receivedProduct: product,
     });
   }
 

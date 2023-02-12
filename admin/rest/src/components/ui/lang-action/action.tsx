@@ -9,7 +9,8 @@ export type LanguageSwitcherProps = {
   slug: string;
   deleteModalView?: string | any;
   routes: any;
-  showEdit:boolean;
+  isInfluencerProduct?: boolean;
+  showEdit: boolean;
   className?: string | undefined;
 };
 
@@ -18,6 +19,7 @@ export default function LanguageSwitcher({
   slug,
   deleteModalView,
   routes,
+  isInfluencerProduct = false,
   showEdit = false,
   className,
 }: LanguageSwitcherProps) {
@@ -37,8 +39,8 @@ export default function LanguageSwitcher({
         />
       ) : (
         <ActionButtons
-          id={record?.id}
-          editUrl={showEdit ? routes.editWithoutLang(slug, shop): undefined}
+          id={isInfluencerProduct ? record.pivot.id : record?.id}
+          editUrl={showEdit ? routes.editWithoutLang(slug, shop) : undefined}
           deleteModalView={deleteModalView}
         />
       )}

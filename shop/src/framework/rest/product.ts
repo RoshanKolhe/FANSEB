@@ -141,12 +141,16 @@ export function useProduct({ slug }: { slug: string }) {
   };
 }
 
-export function useInfluencerProduct(params: { slug: string; id: any }) {
+export function useInfluencerProduct(params: {
+  slug: string;
+  id: any;
+  type: any;
+}) {
   const { locale: language } = useRouter();
 
   const { data, isLoading, error } = useQuery<Product, Error>(
-    [API_ENDPOINTS.PRODUCTS, { ...params,language }],
-    () => client.products.influencerProduct({ ...params,language })
+    [API_ENDPOINTS.PRODUCTS, { ...params, language }],
+    () => client.products.influencerProduct({ ...params, language })
   );
   return {
     product: data,

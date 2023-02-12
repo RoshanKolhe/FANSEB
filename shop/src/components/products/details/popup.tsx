@@ -13,11 +13,14 @@ const RelatedProducts = dynamic(() => import('./related-products'));
 interface ProductPopupProps {
   productSlug: string;
   isNotInfluencerProduct?: any;
+  receivedProduct?: any;
 }
 const Popup: React.FC<ProductPopupProps> = ({
   productSlug,
   isNotInfluencerProduct = false,
+  receivedProduct,
 }) => {
+  console.log('receivedProduct', receivedProduct);
   const router = useRouter();
   const { t } = useTranslation('common');
   const [showStickyShortDetails] = useAtom(stickyShortDetailsAtom);
@@ -29,7 +32,7 @@ const Popup: React.FC<ProductPopupProps> = ({
     isLoading = data.isLoading;
   } else {
     const data = router.query.id
-      ? useInfluencerProduct({ slug: productSlug, id: router.query.id })
+      ? useInfluencerProduct({ slug: productSlug, id: router.query.id, type:receivedProduct?.pivot?.type })
       : useProduct({ slug: productSlug });
     product = data.product;
     isLoading = data.isLoading;
