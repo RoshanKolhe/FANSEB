@@ -57,11 +57,11 @@ const InfluencerPage: NextPageWithLayout<
   const [selectedIndex, setSelectedIndex] = useState(0);
   const isGerman = router.locale === 'de';
   const isBook = router.asPath.includes('/book');
-  const influencerSliderImages = influencer?.profile?.influencerPageImages.map(
-    (res: any) => {
-      return res.original;
-    }
-  );
+  const influencerSliderImages = influencer?.profile?.influencerPageImages
+    ? influencer?.profile?.influencerPageImages.map((res: any) => {
+        return res.original;
+      })
+    : [];
   return (
     <div
       className="flex flex-col bg-gray-100 lg:flex-row lg:items-start"
@@ -112,7 +112,7 @@ const InfluencerPage: NextPageWithLayout<
                 justifyContent: 'center',
                 width: '50%',
                 textAlign: 'center',
-                margin:'auto'
+                margin: 'auto',
               }}
             >
               {influencer?.profile?.bio}
