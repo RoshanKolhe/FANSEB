@@ -137,7 +137,7 @@ const CustomerList = ({
               <ActionButtons
                 id={id}
                 userStatus={true}
-                isUserActive={is_active}
+                isUserActive={row.is_active}
                 // showAddWalletPoints={
                 //   row.permissions.filter(
                 //     (value: any) => value.name == 'influencer'
