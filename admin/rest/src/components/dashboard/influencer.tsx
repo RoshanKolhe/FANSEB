@@ -41,7 +41,6 @@ export default function InfluencerDashboard() {
   if (popularProductError) {
     return <ErrorMessage message={popularProductError?.message} />;
   }
-
   return (
     <>
       <div className="grid grid-cols-12 gap-6">
@@ -128,16 +127,27 @@ export default function InfluencerDashboard() {
         </div>
 
         {/* Cover Photo */}
+
         <div className="relative order-1 col-span-12 h-full min-h-[400px] overflow-hidden rounded bg-light xl:order-2 xl:col-span-8 3xl:col-span-9">
-          <Image
-            src={
-              data?.profile?.influencerPageImages[0]?.original ??
-              '/product-placeholder-borderless.svg'
-            }
-            layout="fill"
-            objectFit="contain"
-            alt={data?.name}
-          />
+          {data?.profile?.influencerPageImages &&
+          data?.profile?.influencerPageImages.length > 0 ? (
+            <Image
+              src={
+                data?.profile?.influencerPageImages[0]?.original ??
+                '/product-placeholder-borderless.svg'
+              }
+              layout="fill"
+              objectFit="contain"
+              alt={data?.name}
+            />
+          ) : (
+            <Image
+              src="/product-placeholder-borderless.svg"
+              layout="fill"
+              objectFit="contain"
+              alt={data?.name}
+            />
+          )}
 
           <LinkButton
             size="small"
