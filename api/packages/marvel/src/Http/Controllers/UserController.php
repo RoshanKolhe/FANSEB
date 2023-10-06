@@ -226,16 +226,16 @@ class UserController extends CoreController
 
     public function initiatePayment(Request $request)
     {
-        $url = url('http://localhost:3003/orders/'.$request->tracking_number);
+        $url = url(env('SHOP_URL', 'http://localhost:3003') . "/orders" . '/' . $request->tracking_number);
         $data = array(
-            'merchantId' => 'MERCHANTUAT',
+            'merchantId' => env('MERCHANT_ID', 'MERCHANTUAT'),
             'merchantTransactionId' => uniqid(),
-            'merchantUserId' => 'MUID123',
-            'amount' => 100,
+            'merchantUserId' => env('MERHChANT_USER_ID', 'MUID123'),
+            'amount' => $request->total * 100,
             'redirectUrl' => $url,
             'redirectMode' => 'POST',
             'callbackUrl' => $url,
-            'mobileNumber' => '9999999999',
+            'mobileNumber' => env('MOBILENO', '9999999999'),
             'paymentInstrument' =>
                 array(
                     'type' => 'PAY_PAGE',
@@ -243,7 +243,7 @@ class UserController extends CoreController
         );
         $encode = base64_encode(json_encode($data));
 
-        $saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
+        $saltKey = env('SALTKEY', '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399');
         $saltIndex = 1;
 
         $string = $encode . '/pg/v1/pay' . $saltKey;
@@ -251,7 +251,7 @@ class UserController extends CoreController
 
         $finalXHeader = $sha256 . '###' . $saltIndex;
 
-        $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/pay')
+        $response = Curl::to(env('PAYEMENT_ENDPOINT', 'https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/pay'))
             ->withHeader('Content-Type:application/json')
             ->withHeader('X-VERIFY:' . $finalXHeader)
             ->withData(json_encode(['request' => $encode]))

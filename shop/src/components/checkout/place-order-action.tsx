@@ -35,6 +35,7 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
   const { locale }: any = useRouter();
   const [isPayemntInitiated, setIsPayemntInitiated] = useState(false);
   const [isPayemntCompleted, setIsPayemntCompleted] = useState(false);
+  const [createOrderInput, setCreateOrderInput] = useState({});
   const { items } = useCart();
   const { orderStatuses } = useOrderStatuses({
     limit: 1,
@@ -77,7 +78,7 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
 
       if (checkStatusPaymentData && checkStatusPaymentData.success) {
         clearInterval(intervalId); // Stop the interval if success is true
-        handlePlaceOrder(true);
+        handlePlaceOrder(true, initiatedPaymentData.data.merchantTransactionId);
       }
     };
 
@@ -130,41 +131,47 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
     //   setErrorMessage('Please Pay First');
     //   return;
     // }
-    let input: any = {
-      //@ts-ignore
-      products: available_items?.map((item) => formatOrderedProduct(item)),
-      tracking_number: generateRandomString(12),
-      influencer_id: available_items[0].influencer_id,
-      status: orderStatuses[0]?.id ?? '1',
-      amount: subtotal,
-      coupon_id: Number(coupon?.id),
-      discount: discount ?? 0,
-      paid_total: total,
-      sales_tax: verified_response?.total_tax,
-      delivery_fee: verified_response?.shipping_charge,
-      total,
-      delivery_time: delivery_time?.title,
-      customer_contact,
-      payment_gateway,
-      use_wallet_points,
-      billing_address: {
-        ...(billing_address?.address && billing_address.address),
-      },
-      shipping_address: {
-        ...(shipping_address?.address && shipping_address.address),
-      },
-    };
-    delete input.billing_address.__typename;
-    delete input.shipping_address.__typename;
 
-    if (transactionId) {
-      input.payment_id = transactionId;
-    }
-
-    console.log('orderInput', input);
     if (isPaymentDone) {
-      createOrder(input);
+      if (transactionId) {
+        setCreateOrderInput((prev) => ({
+          ...prev,
+          payment_id: transactionId,
+        }));
+      }
+
+      createOrder(createOrderInput);
+      setCreateOrderInput({});
     } else {
+      let input: any = {
+        //@ts-ignore
+        products: available_items?.map((item) => formatOrderedProduct(item)),
+        tracking_number: generateRandomString(12),
+        influencer_id: available_items[0].influencer_id,
+        status: orderStatuses[0]?.id ?? '1',
+        amount: subtotal,
+        coupon_id: Number(coupon?.id),
+        discount: discount ?? 0,
+        paid_total: total,
+        sales_tax: verified_response?.total_tax,
+        delivery_fee: verified_response?.shipping_charge,
+        total,
+        delivery_time: delivery_time?.title,
+        customer_contact,
+        payment_gateway,
+        use_wallet_points,
+        billing_address: {
+          ...(billing_address?.address && billing_address.address),
+        },
+        shipping_address: {
+          ...(shipping_address?.address && shipping_address.address),
+        },
+      };
+      delete input.billing_address.__typename;
+      delete input.shipping_address.__typename;
+
+      setCreateOrderInput(input);
+
       initiatePayment(input);
     }
     //@ts-ignore
