@@ -26,18 +26,19 @@ interface CheckoutState {
   use_wallet: boolean;
   [key: string]: unknown;
 }
+
 export const defaultCheckout: CheckoutState = {
   billing_address: null,
   shipping_address: null,
   delivery_time: null,
-  payment_gateway: 'STRIPE',
+  payment_gateway: 'PHONEPE',
   customer_contact: '',
   verified_response: null,
   coupon: null,
   payable_amount: 0,
   use_wallet: false,
 };
-export type PaymentMethodName = 'CASH_ON_DELIVERY' | 'STRIPE';
+export type PaymentMethodName = 'CASH_ON_DELIVERY'  | 'PHONEPE';
 
 // Original atom.
 export const checkoutAtom = atomWithStorage(CHECKOUT, defaultCheckout);
@@ -67,7 +68,7 @@ export const deliveryTimeAtom = atom(
 );
 export const paymentGatewayAtom = atom(
   (get) => get(checkoutAtom).payment_gateway,
-  (get, set, data: PaymentMethodName) => {
+  (get, set,  data: PaymentMethodName) => {
     const prev = get(checkoutAtom);
     return set(checkoutAtom, { ...prev, payment_gateway: data });
   }

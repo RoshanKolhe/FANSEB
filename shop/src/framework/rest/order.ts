@@ -6,7 +6,7 @@ import {
   OrderStatusPaginator,
   QueryOptions,
   CreateOrderInput,
-  CreateRefundInput
+  CreateRefundInput,
 } from '@/types';
 import {
   useInfiniteQuery,
@@ -27,7 +27,7 @@ import { mapPaginatorData } from '@/framework/utils/data-mappers';
 
 export function useOrders(options?: Partial<OrderQueryOptions>) {
   const { locale } = useRouter();
-  
+
   const formattedOptions = {
     ...options,
     // language: locale
@@ -82,9 +82,11 @@ export function useOrder({ tracking_number }: { tracking_number: string }) {
   };
 }
 
-export function useOrderStatuses(options: Pick<QueryOptions, 'limit' | 'language'>) {
+export function useOrderStatuses(
+  options: Pick<QueryOptions, 'limit' | 'language'>
+) {
   const { locale } = useRouter();
-  
+
   const formattedOptions = {
     ...options,
     // language: locale
@@ -125,9 +127,8 @@ export function useOrderStatuses(options: Pick<QueryOptions, 'limit' | 'language
 }
 
 export function useRefunds(options: Pick<QueryOptions, 'limit'>) {
-
   const { locale } = useRouter();
-  
+
   const formattedOptions = {
     ...options,
     // language: locale
@@ -170,9 +171,8 @@ export function useRefunds(options: Pick<QueryOptions, 'limit'>) {
 export const useDownloadableProducts = (
   options: Pick<QueryOptions, 'limit'>
 ) => {
-
   const { locale } = useRouter();
-  
+
   const formattedOptions = {
     ...options,
     // language: locale
@@ -269,10 +269,10 @@ export function useCreateOrder() {
     },
   });
 
-  function formatOrderInput(input: CreateOrderInput) {
+  function formatOrderInput(input: any) {
     const formattedInputs = {
       ...input,
-      language: locale
+      language: locale,
     };
     createOrder(formattedInputs);
   }
@@ -280,6 +280,76 @@ export function useCreateOrder() {
   return {
     createOrder: formatOrderInput,
     isLoading,
+  };
+}
+
+export function useInitiatePayment() {
+  const router = useRouter();
+  const { locale } = router;
+
+  const {
+    mutate: initiatePayment,
+    isLoading,
+    data,
+  } = useMutation(client.orders.initiatePayment, {
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      const {
+        response: { data },
+      }: any = error ?? {};
+      toast.error(data?.message);
+    },
+  });
+
+  function formatOrderInput(input: any) {
+    const formattedInputs = {
+      ...input,
+      language: locale,
+    };
+    initiatePayment(formattedInputs);
+  }
+
+  return {
+    initiatePayment: formatOrderInput,
+    isLoading,
+    initiatedPaymentData: data,
+  };
+}
+
+export function useCheckStatus() {
+  const router = useRouter();
+  const { locale } = router;
+
+  const {
+    mutate: checkStatus,
+    isLoading,
+    data,
+  } = useMutation(client.orders.checkStatus, {
+    // onSuccess should return the data
+    onSuccess: (data) => data,
+    onError: (error) => {
+      const {
+        response: { data },
+      }: any = error ?? {};
+      toast.error(data?.message);
+    },
+  });
+
+  function formatOrderInput(input: any) {
+    const formattedInputs = {
+      ...input,
+      language: locale,
+    };
+    // Return the promise from checkStatus
+    return checkStatus(formattedInputs);
+  }
+
+  return {
+    checkStatus: formatOrderInput,
+    isLoading,
+    checkStatusPaymentData: data,
   };
 }
 

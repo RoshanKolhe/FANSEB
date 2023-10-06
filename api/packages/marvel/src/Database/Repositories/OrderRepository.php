@@ -93,7 +93,7 @@ class OrderRepository extends BaseRepository
     public function storeOrder($request)
     {
         $useWalletPoints = isset($request->use_wallet_points) ? $request->use_wallet_points : false;
-        $request['tracking_number'] = Str::random(12);
+        // $request['tracking_number'] = Str::random(12);
         if ($request->user() && !$request->user()->hasPermissionTo(Permission::SUPER_ADMIN) && isset($request['customer_id'])) {
             $request['customer_id'] = $request['customer_id'];
         } else {
@@ -138,32 +138,39 @@ class OrderRepository extends BaseRepository
             case 'CASH':
                 return $this->createCashOrder($request, $useWalletPoints, $amount, $user);
                 break;
-            case 'PAYPAL':
+            case 'PHONEPE':
                 // For default gateway no need to set gateway
-                Omnipay::setGateway('PAYPAL');
+                return $this->createPhonepeOrder($request, $useWalletPoints, $amount, $user);
                 break;
             default:
                 break;
         }
 
-        $response = $this->capturePayment($request, $amount);
-        if ($response->isSuccessful()) {
-            $payment_id = $response->getTransactionReference();
-            $request['payment_id'] = $payment_id;
+        if ($request['payment_id']) {
+            // $payment_id = $response->getTransactionReference();
+            // $request['payment_id'] = $payment_id;
             $order = $this->createOrder($request);
             if ($useWalletPoints === true && $user) {
                 $this->storeOrderWalletPoint(round($request['paid_total'], 2) - $amount, $order->id);
                 $this->manageWalletAmount(round($request['paid_total'], 2), $user->id);
             }
             return $order;
-        } elseif ($response->isRedirect()) {
-            return $response->getRedirectResponse();
         } else {
             throw new MarvelException(PAYMENT_FAILED);
         }
     }
 
     public function createCashOrder($request, $useWalletPoints, $amount, $user)
+    {
+        $order = $this->createOrder($request);
+        if ($useWalletPoints === true && $user) {
+            $this->storeOrderWalletPoint(round($request['paid_total'], 2) - $amount, $order->id);
+            $this->manageWalletAmount(round($request['paid_total'], 2), $user->id);
+        }
+        return $order;
+    }
+
+    public function createPhonepeOrder($request, $useWalletPoints, $amount, $user)
     {
         $order = $this->createOrder($request);
         if ($useWalletPoints === true && $user) {

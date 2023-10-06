@@ -7,6 +7,7 @@ import CashOnDelivery from '@/components/checkout/payment/cash-on-delivery';
 import { useAtom } from 'jotai';
 import { paymentGatewayAtom, PaymentMethodName } from '@/store/checkout';
 import cn from 'classnames';
+import PhonePe from './phonepe';
 
 interface PaymentMethodInformation {
   name: string;
@@ -28,11 +29,17 @@ const PaymentGrid: React.FC<{ className?: string; theme?: 'bw' }> = ({
     PaymentMethodName,
     PaymentMethodInformation
   > = {
-    STRIPE: {
-      name: 'Stripe',
-      value: 'STRIPE',
-      icon: '/payment/stripe.png',
-      component: StripePayment,
+    // STRIPE: {
+    //   name: 'Stripe',
+    //   value: 'STRIPE',
+    //   icon: '/payment/stripe.png',
+    //   component: StripePayment,
+    // },
+    PHONEPE: {
+      name: 'PhonePe',
+      value: 'PHONEPE',
+      icon: '/payment/phonepelogo.png',
+      component: PhonePe,
     },
     CASH_ON_DELIVERY: {
       name: t('text-cash-on-delivery'),

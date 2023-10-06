@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import isEmpty from 'lodash/isEmpty';
 import classNames from 'classnames';
-import { useCreateOrder, useOrderStatuses } from '@/framework/order';
+import {
+  useCheckStatus,
+  useCreateOrder,
+  useInitiatePayment,
+  useOrderStatuses,
+} from '@/framework/order';
 import ValidationError from '@/components/ui/validation-error';
 import Button from '@/components/ui/button';
 import { formatOrderedProduct } from '@/lib/format-ordered-product';
@@ -18,13 +23,22 @@ import { useRouter } from 'next/router';
 export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
   const { t } = useTranslation('common');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { createOrder, isLoading } = useCreateOrder();
-  const { locale } : any = useRouter();
+  const { createOrder, isLoading: isLoadingOrder } = useCreateOrder();
+  const { initiatePayment, isLoading, initiatedPaymentData } =
+    useInitiatePayment();
+  const {
+    checkStatus,
+    isLoading: paymentStatusLoading,
+    checkStatusPaymentData,
+  } = useCheckStatus();
+  console.log(initiatedPaymentData);
+  const { locale }: any = useRouter();
+  const [isPayemntInitiated, setIsPayemntInitiated] = useState(false);
+  const [isPayemntCompleted, setIsPayemntCompleted] = useState(false);
   const { items } = useCart();
-  console.log('items',items);
   const { orderStatuses } = useOrderStatuses({
     limit: 1,
-    language: locale
+    language: locale,
   });
 
   const [
@@ -43,6 +57,45 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
   const [use_wallet_points] = useAtom(walletAtom);
 
   useEffect(() => {
+    if (initiatedPaymentData) {
+      setIsPayemntInitiated(true);
+      window.open(
+        initiatedPaymentData?.data?.instrumentResponse?.redirectInfo?.url,
+        '_blank'
+      );
+    }
+  }, [initiatedPaymentData]);
+
+  useEffect(() => {
+    let intervalId: any;
+
+    const checkStatusWithInterval = () => {
+      const inputData = {
+        transactionId: initiatedPaymentData.data.merchantTransactionId,
+      };
+      checkStatus(inputData);
+
+      if (checkStatusPaymentData && checkStatusPaymentData.success) {
+        clearInterval(intervalId); // Stop the interval if success is true
+        handlePlaceOrder(true);
+      }
+    };
+
+    if (
+      isPayemntInitiated &&
+      initiatedPaymentData &&
+      initiatedPaymentData.success
+    ) {
+      console.log('here', initiatedPaymentData);
+      intervalId = setInterval(checkStatusWithInterval, 2000); // Call checkStatusWithInterval every 2 seconds
+    }
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval when the component unmounts or when isPaymentInitiated changes
+    };
+  }, [isPayemntInitiated, checkStatusPaymentData]);
+
+  useEffect(() => {
     setErrorMessage(null);
   }, [payment_gateway]);
 
@@ -59,7 +112,12 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
     },
     Number(discount)
   );
-  const handlePlaceOrder = () => {
+
+  function generateRandomString(length: number) {
+    return Math.random().toString(36).substr(2, length);
+  }
+
+  const handlePlaceOrder = (isPaymentDone: boolean, transactionId?: string) => {
     if (!customer_contact) {
       setErrorMessage('Contact Number Is Required');
       return;
@@ -68,14 +126,15 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
       setErrorMessage('Gateway Is Required');
       return;
     }
-    if (!use_wallet_points && payment_gateway === 'STRIPE' && !token) {
-      setErrorMessage('Please Pay First');
-      return;
-    }
-    let input = {
+    // if (!use_wallet_points && payment_gateway === 'PHONEPE' ) {
+    //   setErrorMessage('Please Pay First');
+    //   return;
+    // }
+    let input: any = {
       //@ts-ignore
       products: available_items?.map((item) => formatOrderedProduct(item)),
-      influencer_id : available_items[0].influencer_id,
+      tracking_number: generateRandomString(12),
+      influencer_id: available_items[0].influencer_id,
       status: orderStatuses[0]?.id ?? '1',
       amount: subtotal,
       coupon_id: Number(coupon?.id),
@@ -95,15 +154,20 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
         ...(shipping_address?.address && shipping_address.address),
       },
     };
-    if (payment_gateway === 'STRIPE') {
-      //@ts-ignore
-      input.token = token;
-    }
-
     delete input.billing_address.__typename;
     delete input.shipping_address.__typename;
+
+    if (transactionId) {
+      input.payment_id = transactionId;
+    }
+
+    console.log('orderInput', input);
+    if (isPaymentDone) {
+      createOrder(input);
+    } else {
+      initiatePayment(input);
+    }
     //@ts-ignore
-    createOrder(input);
   };
   const isDigitalCheckout = available_items.find((item) =>
     Boolean(item.is_digital)
@@ -125,9 +189,11 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
   return (
     <>
       <Button
-        loading={isLoading}
+        loading={isLoadingOrder || isLoading}
         className={classNames('mt-5 w-full', props.className)}
-        onClick={handlePlaceOrder}
+        onClick={() => {
+          handlePlaceOrder(false);
+        }}
         disabled={!isAllRequiredFieldSelected}
         {...props}
       />

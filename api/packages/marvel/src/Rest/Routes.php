@@ -51,6 +51,8 @@ Route::post('/social-login-token', [UserController::class, 'socialLogin']);
 Route::post('/send-otp-code', [UserController::class, 'sendOtpCode']);
 Route::post('/verify-otp-code', [UserController::class, 'verifyOtpCode']);
 Route::post('/otp-login', [UserController::class, 'otpLogin']);
+Route::post('/initiatePayment', [UserController::class, 'initiatePayment']);
+Route::post('/checkStatus', [UserController::class, 'checkStatus']);
 Route::get('top-authors', [AuthorController::class, 'topAuthor']);
 Route::get('top-manufacturers', [ManufacturerController::class, 'topManufacturer']);
 Route::get('popular-products', [ProductController::class, 'popularProducts']);
@@ -58,7 +60,7 @@ Route::get('check-availability', [ProductController::class, 'checkAvailability']
 Route::get('influencerProducts', [UserController::class, 'getUserProducts']);
 Route::get('influencerProduct/{slug}', [UserController::class, 'getUserSingleProduct']);
 Route::apiResource('reels', ReelController::class, [
-    'only' => ['index','show'],
+    'only' => ['index', 'show'],
 ]);
 Route::get('/influencerUser/{id}', [UserController::class, 'getUserInfluencer']);
 
@@ -220,7 +222,7 @@ Route::group(
         // Route::get('shops/refunds', 'Marvel\Http\Controllers\ShopController@refunds');
         Route::post('influencerProducts', 'Marvel\Http\Controllers\ProductController@createProductUser');
         Route::delete('influencerProducts', 'Marvel\Http\Controllers\ProductController@deleteInfluencerProduct');
-        
+
         Route::apiResource('questions', QuestionController::class, [
             'only' => ['update'],
         ]);
@@ -231,7 +233,7 @@ Route::group(
             'only' => ['store'],
         ]);
         Route::apiResource('influencer-withdraws', InfluencerWithdrawController::class, [
-            'only' => ['store','index','show', 'update', 'destroy'],
+            'only' => ['store', 'index', 'show', 'update', 'destroy'],
         ]);
 
         Route::get('export-order-url/{shop_id?}', 'Marvel\Http\Controllers\OrderController@exportOrderUrl');

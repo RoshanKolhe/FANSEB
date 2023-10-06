@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Marvel\Enums\Permission;
 use Illuminate\Http\Response;
 use Marvel\Mail\ContactAdmin;
+use Ixudra\Curl\Facades\Curl;
 use Marvel\Database\Models\User;
 use Illuminate\Support\Facades\DB;
 use Marvel\Database\Models\Wallet;
@@ -57,9 +58,11 @@ class UserController extends CoreController
         $limit = $request->limit ? $request->limit : 15;
         if ($request->permission == 'influencer') {
             return $this->repository->with(['profile', 'address', 'permissions'])->where(function ($query) {
-                $query->whereHas('permissions', function ($subquery) {
-                    $subquery->where('name', 'influencer');
-                }
+                $query->whereHas(
+                    'permissions',
+                    function ($subquery) {
+                        $subquery->where('name', 'influencer');
+                    }
                 );
             })->where('is_active', '1')->paginate($limit);
         }
@@ -144,6 +147,8 @@ class UserController extends CoreController
         ]);
 
         $user = User::where('email', $request->email)->where('is_active', true)->first();
+        Log::info($request->password);
+        Log::info($user->password);
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return ["token" => null, "permissions" => []];
@@ -178,7 +183,7 @@ class UserController extends CoreController
                 'password' => Hash::make($request->password),
                 'is_active' => '0',
             ]);
-            $user->influencerBalance()->create(['influencer_commission_rate'=>'10']);
+            $user->influencerBalance()->create(['influencer_commission_rate' => '10']);
         } else {
             $user = $this->repository->create([
                 'name' => $request->name,
@@ -216,6 +221,70 @@ class UserController extends CoreController
             return $activeUser;
         } else {
             throw new MarvelException(NOT_AUTHORIZED);
+        }
+    }
+
+    public function initiatePayment(Request $request)
+    {
+        $url = url('http://localhost:3003/orders/'.$request->tracking_number);
+        $data = array(
+            'merchantId' => 'MERCHANTUAT',
+            'merchantTransactionId' => uniqid(),
+            'merchantUserId' => 'MUID123',
+            'amount' => 100,
+            'redirectUrl' => $url,
+            'redirectMode' => 'POST',
+            'callbackUrl' => $url,
+            'mobileNumber' => '9999999999',
+            'paymentInstrument' =>
+                array(
+                    'type' => 'PAY_PAGE',
+                ),
+        );
+        $encode = base64_encode(json_encode($data));
+
+        $saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
+        $saltIndex = 1;
+
+        $string = $encode . '/pg/v1/pay' . $saltKey;
+        $sha256 = hash('sha256', $string);
+
+        $finalXHeader = $sha256 . '###' . $saltIndex;
+
+        $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/pay')
+            ->withHeader('Content-Type:application/json')
+            ->withHeader('X-VERIFY:' . $finalXHeader)
+            ->withData(json_encode(['request' => $encode]))
+            ->post();
+
+        $rData = json_decode($response);
+        return $rData;
+    }
+
+    public function checkStatus(Request $request)
+    {
+        try {
+            $input = $request->all();
+            // dd($input);
+            $saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
+            $saltIndex = 1;
+
+            $finalXHeader = hash('sha256', '/pg/v1/status/MERCHANTUAT/' . $input['transactionId'] . $saltKey) . '###' . $saltIndex;
+
+            $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/MERCHANTUAT/' . $input['transactionId'])
+                ->withHeader('Content-Type:application/json')
+                ->withHeader('accept:application/json')
+                ->withHeader('X-VERIFY:' . $finalXHeader)
+                ->withHeader('X-MERCHANT-ID:' . $input['transactionId'])
+                ->get();
+
+            $data = json_decode($response, true);
+            // dd($data);
+            return $data;
+
+        } catch (Exception $e) {
+            return view('error');
+
         }
     }
 
@@ -459,8 +528,8 @@ class UserController extends CoreController
                         $user = User::firstOrCreate([
                             'email' => $email
                         ], [
-                                'name' => $name,
-                            ]);
+                            'name' => $name,
+                        ]);
                         $user->givePermissionTo(Permission::CUSTOMER);
                         $user->profile()->updateOrCreate(
                             ['customer_id' => $user->id],
@@ -598,5 +667,5 @@ class UserController extends CoreController
     {
         return $this->repository->with(['profile'])->find($id);
     }
-    
+
 }

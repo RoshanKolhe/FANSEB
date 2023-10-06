@@ -21,6 +21,7 @@
         "laravel/legacy-factories": "^1",
         "cviebrock/eloquent-sluggable": "^8.0",
         "laravel/sanctum": "^2.7",
+        "ixudra/curl": "^6.22",
         "mll-lab/laravel-graphql-playground": "^2.1",
         "prettus/l5-repository": "^2.6",
         "spatie/laravel-medialibrary": "^9.4.0",

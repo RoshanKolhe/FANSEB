@@ -580,6 +580,7 @@ export interface CardInput {
 
 enum PaymentGatewayType {
   STRIPE = 'Stripe',
+  PHONEPE = 'Phone Pe',
   CASH_ON_DELIVERY = 'Cash on delivery',
   CASH = 'Cash',
   FULL_WALLET_PAYMENT = 'Full wallet payment',
@@ -602,7 +603,7 @@ export interface CreateOrderInput {
   use_wallet_points?: boolean;
   delivery_fee?: number;
   delivery_time: string;
-  card: CardInput;
+  card?: CardInput;
   token?: string;
   billing_address: Address;
   shipping_address: Address;

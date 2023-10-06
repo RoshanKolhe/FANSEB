@@ -16,7 +16,7 @@ use Marvel\Database\Models\Address;
 use Marvel\Database\Models\Profile;
 use Marvel\Database\Models\Shop;
 use Marvel\Exceptions\MarvelException;
-
+use Illuminate\Support\Facades\Log;
 class UserRepository extends BaseRepository
 {
     /**
@@ -168,6 +168,7 @@ class UserRepository extends BaseRepository
             Mail::to($email)->send(new ForgetPassword($token));
             return true;
         } catch (\Exception $e) {
+            Log::error('Exception occurred: ' . $e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
