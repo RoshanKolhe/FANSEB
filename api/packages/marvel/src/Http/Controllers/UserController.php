@@ -230,10 +230,10 @@ class UserController extends CoreController
         $data = array(
             'merchantId' => env('MERCHANT_ID', 'MERCHANTUAT'),
             'merchantTransactionId' => uniqid(),
-            'merchantUserId' => env('MERHChANT_USER_ID', 'MUID123'),
+            'merchantUserId' => env('MERHCHANT_USER_ID', 'MUID123'),
             'amount' => $request->total * 100,
             'redirectUrl' => $url,
-            'redirectMode' => 'POST',
+            'redirectMode' => 'GET',
             'callbackUrl' => $url,
             'mobileNumber' => env('MOBILENO', '9999999999'),
             'paymentInstrument' =>
@@ -266,12 +266,12 @@ class UserController extends CoreController
         try {
             $input = $request->all();
             // dd($input);
-            $saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
+            $saltKey = env('SALTKEY', '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399');
             $saltIndex = 1;
 
-            $finalXHeader = hash('sha256', '/pg/v1/status/MERCHANTUAT/' . $input['transactionId'] . $saltKey) . '###' . $saltIndex;
+            $finalXHeader = hash('sha256', '/pg/v1/status/' . env('MERCHANT_ID', 'MERCHANTUAT') . '/' . $input['transactionId'] . $saltKey) . '###' . $saltIndex;
 
-            $response = Curl::to('https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/MERCHANTUAT/' . $input['transactionId'])
+            $response = Curl::to(env('PAYEMENT_ENDPOINT', 'https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/') . env('MERCHANT_ID', 'MERCHANTUAT') . '/' . $input['transactionId'])
                 ->withHeader('Content-Type:application/json')
                 ->withHeader('accept:application/json')
                 ->withHeader('X-VERIFY:' . $finalXHeader)
