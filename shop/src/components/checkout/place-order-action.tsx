@@ -76,7 +76,10 @@ export const PlaceOrderAction: React.FC<{ className?: string }> = (props) => {
       };
       checkStatus(inputData);
 
-      if (checkStatusPaymentData && checkStatusPaymentData.success) {
+      if (
+        checkStatusPaymentData &&
+        checkStatusPaymentData.code === 'COMPLETED'
+      ) {
         clearInterval(intervalId); // Stop the interval if success is true
         handlePlaceOrder(true, initiatedPaymentData.data.merchantTransactionId);
       }
