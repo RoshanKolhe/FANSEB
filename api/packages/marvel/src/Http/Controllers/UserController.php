@@ -271,7 +271,7 @@ class UserController extends CoreController
 
             $finalXHeader = hash('sha256', '/pg/v1/status/' . env('MERCHANT_ID', 'MERCHANTUAT') . '/' . $input['transactionId'] . $saltKey) . '###' . $saltIndex;
 
-            $response = Curl::to(env('PAYEMENT_ENDPOINT', 'https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/') . env('MERCHANT_ID', 'MERCHANTUAT') . '/' . $input['transactionId'])
+            $response = Curl::to(env('STATUS_ENDPOINT', 'https://api-preprod.phonepe.com/apis/merchant-simulator/pg/v1/status/') . env('MERCHANT_ID', 'MERCHANTUAT') . '/' . $input['transactionId'])
                 ->withHeader('Content-Type:application/json')
                 ->withHeader('accept:application/json')
                 ->withHeader('X-VERIFY:' . $finalXHeader)
